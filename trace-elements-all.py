@@ -32,9 +32,9 @@ sns.set_style("darkgrid")
 #plt.xlim (25,100)
 
 #create plot
-plot = sns.scatterplot(data = MG, x= 'Ba', y='Sr',hue = "Population" , style = MG_index, palette="Blues_d",marker = 's', edgecolor="black", s=100,alpha = 0.5,legend="brief")
-plot = sns.scatterplot(data = VCCR, x= 'Ba', y='Sr',hue = "Population", palette="PuRd_d", marker = '^', edgecolor="black", s=150, legend = "brief", style = VCCR_index, alpha = 0.5, hue_order = ['VCCR 1', 'VCCR 2', 'VCCR 3'])
-plot = sns.scatterplot(data = FG, x= 'Ba', y='Sr', style = FG_index, hue = "Population", palette="binary", edgecolor="black", s=100,alpha = 0.5,legend="brief", markers=('o', 's', '^', 'X'))
+plot = sns.scatterplot(data = MG, x= 'Ba', y='Sr',hue = "Population" , style = MG_index, palette="Blues_d",marker = 's', edgecolor="black", s=100,alpha = 0.5,legend=False)
+plot = sns.scatterplot(data = VCCR, x= 'Ba', y='Sr',hue = "Population", palette="PuRd_d", marker = '^', edgecolor="black", s=150, legend = False, style = VCCR_index, alpha = 0.5, hue_order = ['VCCR 1', 'VCCR 2', 'VCCR 3'])
+plot = sns.scatterplot(data = FG, x= 'Ba', y='Sr', style = FG_index, hue = "Population", palette="binary", edgecolor="black", s=100,alpha = 0.5,legend=False, markers=('o', 's', '^', 'X'))
 
 #plot = sns.scatterplot(data = FG, x= 'Y', y='Nb',hue = FG_index, palette="Blues",legend="brief", marker = 's', edgecolor="black", s=150)
 #plot = sns.scatterplot(data = FGCP, x= 'Y', y='Nb',hue = FGCP_index, palette="Blues",legend="brief", marker = 's', edgecolor="black", s=150)
@@ -46,7 +46,7 @@ plot = sns.scatterplot(data = FG, x= 'Ba', y='Sr', style = FG_index, hue = "Popu
 #set location of legend
 
 #plt.legend(loc='upper left')
-plt.legend(loc='center left', bbox_to_anchor=(1, 0.5), ncol=3)
+#plt.legend(loc='center left', bbox_to_anchor=(1, 0.5), ncol=3)
 
 # general title
 plt.suptitle("All Fiamme Glass", fontsize=15, fontweight=0, color='black')
