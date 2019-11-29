@@ -23,7 +23,7 @@ sns.set_style("darkgrid")
 #plt.xlim (25,100)
 
 #create plot
-plot = sns.scatterplot(data = FGCP, x= 'Ba', y='Sr', style = FGCP_index, hue = "Population", palette="Greens", edgecolor="black", s=100, alpha = 0.5, legend=False)
+plot = sns.scatterplot(data = FGCP, x= 'Ba', y='Sr', hue = FGCP_index, palette="Greens", edgecolor="black", s=100, alpha = 0.5, legend="brief")
 
 #plot = sns.scatterplot(data = FG, x= 'Y', y='Nb',hue = FG_index, palette="Blues",legend="brief", marker = 's', edgecolor="black", s=150)
 #plot = sns.scatterplot(data = FGCP, x= 'Y', y='Nb',hue = FGCP_index, palette="Blues",legend="brief", marker = 's', edgecolor="black", s=150)
@@ -35,7 +35,7 @@ plot = sns.scatterplot(data = FGCP, x= 'Ba', y='Sr', style = FGCP_index, hue = "
 #set location of legend
 
 #plt.legend(loc='upper left')
-#plt.legend(loc='center left', bbox_to_anchor=(1, 0.5), ncol=3)
+plt.legend(loc='center left', bbox_to_anchor=(1, 0.5), ncol=1)
 
 # general title
 plt.suptitle("FGCP Fiamme Glass", fontsize=15, fontweight=0)
