@@ -47,7 +47,7 @@ plot = sns.scatterplot(data = FG, x= 'Ba', y='Sr', style = FG_index, hue = "Popu
 #set location of legend
 
 #plt.legend(loc='upper left')
-plt.legend(loc='center left', bbox_to_anchor=(1, 0.5), ncol=2)
+plt.legend(loc='center left', bbox_to_anchor=(1, 0.5), ncol=1)
 
 # general title
 plt.suptitle("All Fiamme Glass", fontsize=15, fontweight=0, color='black')
