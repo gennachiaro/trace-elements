@@ -29,7 +29,7 @@ sns.set_style("darkgrid")
 #sns.set_palette("PuBuGn_d")
 
 #create plot
-plot = sns.scatterplot(data = VCCR, x= 'Y', y='Nb',hue = "Population", palette="PuRd_d", marker = '^', edgecolor="black", s=150, legend = "brief", style = VCCR_index, alpha = 0.5, hue_order = ['VCCR 1', 'VCCR 2', 'VCCR 3'])
+plot = sns.scatterplot(data = VCCR, x= 'Ba', y='Sr',hue = "Population", palette="PuRd_d", marker = '^', edgecolor="black", s=150, legend = "brief", style = VCCR_index, alpha = 0.5, hue_order = ['VCCR 1', 'VCCR 2', 'VCCR 3'])
 
 #set y axis to log scale
 #plot.set(yscale='log')
@@ -41,7 +41,7 @@ plot = sns.scatterplot(data = VCCR, x= 'Y', y='Nb',hue = "Population", palette="
 plt.legend(loc='center left', bbox_to_anchor=(1, 0.5), ncol=1)
 
 # general title
-plt.suptitle("Very Coarse-Grained Crystal-Rich Fiamme Glass", fontsize=15, fontweight=0, color='black')
+plt.suptitle("Very Coarse-Grained Crystal-Rich (VCCR) Fiamme Glass", fontsize=15, fontweight=0, color='black')
 
 # set size of plot
 sns.set_context("poster")

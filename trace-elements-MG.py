@@ -44,7 +44,7 @@ plot = sns.scatterplot(data = MG, x= 'Ba', y='Sr',hue = "Population" , style = M
 plt.legend(loc='center left', bbox_to_anchor=(1, 0.5), ncol=1)
 
 # general title
-plt.suptitle("Medium-Grained Fiamme Glass", fontsize=15, fontweight=0, color='black')
+plt.suptitle("Medium-Grained (MG) Fiamme Glass", fontsize=15, fontweight=0, color='black')
 
 # set size of plot
 sns.set_context("poster")

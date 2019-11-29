@@ -39,7 +39,7 @@ sns.set_style("darkgrid")
 fig = plt.figure(figsize=(6,8))
 
 
-title = fig.suptitle("Mingled FGCP Fiamme Glasses", fontsize=16, y = 1.02)
+title = fig.suptitle("Mingled (FGCP) Fiamme Glasses", fontsize=16, y = 1.02)
 
 
 #plot 1

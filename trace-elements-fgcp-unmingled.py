@@ -37,7 +37,7 @@ plot = sns.scatterplot(data = FGCP, x= 'Ba', y='Sr', style = FGCP_index, hue = F
 plt.legend(loc='center left', bbox_to_anchor=(1, 0.5), ncol=1)
 
 # general title
-plt.suptitle("FGCP Unmingled Fiamme Glass", fontsize=15, fontweight=0, y=0.96)
+plt.suptitle("Unmingled (FGCP) Fiamme Glass", fontsize=15, fontweight=0, y=0.96)
 
 # set size of plot
 sns.set_context("paper")

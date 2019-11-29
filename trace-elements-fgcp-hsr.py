@@ -34,7 +34,7 @@ plot = sns.scatterplot(data = FGCP, x= 'Ba', y='Sr', style = FGCP_index,hue = FG
 plt.legend(loc='center left', bbox_to_anchor=(1, 0.5), ncol=1)
 
 # general title
-plt.suptitle("FGCP High-Silica Rhyolite Fiamme Glass", fontsize=15, fontweight=0)
+plt.suptitle("High-Silica Rhyolite (FGCP) Fiamme Glass", fontsize=15, fontweight=0)
 
 # set size of plot
 sns.set_context("paper")

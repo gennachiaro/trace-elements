@@ -41,7 +41,7 @@ plot = sns.scatterplot(data = VCCR, x= 'Y', y='Nb',hue = "Population", palette="
 plt.legend(loc='center left', bbox_to_anchor=(1, 0.5), ncol=1)
 
 # general title
-plt.suptitle("Very Coarse-Grained Crystal-Rich Fiamme Glass", fontsize=15, fontweight=0, color='black')
+plt.suptitle("Very Coarse-Grained Crystal-Rich (VCCR) Fiamme Glass", fontsize=15, fontweight=0, color='black')
 
 # set size of plot
 sns.set_context("poster")
