@@ -53,7 +53,7 @@ title = fig.suptitle("Mingled (FGCP) Fiamme Glass", fontsize=24, y = 1.025)
 #plot 1
 plt.subplot(3, 2, 1)
 plot1 = sns.lineplot(data = One, x= 'REE', y='Sample/Chondrite', hue = One_index, sort = False, palette="Greens_d",legend="brief")
-plt.title('ORA-2A-002',fontsize = 15)
+plt.title('ORA-2A-002',fontsize = 20)
 plt.ylim(0.05, 200)
 plt.legend(loc='lower right')
 #set y axis to log scale
