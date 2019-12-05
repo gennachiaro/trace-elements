@@ -48,7 +48,7 @@ sns.set_style("darkgrid")
 #plot matrix
 fig = plt.figure(figsize=(10.4,11))
 
-title = fig.suptitle("Mingled (FGCP) Fiamme Glasses", fontsize=18, y = 1.02)
+title = fig.suptitle("Mingled (FGCP) Fiamme Glass", fontsize=24, y = 1.025)
 
 #plot 1
 plt.subplot(3, 2, 1)
