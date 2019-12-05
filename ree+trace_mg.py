@@ -31,7 +31,7 @@ sns.set_style("darkgrid")
 fig = plt.figure(figsize=(10,3.5))
 
 #group plot title
-title = fig.suptitle("Medium-Grained (MG) Fiamme Glass", fontsize=16, y = 1.04)
+title = fig.suptitle("Medium-Grained (MG) Fiamme Glass", fontsize=21, y = 1.04)
 
 #plot 1 
 

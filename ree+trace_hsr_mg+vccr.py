@@ -35,7 +35,7 @@ sns.set_style("darkgrid")
 fig = plt.figure(figsize=(10,3.5))
 
 #group plot title
-title = fig.suptitle("High-Silica Rhyolite (MG + VCCR) Fiamme Glass", fontsize=15, y = 1.04)
+title = fig.suptitle("High-Silica Rhyolite (MG + VCCR) Fiamme Glass", fontsize=12, y = 1.02)
 
 #plot 1 
 
