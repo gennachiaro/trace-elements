@@ -11,7 +11,7 @@ import seaborn as sns; sns.set()
 import matplotlib.pyplot as plt
 
 #import csv file
-df = pd.read_csv('/Users/gennachiaro/Documents/Vanderbilt/Research/Ora Caldera/Trace Elements/TraceElements_All.csv', index_col=1)
+df = pd.read_csv('/Users/gennachiaro/Documents/vanderbilt/research/ora caldera/trace-elements/TraceElements_All.csv', index_col=1)
 
 FGCP = df.loc[['ORA-2A-002-Type1','ORA-2A-002-Type2','ORA-2A-002']]
 FGCP_index = FGCP.index
@@ -23,7 +23,7 @@ sns.set_style("darkgrid")
 #plt.xlim (25,100)
 
 #create plot
-plot = sns.scatterplot(data = FGCP, x= 'Ba', y='Sr', hue = FGCP_index, style = FGCP_index, palette="Greens", edgecolor="black", s=100, alpha = 0.5, legend='brief')
+plot = sns.scatterplot(data = FGCP, x= 'U', y='Ti', hue = FGCP_index, style = FGCP_index, palette="Greens", edgecolor="black", s=100, alpha = 0.5, legend='brief')
 
 #set y axis to log scale
 #plot.set(yscale='log')
