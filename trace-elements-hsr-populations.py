@@ -38,8 +38,8 @@ sns.set_style("darkgrid")
 #sns.set_palette("PuBuGn_d")
 
 #create plot
-plot = sns.scatterplot(data = MG, x= 'Ba', y='Nb',hue = "Population" , palette="Blues",marker = 's', edgecolor="black", s=100,alpha = 0.5,legend="brief")
-plot = sns.scatterplot(data = VCCR, x= 'Ba', y='Nb',hue = "Population", palette="PuRd", marker = '^', edgecolor="black", s=150, legend = "brief", alpha = 0.5, hue_order = ['VCCR 1', 'VCCR 2', 'VCCR 3'])
+plot = sns.scatterplot(data = MG, x= 'Ti', y='Th',hue = "Population" , palette="Blues",marker = 's', edgecolor="black", s=100,alpha = 0.5,legend="brief")
+plot = sns.scatterplot(data = VCCR, x= 'Ti', y='Th',hue = "Population", palette="PuRd", marker = '^', edgecolor="black", s=150, legend = "brief", alpha = 0.5, hue_order = ['VCCR 1', 'VCCR 2', 'VCCR 3'])
 
 #plot = sns.scatterplot(data = FG, x= 'Y', y='Nb',hue = FG_index, palette="Blues",legend="brief", marker = 's', edgecolor="black", s=150)
 #plot = sns.scatterplot(data = FGCP, x= 'Y', y='Nb',hue = FGCP_index, palette="Blues",legend="brief", marker = 's', edgecolor="black", s=150)
