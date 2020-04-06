@@ -42,8 +42,8 @@ plot = sns.scatterplot(data = VCCR, x= 'Ba', y='Sr',hue = "Population", palette=
 #plot = sns.scatterplot(data = FGCP, x= 'Y', y='Nb',hue = FGCP_index, palette="Blues",legend="brief", marker = 's', edgecolor="black", s=150)
 
 #set y axis to log scale
-plot.set(yscale='log')
-plot.set(xscale='log')
+#plot.set(yscale='log')
+#plot.set(xscale='log')
 
 #set location of legend
 

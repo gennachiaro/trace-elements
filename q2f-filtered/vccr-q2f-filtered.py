@@ -30,9 +30,9 @@ sns.set_style("darkgrid")
 #sns.set_palette("PuBuGn_d")
 
 #create plot
-plot = sns.scatterplot(data = VCCR1, x= 'Ba', y='Sr',hue = "Population",  style= VCCR1_index, palette="binary", marker = 'x', edgecolor="black", s=150, legend = False, alpha = 0.4, hue_order = ['VCCR 1', 'VCCR 2', 'VCCR 3'])
+plot = sns.scatterplot(data = VCCR1, x= 'Ba', y='Zr',hue = "Population",  style= VCCR1_index, palette="binary", marker = 'x', edgecolor="black", s=150, legend = False, alpha = 0.4, hue_order = ['VCCR 1', 'VCCR 2', 'VCCR 3'])
 
-plot = sns.scatterplot(data = VCCR, x= 'Ba', y='Sr',hue = "Population",  style= VCCR_index, palette="PuRd_r", marker = '^', edgecolor="black", s=150, legend = "brief", alpha = 0.7, hue_order = ['VCCR 1', 'VCCR 2', 'VCCR 3'])
+plot = sns.scatterplot(data = VCCR, x= 'Ba', y='Zr',hue = "Population",  style= VCCR_index, palette="PuRd_r", marker = '^', edgecolor="black", s=150, legend = "brief", alpha = 0.7, hue_order = ['VCCR 1', 'VCCR 2', 'VCCR 3'])
 
 #set y axis to log scale
 #plot.set(yscale='log')

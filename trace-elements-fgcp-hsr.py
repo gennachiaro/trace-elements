@@ -23,7 +23,7 @@ sns.set_style("darkgrid")
 #plt.xlim (25,100)
 
 #create plot
-plot = sns.scatterplot(data = FGCP, x= 'U', y='Ti', style = FGCP_index,hue = FGCP_index, palette="Greens", edgecolor="black", s=100, alpha = 0.5, legend="brief")
+plot = sns.scatterplot(data = FGCP, x= 'Ba', y='Zr', style = FGCP_index,hue = FGCP_index, palette="Greens", edgecolor="black", s=100, alpha = 0.5, legend="brief")
 
 #set y axis to log scale
 #plot.set(yscale='log')

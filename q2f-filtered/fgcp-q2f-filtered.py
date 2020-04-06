@@ -27,9 +27,9 @@ sns.set_style("darkgrid")
 #plt.xlim (25,100)
 
 #create plot
-plot = sns.scatterplot(data = FGCP, x= 'Ba', y='Sr', style = 'Population', hue = "Population", palette="binary", edgecolor="black", marker = 'x', s=100, alpha = 0.4, legend="brief")
+plot = sns.scatterplot(data = FGCP, x= 'Ba', y='Zr', style = 'Population', hue = "Population", palette="binary", edgecolor="black", marker = 'x', s=100, alpha = 0.4, legend="brief")
 
-plot = sns.scatterplot(data = FGCP1, x= 'Ba', y='Sr', style = 'Population', hue = "Population", palette="Greens", edgecolor="black", s=100, alpha = 0.7, legend="brief")
+plot = sns.scatterplot(data = FGCP1, x= 'Ba', y='Zr', style = 'Population', hue = "Population", palette="Greens", edgecolor="black", s=100, alpha = 0.7, legend="brief")
 
 
 #plot = sns.scatterplot(data = FG, x= 'Y', y='Nb',hue = FG_index, palette="Blues",legend="brief", marker = 's', edgecolor="black", s=150)
