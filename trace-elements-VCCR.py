@@ -11,7 +11,7 @@ import seaborn as sns; sns.set()
 import matplotlib.pyplot as plt
 
 #import csv file
-df = pd.read_csv('/Users/gennachiaro/Documents/Vanderbilt/Research/Ora Caldera/Trace Elements/TraceElements_All.csv', index_col=1)
+df = pd.read_csv('/Users/gennachiaro/Documents/vanderbilt/research/ora caldera/trace-elements/TraceElements_All.csv', index_col=1)
 
 VCCR = df.loc [['ORA-5B-402','ORA-5B-404A','ORA-5B-406','ORA-5B-409','ORA-5B-411','ORA-5B-415','ORA-5B-416','ORA-5B-417']]
 VCCR_index = VCCR.index
@@ -29,7 +29,7 @@ sns.set_style("darkgrid")
 #sns.set_palette("PuBuGn_d")
 
 #create plot
-plot = sns.scatterplot(data = VCCR, x= 'Ba', y='Sr',hue = "Population", palette="PuRd_d", marker = '^', edgecolor="black", s=150, legend = "brief", style = VCCR_index, alpha = 0.5, hue_order = ['VCCR 1', 'VCCR 2', 'VCCR 3'])
+plot = sns.scatterplot(data = VCCR, x= 'Zr', y='Y',hue = "Population", palette="PuRd_d", marker = '^', edgecolor="black", s=150, legend = "brief", style = VCCR_index, alpha = 0.5, hue_order = ['VCCR 1', 'VCCR 2', 'VCCR 3'])
 
 #set y axis to log scale
 #plot.set(yscale='log')
