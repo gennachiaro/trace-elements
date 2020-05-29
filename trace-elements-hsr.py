@@ -60,6 +60,9 @@ plot = sns.scatterplot(data = VCCR, x= 'Ba', y='Sr',hue = "Population", palette=
 #plt.legend(loc='upper left')
 plt.legend(loc='center left', bbox_to_anchor=(1, 0.5), ncol=2)
 
+h,l = plot.get_legend_handles_labels()
+plt.legend(h[1:4]+h[13:16],l[1:4]+l[13:16],loc='center left', bbox_to_anchor=(1, 0.5), ncol=1)
+
 # general title
 plt.suptitle("High-Silica Rhyolite (MG + VCCR) Fiamme Glass", fontsize=15, fontweight=0, color='black')
 
