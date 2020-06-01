@@ -27,7 +27,7 @@ plt.ylim(0,300,50)
 plt.xlim (0,300,50)
 
 #create plot
-plot = sns.scatterplot(data = FG, x= 'Ba', y='Sr', style = FG_index, hue = "Population", palette="OrRd_r", edgecolor="black", s=150,alpha = 0.5,legend="brief",hue_order = ['FG 1', 'FG 2', 'FG 3'])
+plot = sns.scatterplot(data = FG, x= 'Ba', y='Sr', style = FG_index, hue = "Population", palette="OrRd_r", edgecolor="black", s=150,alpha = 0.5,legend="brief",hue_order = ['ORA-5B-412','ORA-5B-410', 'ORA-5B-414'])
 
 #set y axis to log scale
 #plot.set(yscale='log')
