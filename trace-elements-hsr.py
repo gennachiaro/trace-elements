@@ -45,8 +45,8 @@ sns.set_style("darkgrid")
 #plot = sns.scatterplot(data = VCCR1, x= 'Ba', y='Sr',hue = "Population",  style= VCCR1_index, palette="binary", marker = 'x', edgecolor="black", s=150, legend = False, alpha = 0.4, hue_order = ['VCCR 1', 'VCCR 2', 'VCCR 3'])
 #plot = sns.scatterplot(data = MG1, x= 'Ba', y='Sr',hue = "Population" , style = "Population", palette="binary",marker = 'x', edgecolor="black", s=150,alpha = 0.3, legend = "brief")
 
-plot = sns.scatterplot(data = MG, x= 'Ba', y='Sr',hue = "Population" , style = MG_index, palette="Blues_d",marker = 's', edgecolor="black", s=150, alpha = 0.5, legend = "brief")
-plot = sns.scatterplot(data = VCCR, x= 'Ba', y='Sr',hue = "Population", palette="PuRd_r", marker = '^', edgecolor="black", s=150, style = VCCR_index, alpha = 0.5, hue_order = ['VCCR 1', 'VCCR 2', 'VCCR 3'], legend = "brief")
+plot = sns.scatterplot(data = MG, x= 'Zr', y='Rb',hue = "Population" , style = MG_index, palette="Blues_d",marker = 's', edgecolor="black", s=150, alpha = 0.5, legend = "brief")
+plot = sns.scatterplot(data = VCCR, x= 'Zr', y='Rb',hue = "Population", palette="PuRd_r", marker = '^', edgecolor="black", s=150, style = VCCR_index, alpha = 0.5, hue_order = ['VCCR 1', 'VCCR 2', 'VCCR 3'], legend = "brief")
 
 #plot = sns.scatterplot(data = FG, x= 'Y', y='Nb',hue = FG_index, palette="Blues",legend="brief", marker = 's', edgecolor="black", s=150)
 #plot = sns.scatterplot(data = FGCP, x= 'Y', y='Nb',hue = FGCP_index, palette="Blues",legend="brief", marker = 's', edgecolor="black", s=150)
@@ -61,7 +61,11 @@ plot = sns.scatterplot(data = VCCR, x= 'Ba', y='Sr',hue = "Population", palette=
 plt.legend(loc='center left', bbox_to_anchor=(1, 0.5), ncol=2)
 
 h,l = plot.get_legend_handles_labels()
+#populations
 plt.legend(h[1:4]+h[13:16],l[1:4]+l[13:16],loc='center left', bbox_to_anchor=(1, 0.5), ncol=1)
+
+#samples + populations
+#plt.legend(h[0:4]+ h[5:12]+h[13:16]+h[17:27],l[0:4]+l[5:12]+ l[13:16]+l[17:27],loc='center left', bbox_to_anchor=(1, 0.5), ncol=2)
 
 # general title
 plt.suptitle("High-Silica Rhyolite (MG + VCCR) Fiamme Glass", fontsize=15, fontweight=0, color='black')
