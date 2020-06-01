@@ -64,7 +64,7 @@ h,l = plot.get_legend_handles_labels()
 #plt.legend(h[1:6]+h[6:10]+ h[10:18]+h[18:22] + h[22:31]+ h[31:35],l[1:6]+l[6:10]+ l[10:18]+l[18:22]+ l[22:31]+l[31:35],loc='center left', bbox_to_anchor=(1, 0.5), ncol=2)
 
 #plot populations to delete and make spaces between groups
-plt.legend(h[1:6]+h[6:10]+ h[11:18]+h[19:22] + h[23:31]+ h[31:35],l[1:6]+l[6:10]+ l[11:18]+l[19:22]+ l[23:31]+l[31:35],loc='center left', bbox_to_anchor=(1, 0.5), ncol=2)
+plt.legend(h[1:6]+h[6:10]+ h[11:18]+h[18:22] + h[23:31]+ h[31:35],l[1:6]+l[6:10]+ l[11:18]+l[18:22]+ l[23:31]+l[31:35],loc='center left', bbox_to_anchor=(1, 0.5), ncol=2)
 
 # general title
 plt.suptitle("All Fiamme Glass", fontsize=15, fontweight=0, color='black')
