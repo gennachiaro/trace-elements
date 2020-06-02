@@ -23,7 +23,7 @@ sns.set_style("darkgrid")
 #plt.xlim (25,100)
 
 #create plot
-plot = sns.scatterplot(data = FGCP, x= 'Zr', y='Y', hue = FGCP_index, style = FGCP_index, palette="Greens", edgecolor="black", s=100, alpha = 0.5, legend='brief')
+plot = sns.scatterplot(data = FGCP, x= 'Ba', y='Sr', hue = FGCP_index, style = FGCP_index, palette="Greens", edgecolor="black", s=150, alpha = 0.5, legend='brief', hue_order = ['ORA-2A-002', 'ORA-2A-002-Type1','ORA-2A-002-Type2'])
 
 #set y axis to log scale
 #plot.set(yscale='log')
@@ -33,7 +33,7 @@ plot = sns.scatterplot(data = FGCP, x= 'Zr', y='Y', hue = FGCP_index, style = FG
 plt.legend(loc='center left', bbox_to_anchor=(1, 0.5), ncol=1)
 
 # general title
-plt.suptitle("ORA-2A-002 Fiamme Glass", fontsize=15, fontweight=0)
+plt.suptitle("ORA-2A-002 Fiamme Glass", fontsize=15, fontweight=0, y = 0.95)
 
 # set size of plot
 sns.set_context("paper")
