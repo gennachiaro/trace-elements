@@ -23,11 +23,11 @@ FG_index = FG.index
 sns.set_style("darkgrid")
 
 
-plt.ylim(0,300,50)
-plt.xlim (0,300,50)
+#plt.ylim(0,300,50)
+#plt.xlim (0,300,50)
 
 #create plot
-plot = sns.scatterplot(data = FG, x= 'Ba', y='Sr', style = FG_index, hue = "Population", palette="OrRd_r", edgecolor="black", s=150,alpha = 0.5,legend="brief",hue_order = ['ORA-5B-412','ORA-5B-410', 'ORA-5B-414'])
+plot = sns.scatterplot(data = FG, x= 'Zr', y='Y', style = FG_index, hue = "Population", palette="OrRd_r", edgecolor="black", s=150,alpha = 0.5,legend="brief",hue_order = ['ORA-5B-412','ORA-5B-410', 'ORA-5B-414'])
 
 #set y axis to log scale
 #plot.set(yscale='log')
