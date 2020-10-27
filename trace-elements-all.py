@@ -32,10 +32,10 @@ sns.set_style("darkgrid")
 #plt.xlim (10,500,100)
 
 #create plot
-plot = sns.scatterplot(data = FGCP, x= 'Ba', y='Sr', hue = "Population", style = 'Population', palette="Greens_r", edgecolor="black", s=150, alpha = 0.5, legend='brief', hue_order = ['ORA-2A-002', 'ORA-2A-003', 'ORA-2A-016', 'ORA-2A-023', 'ORA-2A-024'])
-plot = sns.scatterplot(data = MG, x= 'Ba', y='Sr',hue = "Population" , style = MG_index, palette="Blues_d",marker = 's', edgecolor="black", s=150,alpha = 0.6,legend="brief", hue_order = ['MG 1', 'MG 2', 'MG 3'])
-plot = sns.scatterplot(data = VCCR, x= 'Ba', y='Sr',hue = "Population", palette="PuRd_d", marker = '^', edgecolor="black", s=150, legend = "brief", style = VCCR_index, alpha = 0.5, hue_order = ['VCCR 1', 'VCCR 2', 'VCCR 3'])
-plot = sns.scatterplot(data = FG, x= 'Ba', y='Sr', style = "Population", hue = "Population", palette="OrRd_r", edgecolor="black", s=150,alpha = 0.5,legend="brief", hue_order = ['ORA-5B-412','ORA-5B-410', 'ORA-5B-414'])
+plot = sns.scatterplot(data = FGCP, x= 'Ba', y='Y', hue = "Population", style = 'Population', palette="Greens_r", edgecolor="black", s=150, alpha = 0.5, legend='brief', hue_order = ['ORA-2A-002', 'ORA-2A-003', 'ORA-2A-016', 'ORA-2A-023', 'ORA-2A-024'])
+plot = sns.scatterplot(data = MG, x= 'Ba', y='Y',hue = "Population" , style = MG_index, palette="Blues_d",marker = 's', edgecolor="black", s=150,alpha = 0.6,legend="brief", hue_order = ['MG 1', 'MG 2', 'MG 3'])
+plot = sns.scatterplot(data = VCCR, x= 'Ba', y='Y',hue = "Population", palette="PuRd", marker = '^', edgecolor="black", s=150, legend = "brief", style = VCCR_index, alpha = 0.5, hue_order = ['VCCR 1', 'VCCR 2', 'VCCR 3'])
+plot = sns.scatterplot(data = FG, x= 'Ba', y='Y', style = "Population", hue = "Population", palette="OrRd_r", edgecolor="black", s=150,alpha = 0.5,legend="brief", markers=('o', '^', 's'), hue_order = ['ORA-5B-412','ORA-5B-410', 'ORA-5B-414'])
 
 #set y axis to log scale
 #plot.set(yscale='log')
