@@ -48,16 +48,16 @@ plt.suptitle("All Fiamme Glass", fontsize=16, fontweight=0, color='black', x= 0.
 plt.subplot(3,1,1)
 plot = sns.scatterplot(data = FGCP, x= 'Ba', y='Sr', hue = "Population", style = 'Population', palette="Greens_r", edgecolor="black", s=150, alpha = 0.5, legend=False, hue_order = ['ORA-2A-002', 'ORA-2A-003', 'ORA-2A-016', 'ORA-2A-023', 'ORA-2A-024'])
 plot = sns.scatterplot(data = MG, x= 'Ba', y='Sr',hue = "Population" , style = MG_index, palette="Blues_d",marker = 's', edgecolor="black", s=150,alpha = 0.6,legend=False, hue_order = ['MG 1', 'MG 2', 'MG 3'])
-plot = sns.scatterplot(data = VCCR, x= 'Ba', y='Sr',hue = "Population", palette="PuRd", marker = '^', edgecolor="black", s=150, legend = False, style = VCCR_index, alpha = 0.5, hue_order = ['VCCR 1', 'VCCR 2', 'VCCR 3'])
-plot = sns.scatterplot(data = FG, x= 'Ba', y='Sr', style = "Population", hue = "Population", palette="OrRd", edgecolor="black", s=150,alpha = 0.5,legend=False, markers=('^', 'o', 's'), hue_order = ['ORA-5B-412','ORA-5B-410', 'ORA-5B-414'])
+plot = sns.scatterplot(data = VCCR, x= 'Ba', y='Sr',hue = "Population", palette="PuRd_r", marker = '^', edgecolor="black", s=150, legend = False, style = VCCR_index, alpha = 0.5, hue_order = ['VCCR 1', 'VCCR 2', 'VCCR 3'])
+plot = sns.scatterplot(data = FG, x= 'Ba', y='Sr', style = "Population", hue = "Population", palette="OrRd_r", edgecolor="black", s=150,alpha = 0.5,legend=False, markers=('^', 'X', 's'), hue_order = ['ORA-5B-412','ORA-5B-410', 'ORA-5B-414'])
 
 
 #plot 2
 plt.subplot(3,1,2)
 plot = sns.scatterplot(data = FGCP, x= 'Ba', y='Y', hue = "Population", style = 'Population', palette="Greens_r", edgecolor="black", s=150, alpha = 0.5, legend='brief', hue_order = ['ORA-2A-002', 'ORA-2A-003', 'ORA-2A-016', 'ORA-2A-023', 'ORA-2A-024'])
 plot = sns.scatterplot(data = MG, x= 'Ba', y='Y',hue = "Population" , style = MG_index, palette="Blues_d",marker = 's', edgecolor="black", s=150,alpha = 0.6,legend="brief", hue_order = ['MG 1', 'MG 2', 'MG 3'])
-plot = sns.scatterplot(data = VCCR, x= 'Ba', y='Y',hue = "Population", palette="PuRd", marker = '^', edgecolor="black", s=150, legend = "brief", style = VCCR_index, alpha = 0.5, hue_order = ['VCCR 1', 'VCCR 2', 'VCCR 3'])
-plot = sns.scatterplot(data = FG, x= 'Ba', y='Y', style = "Population", hue = "Population", palette="OrRd", edgecolor="black", s=150,alpha = 0.5,legend="brief", markers=('^', 'o', 's'), hue_order = ['ORA-5B-412','ORA-5B-410', 'ORA-5B-414'])
+plot = sns.scatterplot(data = VCCR, x= 'Ba', y='Y',hue = "Population", palette="PuRd_r", marker = '^', edgecolor="black", s=150, legend = "brief", style = VCCR_index, alpha = 0.5, hue_order = ['VCCR 1', 'VCCR 2', 'VCCR 3'])
+plot = sns.scatterplot(data = FG, x= 'Ba', y='Y', style = "Population", hue = "Population", palette="OrRd_r", edgecolor="black", s=150,alpha = 0.5,legend="brief", markers=('^', 'X', 's'), hue_order = ['ORA-5B-412','ORA-5B-410', 'ORA-5B-414'])
 
 h,l = plot.get_legend_handles_labels()
 #plot just populations
@@ -69,8 +69,8 @@ plt.legend(h[1:6]+h[7:10]+h[19:22] + h[32:35],l[1:6]+l[7:10]+l[19:22]+l[32:35],l
 plt.subplot(3,1,3)
 plot = sns.scatterplot(data = FGCP, x= 'Nb', y='Rb', hue = "Population", style = 'Population', palette="Greens_r", edgecolor="black", s=150, alpha = 0.5, legend=False, hue_order = ['ORA-2A-002', 'ORA-2A-003', 'ORA-2A-016', 'ORA-2A-023', 'ORA-2A-024'])
 plot = sns.scatterplot(data = MG, x= 'Nb', y='Rb',hue = "Population" , style = MG_index, palette="Blues_d",marker = 's', edgecolor="black", s=150,alpha = 0.6,legend=False, hue_order = ['MG 1', 'MG 2', 'MG 3'])
-plot = sns.scatterplot(data = VCCR, x= 'Nb', y='Rb',hue = "Population", palette="PuRd", marker = '^', edgecolor="black", s=150, legend = False, style = VCCR_index, alpha = 0.5, hue_order = ['VCCR 1', 'VCCR 2', 'VCCR 3'])
-plot = sns.scatterplot(data = FG, x= 'Nb', y='Rb', style = "Population", hue = "Population", palette="OrRd", edgecolor="black", s=150,alpha = 0.5,legend=False, markers=('^', 'o', 's'), hue_order = ['ORA-5B-412','ORA-5B-410', 'ORA-5B-414'])
+plot = sns.scatterplot(data = VCCR, x= 'Nb', y='Rb',hue = "Population", palette="PuRd_r", marker = '^', edgecolor="black", s=150, legend = False, style = VCCR_index, alpha = 0.5, hue_order = ['VCCR 1', 'VCCR 2', 'VCCR 3'])
+plot = sns.scatterplot(data = FG, x= 'Nb', y='Rb', style = "Population", hue = "Population", palette="OrRd_r", edgecolor="black", s=150,alpha = 0.5,legend=False, markers=('^', 'X', 's'), hue_order = ['ORA-5B-412','ORA-5B-410', 'ORA-5B-414'])
 
 
 # set size of plot
