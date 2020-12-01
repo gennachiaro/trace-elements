@@ -19,11 +19,11 @@ FGCP_index = FGCP.index
 #set background color
 sns.set_style("darkgrid")
 
-plt.ylim(0, 600)
-plt.xlim (0,500)
+#plt.ylim(0, 600)
+#plt.xlim (0,500)
 
 #create plot
-plot = sns.scatterplot(data = FGCP, x= 'Ba', y='Sr', hue = FGCP_index, style = FGCP_index, palette="Greens", edgecolor="black", s=150, alpha = 0.5, legend='brief')
+plot = sns.scatterplot(data = FGCP, x= 'Zr', y='Y', hue = FGCP_index, style = FGCP_index, palette="Greens", edgecolor="black", s=150, alpha = 0.5, legend='brief')
 
 #set y axis to log scale
 #plot.set(yscale='log')

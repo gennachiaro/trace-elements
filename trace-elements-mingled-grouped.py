@@ -44,21 +44,21 @@ title = fig.suptitle("Mingled (FGCP) Fiamme Glasses", fontsize=17, y = 1.02)
 
 #plot 1
 plt.subplot(3, 1, 1)
-Two = sns.scatterplot(data = Two, x= 'Ba', y='Sr', hue = Two_index, style = Two_index, palette="Greens_r", edgecolor="black", s=100, alpha = 0.5)
+Two = sns.scatterplot(data = Two, x= 'Zr', y='Y', hue = Two_index, style = Two_index, palette="Greens_r", edgecolor="black", s=100, alpha = 0.5)
 plt.title('ORA-2A-002')
 plt.legend(loc='center left', bbox_to_anchor=(1, 0.5), ncol=1)
 #plt.legend(loc='upper center')
 
 #plot 2
 plt.subplot(3, 1, 2)
-Three = sns.scatterplot(data = Three, x= 'Ba', y='Sr', hue = Three_index, style = Three_index, palette="Greens_r", edgecolor="black", s=100, alpha = 0.5)
+Three = sns.scatterplot(data = Three, x= 'Zr', y='Y', hue = Three_index, style = Three_index, palette="Greens_r", edgecolor="black", s=100, alpha = 0.5)
 plt.title('ORA-2A-016')
 plt.legend(loc='center left', bbox_to_anchor=(1, 0.5), ncol=1)
 
 
 #plot 3
 plt.subplot(3, 1, 3)
-One = sns.scatterplot(data = One, x= 'U', y='Zr', hue = One_index, style = One_index, palette="Greens_r", edgecolor="black", s=100, alpha = 0.5, legend = "brief")
+One = sns.scatterplot(data = One, x= 'Zr', y='Y', hue = One_index, style = One_index, palette="Greens_r", edgecolor="black", s=100, alpha = 0.5, legend = "brief")
 plt.title('ORA-2A-024')
 plt.legend(loc='center left', bbox_to_anchor=(1, 0.5), ncol=1)
 

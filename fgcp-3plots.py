@@ -31,7 +31,7 @@ fig = plt.figure(figsize=(6.5,10))
 
 #create plot 1
 plt.subplot(3,1,1)
-plot = sns.scatterplot(data = FGCP, x= 'Zr', y='Nb', hue = FGCP_index, style = FGCP_index, palette="Greens", edgecolor="black", s=150, alpha = 0.5, legend='brief', hue_order = ['ORA-2A-002', 'ORA-2A-002-Type1','ORA-2A-002-Type2'])
+plot = sns.scatterplot(data = FGCP, x= 'Zr', y='Y', hue = FGCP_index, style = FGCP_index, palette="Greens", edgecolor="black", s=150, alpha = 0.5, legend='brief', hue_order = ['ORA-2A-002', 'ORA-2A-002-Type1','ORA-2A-002-Type2'])
 h,l = plot.get_legend_handles_labels()
 plt.legend(h[1:6],l[1:6],loc='center left', bbox_to_anchor=(1, 0.5), ncol=1)
 
@@ -41,7 +41,7 @@ plt.title("ORA-2A-002")
 
 #plot 2
 plt.subplot(3,1,2)
-plot = sns.scatterplot(data = FGCP1, x= 'Zr', y='Nb', hue = FGCP1_index, style = FGCP1_index, palette="Greens", edgecolor="black", s=150, alpha = 0.5, legend='brief')
+plot = sns.scatterplot(data = FGCP1, x= 'Zr', y='Y', hue = FGCP1_index, style = FGCP1_index, palette="Greens", edgecolor="black", s=150, alpha = 0.5, legend='brief')
 
 # general title
 plt.title("ORA-2A-016")
@@ -52,7 +52,7 @@ plt.legend(h[1:6],l[1:6],loc='center left', bbox_to_anchor=(1, 0.5), ncol=1)
 
 #plot 3
 plt.subplot(3,1,3)
-plot = sns.scatterplot(data = FGCP2, x= 'Zr', y='Nb', hue = FGCP2_index, style = FGCP2_index, palette="Greens", edgecolor="black", s=150, alpha = 0.5, legend='brief')
+plot = sns.scatterplot(data = FGCP2, x= 'Zr', y='Y', hue = FGCP2_index, style = FGCP2_index, palette="Greens", edgecolor="black", s=150, alpha = 0.5, legend='brief')
 #set location of legend
 plt.legend(loc='center left', bbox_to_anchor=(1, 0.5), ncol=1)
 # general title

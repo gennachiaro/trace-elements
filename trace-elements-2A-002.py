@@ -23,7 +23,7 @@ sns.set_style("darkgrid")
 #plt.xlim (25,100)
 
 #create plot
-plot = sns.scatterplot(data = FGCP, x= 'Ba', y='Sr', hue = FGCP_index, style = FGCP_index, palette="Greens", edgecolor="black", s=150, alpha = 0.5, legend='brief', hue_order = ['ORA-2A-002', 'ORA-2A-002-Type1','ORA-2A-002-Type2'])
+plot = sns.scatterplot(data = FGCP, x= 'Zr', y='Y', hue = FGCP_index, style = FGCP_index, palette="Greens", edgecolor="black", s=150, alpha = 0.5, legend='brief', hue_order = ['ORA-2A-002', 'ORA-2A-002-Type1','ORA-2A-002-Type2'])
 
 #set y axis to log scale
 #plot.set(yscale='log')
