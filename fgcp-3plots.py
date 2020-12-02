@@ -13,7 +13,7 @@ import matplotlib.pyplot as plt
 #import csv file
 df = pd.read_csv('/Users/gennachiaro/Documents/vanderbilt/research/ora caldera/trace-elements/TraceElements_All.csv', index_col=1)
 
-FGCP = df.loc[['ORA-2A-002-Type1','ORA-2A-002-Type2','ORA-2A-002']]
+FGCP = df.loc[['ORA-2A-002-Type1','ORA-2A-002-Type2','ORA-2A-002-Type3']]
 FGCP_index = FGCP.index
 
 FGCP1 = df.loc[['ORA-2A-016-Type1','ORA-2A-016-Type2','ORA-2A-016-Type3','ORA-2A-016-Type4']]
@@ -43,7 +43,7 @@ plt.title("ORA-2A-024")
 
 #plot 2
 plt.subplot(3,1,2)
-plot = sns.scatterplot(data = FGCP, x= 'Zr', y='Y', hue = FGCP_index, style = FGCP_index, palette="Greens", edgecolor="black", s=150, alpha = 0.5, legend='brief', hue_order = ['ORA-2A-002', 'ORA-2A-002-Type1','ORA-2A-002-Type2'])
+plot = sns.scatterplot(data = FGCP, x= 'Zr', y='Y', hue = FGCP_index, style = FGCP_index, palette="Greens", edgecolor="black", s=150, alpha = 0.5, legend='brief')
 h,l = plot.get_legend_handles_labels()
 plt.legend(h[1:6],l[1:6],loc='center left', bbox_to_anchor=(1, 0.5), ncol=1)
 
