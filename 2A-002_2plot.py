@@ -24,7 +24,7 @@ sns.set_style("darkgrid")
 
 #plot matrix
 fig = plt.figure(figsize=(10,4))
-plt.suptitle("ORA-2A-002 Fiamme Glass", fontsize=15, fontweight=0, color='black', y = 0.95)
+#plt.suptitle("ORA-2A-002 Fiamme Glass", fontsize=15, fontweight=0, color='black', y = 0.95)
 
 #create plot 1
 plt.subplot(1,2,1)
