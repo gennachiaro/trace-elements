@@ -13,7 +13,7 @@ import matplotlib.pyplot as plt
 #import csv file
 df = pd.read_csv('/Users/gennachiaro/Documents/vanderbilt/research/ora caldera/trace-elements/TraceElements_All.csv', index_col=1)
 
-FGCP = df.loc[['ORA-2A-002-Type1','ORA-2A-002-Type2','ORA-2A-002-Type3']] 
+FGCP = df.loc[['ORA-2A-024-TYPE1','ORA-2A-024-TYPE2','ORA-2A-024-TYPE3','ORA-2A-024-TYPE4']] 
 FGCP_index = FGCP.index
 
 #set background color
@@ -28,11 +28,11 @@ fig = plt.figure(figsize=(10,4))
 
 #create plot 1
 plt.subplot(1,2,1)
-plot = sns.scatterplot(data = FGCP, x= 'Ba', y='Sr', hue = FGCP_index, style = FGCP_index, palette="Greens_r", edgecolor="black", s=150, alpha = 0.5, legend=False, markers = ['o','s','X'])
+plot = sns.scatterplot(data = FGCP, x= 'Ba', y='Sr', hue = FGCP_index, style = FGCP_index, palette="Greens_r", edgecolor="black", s=150, alpha = 0.5, legend=False)
 
 #plot 2
 plt.subplot(1,2,2)
-plot = sns.scatterplot(data = FGCP, x= 'Zr', y='Y', hue = FGCP_index, style = FGCP_index, palette="Greens_r", edgecolor="black", s=150, alpha = 0.5, legend = "full", markers = ['o','s','X'])
+plot = sns.scatterplot(data = FGCP, x= 'Zr', y='Y', hue = FGCP_index, style = FGCP_index, palette="Greens_r", edgecolor="black", s=150, alpha = 0.5, legend = "full")
 
 
 #plt.legend(loc='upper left')
