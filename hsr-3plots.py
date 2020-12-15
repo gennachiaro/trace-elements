@@ -36,7 +36,7 @@ sns.set_style("darkgrid")
 #plot matrix
 #fig = plt.figure(figsize=(6.5,10))
 fig = plt.figure(figsize=(6.75,11))
-plt.suptitle("High-Silica Rhyolite (VCCR + MG) Fiamme Glass", fontsize=15, fontweight=0, color='black', x= 0.45, y = 1.01)
+plt.suptitle("High-Silica Rhyolite (VCCR + MG) Fiamme Glass", fontsize=16, fontweight=0, color='black', x= 0.45, y = 1.01)
 
 #create plot 1
 plt.subplot(3,1,1)
