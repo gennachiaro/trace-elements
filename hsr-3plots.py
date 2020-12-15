@@ -35,8 +35,8 @@ sns.set_style("darkgrid")
 
 #plot matrix
 #fig = plt.figure(figsize=(6.5,10))
-fig = plt.figure(figsize=(7,11))
-plt.suptitle("All Fiamme Glass", fontsize=16, fontweight=0, color='black', x= 0.45, y = 1.01)
+fig = plt.figure(figsize=(6.75,11))
+plt.suptitle("High-Silica Rhyolite (VCCR + MG) Fiamme Glass", fontsize=15, fontweight=0, color='black', x= 0.45, y = 1.01)
 
 #create plot 1
 plt.subplot(3,1,1)
@@ -46,8 +46,8 @@ plot = sns.scatterplot(data = VCCR, x= 'Ba', y='Sr',hue = "Population", palette=
 
 #plot 2
 plt.subplot(3,1,2)
-plot = sns.scatterplot(data = MG, x= 'Zr', y='Ti',hue = "Population" , style = MG_index, palette="Blues_d",marker = 's', edgecolor="black", s=150,alpha = 0.6,legend="brief", hue_order = ['MG 1', 'MG 2', 'MG 3'])
-plot = sns.scatterplot(data = VCCR, x= 'Zr', y='Ti',hue = "Population", palette="PuRd_r", marker = '^', edgecolor="black", s=150, legend = "brief", style = VCCR_index, alpha = 0.5, hue_order = ['VCCR 1', 'VCCR 2', 'VCCR 3'])
+plot = sns.scatterplot(data = MG, x= 'U', y='Ti',hue = "Population" , style = MG_index, palette="Blues_d",marker = 's', edgecolor="black", s=150,alpha = 0.6,legend="brief", hue_order = ['MG 1', 'MG 2', 'MG 3'])
+plot = sns.scatterplot(data = VCCR, x= 'U', y='Ti',hue = "Population", palette="PuRd_r", marker = '^', edgecolor="black", s=150, legend = "brief", style = VCCR_index, alpha = 0.5, hue_order = ['VCCR 1', 'VCCR 2', 'VCCR 3'])
 
 h,l = plot.get_legend_handles_labels()
 #plot just populations
