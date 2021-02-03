@@ -34,9 +34,9 @@ sns.set_style("darkgrid")
 #sns.set_palette("PuBuGn_d")
 
 #create plot
-plot = sns.scatterplot(data = MG, x= 'Ba', y='Sr',hue = MG_index, style = MG_index, palette='Blues_d',marker = 's', edgecolor="black", s=150,alpha = 0.5,legend="brief")
+plot = sns.scatterplot(data = MG, x= 'Nb', y='Y',hue = MG_index, style = MG_index, palette='Blues_d',marker = 's', edgecolor="black", s=150,alpha = 0.5,legend="brief")
 
-plot = sns.scatterplot(data = DEVIT, x= 'Ba', y='Sr',hue = DEVIT_index , style = DEVIT_index, palette='Reds',marker = 's', edgecolor="black", s=150,alpha = 0.5,legend="brief")
+plot = sns.scatterplot(data = DEVIT, x= 'Nb', y='Y',hue = DEVIT_index , style = DEVIT_index, palette='Reds',marker = 's', edgecolor="black", s=150,alpha = 0.5,legend="brief")
 
 #plot = sns.scatterplot(data = MG1, x= 'Ba', y='Sr',hue = MG1_index , style = "Population", palette='OrRd',markers = 'X', edgecolor="black", s=150,alpha = 0.5,legend="brief")
 
