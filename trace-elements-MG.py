@@ -33,7 +33,7 @@ sns.set_style("darkgrid")
 #sns.set_palette("PuBuGn_d")
 
 #create plot
-plot = sns.scatterplot(data = MG, x= 'Rb', y='Sr',hue = "Population" , style = MG_index, palette="Blues_d",marker = 's', edgecolor="black", s=100,alpha = 0.5,legend="brief")
+plot = sns.scatterplot(data = MG, x= 'Nb', y='Y',hue = "Population" , style = MG_index, palette="Blues_d",marker = 's', edgecolor="black", s=100,alpha = 0.5,legend="brief")
 
 #set y axis to log scale
 #plot.set(yscale='log')
@@ -47,4 +47,4 @@ plt.legend(loc='center left', bbox_to_anchor=(1, 0.5), ncol=1)
 plt.suptitle("Medium-Grained (MG) Fiamme Glass", fontsize=15, fontweight=0, color='black', y = 0.95, x = 0.5)
 
 # set size of plot
-sns.set_context("poster")
+#sns.set_context("poster")
