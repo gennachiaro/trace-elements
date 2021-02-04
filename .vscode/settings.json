@@ -1,3 +1,5 @@
 {
-    "jupyter.jupyterServerType": "local"
+    "jupyter.jupyterServerType": "local",
+    "python.condaPath": "/Users/gennachiaro/opt/anaconda3/bin/conda",
+    "python.pythonPath": "/Users/gennachiaro/opt/anaconda3/bin/python"
 }
