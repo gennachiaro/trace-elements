@@ -18,6 +18,9 @@ df = pd.read_csv('/Users/gennachiaro/Documents/vanderbilt/research/ora caldera/t
 MG = df.loc[['ORA-2A-001', 'ORA-2A-031','ORA-2A-040']]
 MG_index = MG.index
 
+MG1 = df.loc[['ORA-2A-001','ORA-2A-005','ORA-2A-018','ORA-2A-031','ORA-2A-032','ORA-2A-035','ORA-2A-040']]
+MG1_index = MG1.index
+
 DEVIT = df.loc[['ORA-2A-001-DEVIT', 'ORA-2A-031-DEVIT', 'ORA-2A-040-DEVIT']]
 DEVIT_index = DEVIT.index
 
@@ -25,7 +28,7 @@ DEVIT_index = DEVIT.index
 sns.set_style("darkgrid")
 
 #plt.ylim(-1, 30)
-#plt.xlim (25,100)
+#plt.xlim (0,75)
 
 # create color palette
 #flatui= ["#A4D3EE", "#4682B4", "#104E8B","#FFE4E1", "#FFB5C5", "#CD6090"]
@@ -34,9 +37,12 @@ sns.set_style("darkgrid")
 #sns.set_palette("PuBuGn_d")
 
 #create plot
-plot = sns.scatterplot(data = MG, x= 'Nb', y='Y',hue = MG_index, style = MG_index, palette='Blues_d',marker = 's', edgecolor="black", s=150,alpha = 0.5,legend="brief")
 
-plot = sns.scatterplot(data = DEVIT, x= 'Nb', y='Y',hue = DEVIT_index , style = DEVIT_index, palette='Reds',marker = 's', edgecolor="black", s=150,alpha = 0.5,legend="brief")
+plot = sns.scatterplot(data = MG1, x= 'Ba', y='Sr',hue = "Population", style = "Population", palette='Blues_d',marker = 's', edgecolor="black", s=150,alpha = 0.5,legend="brief")
+
+#plot = sns.scatterplot(data = MG, x= 'Nb', y='Y',hue = MG_index, style = MG_index, palette='Blues_d',marker = 's', edgecolor="black", s=150,alpha = 0.5,legend="brief")
+
+plot = sns.scatterplot(data = DEVIT, x= 'Ba', y='Sr',hue = DEVIT_index , style = DEVIT_index, palette='Reds',marker = 's', edgecolor="black", s=150,alpha = 0.5,legend="brief")
 
 #plot = sns.scatterplot(data = MG1, x= 'Ba', y='Sr',hue = MG1_index , style = "Population", palette='OrRd',markers = 'X', edgecolor="black", s=150,alpha = 0.5,legend="brief")
 
@@ -49,7 +55,7 @@ plot = sns.scatterplot(data = DEVIT, x= 'Nb', y='Y',hue = DEVIT_index , style = 
 plt.legend(loc='center left', bbox_to_anchor=(1, 0.5), ncol=1)
 
 # general title
-plt.suptitle("All MG + DEVIT Fiamme Glass", fontsize=15, fontweight=0, color='black', y = 0.96)
+plt.suptitle("MG + Devitrified Fiamme Glass", fontsize=15, fontweight=0, color='black', y = 0.96)
 
 # set size of plot
-sns.set_context("poster")
+#sns.set_context("poster")
