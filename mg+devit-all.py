@@ -1,5 +1,5 @@
-#!/usr/bin/env python3
-# -*- coding: utf-8 -*-
+#!/opt/anaconda3/bin/myenv
+# # -*- coding: utf-8 -*-
 """
 Created on Wed Nov 27 16:32:52 2019
 
