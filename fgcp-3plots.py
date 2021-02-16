@@ -19,7 +19,7 @@ FGCP_index = FGCP.index
 FGCP1 = df.loc[['ORA-2A-016-Type1','ORA-2A-016-Type2','ORA-2A-016-Type3','ORA-2A-016-Type4']]
 FGCP1_index = FGCP1.index
 
-FGCP2 = df.loc[['ORA-2A-024','MINGLED1-ORA-2A-024','MINGLED2-ORA-2A-024','MINGLED3-ORA-2A-024']]
+FGCP2 = df.loc[['ORA-2A-024-TYPE1','ORA-2A-024-TYPE2','ORA-2A-024-TYPE3','ORA-2A-024-TYPE4']]
 FGCP2_index = FGCP2.index
 
 #set background color
