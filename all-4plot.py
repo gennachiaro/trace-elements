@@ -68,7 +68,7 @@ plt.ylim(0.2, 4.9)
 #set location of legend
 
 h,l = plot.get_legend_handles_labels()
-plt.legend(h[1:6]+h[7:10]+h[11:14]+h[23:26],l[1:6]+l[7:10]+l[11:14]+l[23:26],loc='lower right', bbox_to_anchor=(2, -3), ncol=4, fontsize = 9)
+plt.legend(h[1:7]+h[7:10]+h[11:14]+h[23:26],l[1:7]+l[7:10]+l[11:14]+l[23:26],loc='lower right', bbox_to_anchor=(2, -3), ncol=5, fontsize = 11)
 
 #plot 2
 plt.subplot(2,2,2)
