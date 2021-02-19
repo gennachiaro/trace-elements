@@ -62,14 +62,11 @@ title = fig.suptitle("MG + Devitrified Fiamme Glass", fontsize=16, y = 0.96)
 
 #create major element plot
 plt.subplot(2,2,1)
-#plot = sns.scatterplot(data = FGCPm, x= 'SiO2', y='K2O',hue = "Population", style = "Population", palette="Greens_r",legend="brief", markers = ('o','s','X','P','D'),edgecolor="black", s=150, alpha = 0.5, hue_order = ['ORA-2A-002', 'ORA-2A-003', 'ORA-2A-016', 'ORA-2A-023', 'ORA-2A-024'])
-#plot = sns.scatterplot(data = FGm, x= 'SiO2', y='K2O',hue = "Population", style = "Population", palette="OrRd_r",legend="brief", markers = ('s', '^', 'X'), edgecolor="black", alpha = 0.5, s=150, hue_order = ['ORA-5B-412', 'ORA-5B-410', 'ORA-5B-414'])
-plot = sns.scatterplot(data = MGm, x= 'SiO2', y='K2O',hue = "Population" , style = MGm_index, marker = '^', palette="Blues_r", edgecolor="black", s=150,alpha = 0.5,legend=False)
-#plot = sns.scatterplot(data = VCCRm, x= 'SiO2', y='K2O',hue = "Population", style = VCCRm_index, marker = 's',palette="PuRd_r", edgecolor="black", s=150, legend = "brief", alpha = 0.5, hue_order = ['VCCR 1', 'VCCR 2', 'VCCR 3'])
-plot = sns.scatterplot(data = devitm, x= 'SiO2', y='K2O',hue = devitm_index , style = devitm_index, marker = 's',palette="Purples_d", edgecolor="black", s=150, legend = False, alpha = 0.5)
+plot = sns.scatterplot(data = MGm, x= 'SiO2', y='Al2O3',hue = "Population" , style = MGm_index, marker = '^', palette="Blues_r", edgecolor="black", s=150,alpha = 0.5,legend=False)
+plot = sns.scatterplot(data = devitm, x= 'SiO2', y='Al2O3',hue = devitm_index , style = devitm_index, marker = 's',palette="Purples_d", edgecolor="black", s=150, legend = False, alpha = 0.5)
 
-plt.xticks(range(68, 82, 2))
-plt.ylim(0, 10)
+#plt.xticks(range(68, 82, 2))
+#plt.ylim(0, 10)
 
 
 #set location of legend
@@ -93,32 +90,26 @@ plt.ylim(-2,35)
 
 #plot 3
 plt.subplot(2,2,3)
-#plot = sns.scatterplot(data = FGCP, x= 'Ba', y='Y', hue = "Population", style = 'Population', palette="Greens_r", edgecolor="black", s=150, alpha = 0.5, legend=False, hue_order = ['ORA-2A-002', 'ORA-2A-003', 'ORA-2A-016', 'ORA-2A-023', 'ORA-2A-024'])
-plot = sns.scatterplot(data = MG, x= 'U', y='Ti',hue = "Population" , style = MG_index, palette="Blues_d",marker = 's', edgecolor="black", s=150,alpha = 0.6,legend="brief", hue_order = ['MG 1', 'MG 2', 'MG 3'])
-#plot = sns.scatterplot(data = VCCR, x= 'Ba', y='Y',hue = "Population", palette="PuRd_r", marker = '^', edgecolor="black", s=150, legend = False, style = VCCR_index, alpha = 0.5, hue_order = ['VCCR 1', 'VCCR 2', 'VCCR 3'])
-#plot = sns.scatterplot(data = FG, x= 'Ba', y='Y', style = "Population", hue = "Population", palette="OrRd_r", edgecolor="black", s=150,alpha = 0.5,legend=False, markers=('^', 'X', 's'), hue_order = ['ORA-5B-412','ORA-5B-410', 'ORA-5B-414'])
-plot = sns.scatterplot(data = DEVIT, x= 'U', y='Ti', style = DEVIT_index, hue = DEVIT_index, palette="Purples_d", edgecolor="black", s=150,alpha = 0.5,legend="brief", markers=('^', 'X', 's'))
+plot = sns.scatterplot(data = MG, x= 'Nd', y='La',hue = "Population" , style = MG_index, palette="Blues_d",marker = 's', edgecolor="black", s=150,alpha = 0.6,legend="brief", hue_order = ['MG 1', 'MG 2', 'MG 3'])
+plot = sns.scatterplot(data = DEVIT, x= 'Nd', y='La', style = DEVIT_index, hue = DEVIT_index, palette="Purples_d", edgecolor="black", s=150,alpha = 0.5,legend="brief", markers=('^', 'X', 's'))
 
 h,l = plot.get_legend_handles_labels()
 plt.legend(h[1:4]+h[9:12],l[1:4]+l[9:12],loc='upper right', ncol=2, fontsize = 12)
 
 
-plt.ylim(30,500)
-plt.xlim (2,55)
+#plt.ylim(30,500)
+#plt.xlim (2,55)
 #plt.ylim(10,125)
 #plt.xlim (-40,510)
 
 
 #plot 4
 plt.subplot(2,2,4)
-#plot = sns.scatterplot(data = FGCP, x= 'Nb', y='Rb', hue = "Population", style = 'Population', palette="Greens_r", edgecolor="black", s=150, alpha = 0.5, legend=False, hue_order = ['ORA-2A-002', 'ORA-2A-003', 'ORA-2A-016', 'ORA-2A-023', 'ORA-2A-024'])
-plot = sns.scatterplot(data = MG, x= 'Nb', y='Y',hue = "Population" , style = MG_index, palette="Blues_d",marker = 's', edgecolor="black", s=150,alpha = 0.6,legend=False, hue_order = ['MG 1', 'MG 2', 'MG 3'])
-#plot = sns.scatterplot(data = VCCR, x= 'Nb', y='Rb',hue = "Population", palette="PuRd_r", marker = '^', edgecolor="black", s=150, legend = False, style = VCCR_index, alpha = 0.5, hue_order = ['VCCR 1', 'VCCR 2', 'VCCR 3'])
-#plot = sns.scatterplot(data = FG, x= 'Nb', y='Rb', style = "Population", hue = "Population", palette="OrRd_r", edgecolor="black", s=150,alpha = 0.5,legend=False, markers=('^', 'X', 's'), hue_order = ['ORA-5B-412','ORA-5B-410', 'ORA-5B-414'])
-plot = sns.scatterplot(data = DEVIT, x= 'Nb', y='Y', style = DEVIT_index, hue = DEVIT_index, palette="Purples_d", edgecolor="black", s=150,alpha = 0.5,legend=False, markers=('^', 'X', 's'))
+plot = sns.scatterplot(data = MG, x= 'U', y='Ti',hue = "Population" , style = MG_index, palette="Blues_d",marker = 's', edgecolor="black", s=150,alpha = 0.6,legend=False, hue_order = ['MG 1', 'MG 2', 'MG 3'])
+plot = sns.scatterplot(data = DEVIT, x= 'U', y='Ti', style = DEVIT_index, hue = DEVIT_index, palette="Purples_d", edgecolor="black", s=150,alpha = 0.5,legend=False, markers=('^', 'X', 's'))
 
-plt.ylim(10,110)
-plt.xlim (5,70)
+#plt.ylim(10,110)
+#plt.xlim (5,70)
 #plt.ylim(170,780)
 #plt.xlim (8.1,50.8)
 
