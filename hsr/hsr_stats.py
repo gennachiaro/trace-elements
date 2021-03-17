@@ -29,4 +29,29 @@ VCCR2_index = VCCR2.index
 VCCR3_index = VCCR3.index
 
 
-one = tr.loc['ORA-5B-402']
+#slice data frame for individual sample
+ORA5B402 = tr.loc[['ORA-5B-402']]
+
+#get individual sample means 
+print(ORA5B402.mean())
+
+#get individual sample std dev
+ORA5B402 = tr.loc[['ORA-5B-402']]
+
+
+ORA5B402.std()
+print(ORA5B402.std())
+print(ORA5B402.mean())
+
+#create dataframe of means and std devs
+stats = pd.DataFrame({'Sample': VCCR_index},
+
+
+
+#have to find a way to index the values and then transpose them 
+
+#then slice the data frame by sample to get sample std dev and means
+
+                        'Element': VCCR.loc[[0:1]]})
+
+print(stats)
