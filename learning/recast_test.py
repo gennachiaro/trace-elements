@@ -39,30 +39,55 @@ from PIL.Image import merge
 #   define the data types of columns:
 
 na_values = ['<-1.00', '****', '<****']
+df = pd.read_csv('/Users/gennachiaro/Documents/vanderbilt/research/ora caldera/trace-elements/TraceElements_NoFilter.csv', dtype={'Li': np.float64, 'Mg': np.float64, 'V': np.float64, 'Cr': np.float64, 'Ni': np.float64}, na_values= na_values, index_col=1)
 df1 = pd.read_csv('/Users/gennachiaro/Documents/vanderbilt/research/ora caldera/trace-elements/TraceElements_NoFilter.csv', dtype={'Li': np.float64, 'Mg': np.float64, 'V': np.float64, 'Cr': np.float64, 'Ni': np.float64}, na_values= na_values)
 
 # drop blank columns
-#df = df.dropna(axis = 1, how = 'all')
-#df1 = df1.dropna(axis = 1, how = 'all')
+df = df.dropna(axis = 1, how = 'all')
+df1 = df1.dropna(axis = 1, how = 'all')
 
 # drop rows with any NaN values
 #df = df.dropna()
 #df1 = df1.dropna()
 
-# fill NaN with zeroes
+# fill NaN
 #df = df.fillna(method = 'bfill')
 #df1 = df1.fillna(method = 'bfill')
 
-#df.iloc[3:62][df.iloc[3:62]< 0] = 0
+#change all negatives to zeroes
+num = df._get_numeric_data()
+num[num < 0] = 0
 
-#df = np.where(df<0, 0, df)
-
-#num = df._get_numeric_data()
-#num[num < 0] = 0
-
-#num = df1._get_numeric_data()
-#num[num < 0] = 0
+num = df1._get_numeric_data()
+num[num < 0] = 0
 
 #map out columns
 col_mapping = [f"{c[0]}:{c[1]}" for c in enumerate(df.columns)]
 
+#DataFrameMelt
+melt = (df.melt(id_vars=['Spot', 'Population'], value_vars=['Li','Mg','Al','Si','Ca','Sc','Ti','Ti.1','V','Cr','Mn','Fe','Co','Ni','Zn','Rb','Sr','Y','Zr','Nb','Ba','La','Ce','Pr','Nd','Sm','Eu','Gd','Tb','Gd.1','Dy','Ho','Er','Tm','Yb','Lu','Hf','Ta','Pb','Th','U','Rb/Sr','Ba/Y','Zr/Y','Zr/Ce','Zr/Nb','U/Ce','Ce/Th','Rb/Th','Th/Nb','U/Y','Sr/Nb','Gd/Yb','U/Yb','Zr/Hf','Ba + Sr'], ignore_index=False))
+print(melt)
+
+#mean = df.mean(level = 'Sample')
+
+mean = df1.groupby('Sample').mean()
+print(mean.head())
+
+#Create dataframe with sample populations
+populations = df1[['Sample','Population']].drop_duplicates('Sample')
+
+# Merge two dataframes
+merge = pd.merge(populations, mean, how = 'right', left_on= "Sample", right_on = mean.index)
+
+print (merge.head())
+
+
+#DataFrameMelt for tidy data and plotting final values
+
+melt2 = (merge.melt(id_vars=['Sample', 'Population'], value_vars=['Li','Mg','Al','Si','Ca','Sc','Ti','Ti.1','V','Cr','Mn','Fe','Co','Ni','Zn','Rb','Sr','Y','Zr','Nb','Ba','La','Ce','Pr','Nd','Sm','Eu','Gd','Tb','Gd.1','Dy','Ho','Er','Tm','Yb','Lu','Hf','Ta','Pb','Th','U','Rb/Sr','Ba/Y','Zr/Y','Zr/Ce','Zr/Nb','U/Ce','Ce/Th','Rb/Th','Th/Nb','U/Y','Sr/Nb','Gd/Yb','U/Yb','Zr/Hf','Ba + Sr','SiO2'], ignore_index=False))
+
+#melt2 = melt2.set_index('Sample')
+
+melt2.groupby(['Sample']).mean()
+
+print(melt2)

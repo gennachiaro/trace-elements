@@ -11,9 +11,18 @@ import seaborn as sns; sns.set()
 import matplotlib.pyplot as plt
 
 # Import csv file
-    #All values
+#   all values
 #df = pd.read_csv('/Users/gennachiaro/Documents/vanderbilt/research/ora caldera/trace-elements/new-spreadsheets/Ora-Glass-All.csv', index_col=1)
 #df1 = pd.read_csv('/Users/gennachiaro/Documents/vanderbilt/research/ora caldera/trace-elements/new-spreadsheets/Ora-Glass-All.csv')
+
+# Drop blank columns
+#df = df.dropna(axis = 1, how = 'all')
+#df1 = df1.dropna(axis = 1, how = 'all')
+
+# Indexed dataframe for 
+#df = pd.read_csv('/Users/gennachiaro/Documents/vanderbilt/research/ora caldera/trace-elements/TraceElements_NoFilter.csv', index_col=1)
+
+#df1 = pd.read_csv('/Users/gennachiaro/Documents/vanderbilt/research/ora caldera/trace-elements/TraceElements_NoFilter.csv')
 
 # Create a custom list of values I want to cast to NaN, and explicitly 
 #   define the data types of columns:
@@ -55,6 +64,7 @@ print(mean.head())
 #   we need to use a non-indexed dataframe to make our "populations" dataframe 
 #       so might as well just use one dataframe and the groupby fx to make it simpler
 #mean = df.mean(level = 'Sample') # another way to calculate means, but need an indexed df to use "level"
+
 
 # Create seperate dataframe with sample populations
 #   this is so we can merge this with the mean dataframe because the groupby fx just gives sample name and value for each element
