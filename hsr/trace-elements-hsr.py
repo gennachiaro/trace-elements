@@ -28,7 +28,6 @@ VCCR_index = VCCR.index
 #MG1 = df.loc[['ORA-2A-001','ORA-2A-005','ORA-2A-018','ORA-2A-031','ORA-2A-032','ORA-2A-035','ORA-2A-040']]
 #MG1_index = MG1.index
 
-
 #FG = df.loc [['ORA-5B-410','ORA-5B-412A-FG','ORA-5B-412B-FG','ORA-5B-414-FG']]
 #FG_index = FG.index
 
