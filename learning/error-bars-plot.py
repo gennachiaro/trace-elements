@@ -143,7 +143,7 @@ yerr2 = VCCR_std['Ba']
 plot = sns.scatterplot(data = MG, x= 'Sr', y= 'Ba', hue = "Population", palette="Blues_d",marker = 's', edgecolor="black", s=150, alpha = 0.5, legend = "brief")
 # Plot Error bars
 #plt.errorbar(data = MG, x = 'Sr', y = 'Ba', xerr = xerr1, yerr = yerr1)
-plt.errorbar(x = MG['Sr'], y = MG['Ba'], xerr = xerr1, yerr = yerr1, ls = 'none', ecolor = 'cornflowerblue')
+plt.errorbar(x = MG['Sr'], y = MG['Ba'], xerr = xerr1, yerr = yerr1, ls = 'none', ecolor = 'cornflowerblue', elinewidth = 1, capsize = 2)
 
 #   Different symbol for each population
 #plot = sns.scatterplot(data = MG, x= 'Sr', y= 'Ba',hue = "Population" , style = MG.index, palette="Blues_d",marker = 's', edgecolor="black", s=150, alpha = 0.5, legend = "brief")
@@ -156,7 +156,7 @@ plt.errorbar(x = MG['Sr'], y = MG['Ba'], xerr = xerr1, yerr = yerr1, ls = 'none'
 plot = sns.scatterplot(data = VCCR, x= 'Sr', y='Ba',hue = "Population", palette="PuRd_r", marker = '^', edgecolor="black", s=150, legend = "brief", alpha = 0.5, hue_order = ['VCCR 1', 'VCCR 2', 'VCCR 3'])
 #plt.errorbar(data = VCCR, x = 'Sr', y = 'Ba', xerr = xerr2, yerr = yerr2)
 
-plt.errorbar(x = VCCR['Sr'], y = VCCR['Ba'], xerr = xerr2, yerr = yerr2, ls = 'none', ecolor = 'palevioletred')
+plt.errorbar(x = VCCR['Sr'], y = VCCR['Ba'], xerr = xerr2, yerr = yerr2, ls = 'none', ecolor = 'palevioletred', elinewidth = 1, capsize = 2, barsabove = False)
 
 #   Different symbol for each population
 #plot = sns.scatterplot(data = VCCR, x= 'Sr', y='Ba',hue = "Population", style = "Population", palette="PuRd_r", marker = '^', edgecolor="black", s=150, legend = "brief", alpha = 0.5, hue_order = ['VCCR 1', 'VCCR 2', 'VCCR 3'])
