@@ -20,8 +20,11 @@ import matplotlib.pyplot as plt
 na_values = ['<-1.00', '****', '<****', '*****']
 
 #df = pd.read_csv('/Users/gennachiaro/Documents/vanderbilt/research/ora caldera/trace-elements/new-spreadsheets/Ora-Glass-All.csv', index_col=1)
-df1 = pd.read_csv('/Users/gennachiaro/Documents/vanderbilt/research/ora caldera/trace-elements/new-spreadsheets/Ora-Glass-All.csv',dtype={'Li': np.float64, 'Mg': np.float64, 'V': np.float64, 'Cr': np.float64, 'Ni': np.float64, 'Nb': np.float64,'SiO2': np.float64}, na_values= na_values)
+#df1 = pd.read_csv('/Users/gennachiaro/Documents/vanderbilt/research/ora caldera/trace-elements/new-spreadsheets/Ora-Glass-All.csv',dtype={'Li': np.float64, 'Mg': np.float64, 'V': np.float64, 'Cr': np.float64, 'Ni': np.float64, 'Nb': np.float64,'SiO2': np.float64}, na_values= na_values)
 
+# read in excel file!
+# All with clear mineral analyses removed
+df1 = pd.read_excel('/Users/gennachiaro/Documents/vanderbilt/research/ora caldera/trace-elements/new-spreadsheets/Ora-Glass-All.xlsx',dtype={'Li': np.float64, 'Mg': np.float64, 'V': np.float64, 'Cr': np.float64, 'Ni': np.float64, 'Nb': np.float64,'SiO2': np.float64}, na_values= na_values, sheet_name = 'Data')
 
 # drop blank columns
 #df = df.dropna(axis = 1, how = 'all')
@@ -68,10 +71,11 @@ populations = df1[['Sample','Population']].drop_duplicates('Sample')
 
 # Merge two dataframes
 merge = pd.merge(populations, sample_mean, how = 'right', left_on= "Sample", right_on = sample_mean.index)
-print (merge.head())
+#print (merge.head())
 
-# DataFrameMelt for tidy data and plotting final values
-means = (merge.melt(id_vars=['Sample', 'Population'], value_vars=['Li','Mg','Al','Si','Ca','Sc','Ti','Ti.1','V','Cr','Mn','Fe','Co','Ni','Zn','Rb','Sr','Y','Zr','Nb','Ba','La','Ce','Pr','Nd','Sm','Eu','Gd','Tb','Gd.1','Dy','Ho','Er','Tm','Yb','Lu','Hf','Ta','Pb','Th','U','Rb/Sr','Ba/Y','Zr/Y','Zr/Ce','Zr/Nb','U/Ce','Ce/Th','Rb/Th','Th/Nb','U/Y','Sr/Nb','Gd/Yb','U/Yb','Zr/Hf','Ba + Sr'], ignore_index=False))
+# Set index
+merge = merge.set_index('Sample')
+#print (merge.head())
 
 # Indexing
 #means = means.set_index('Sample')
@@ -79,4 +83,21 @@ means = (merge.melt(id_vars=['Sample', 'Population'], value_vars=['Li','Mg','Al'
 # Multi-Indexing
 #means = means.set_index(['Sample', 'variable']).sort_index()
 
-print(means.head())
+#print(means.head())
+
+
+# Calculate stdev for each sample (messy)
+
+sample_std = df1.groupby('Sample').std()
+#print(sample_std.head())
+
+# Merge two dataframes (stdev and populations)
+sample_std = pd.merge(populations, sample_std, how = 'right', left_on= "Sample", right_on = sample_std.index)
+#print (sample_std.head())
+
+# Set index
+sample_std = sample_std.set_index('Sample')
+print (sample_std.head())
+
+
+#ax = fig.add_subplot(111)
