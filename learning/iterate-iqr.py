@@ -72,4 +72,14 @@ iqr = x.groupby('Sample').quantile()
 
 # find a way to do dataframe algebra so it is if > median + Iqr
 
+# Calculate median and iqr from groupby for each column
+#   Use this to filter out values using booleans from dataframe (filtered df)
+#           Use Pandas Between method for this!
+#       Then calculate mean from this filtered df!  Hooray!
+
+
+
+# is it easiest to do this by hierarchical indexing? in a melted format?  Or long format
+
+# Use Booleans for this!
 #print(df1.info())
