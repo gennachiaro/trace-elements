@@ -1,10 +1,8 @@
-#!/usr/bin/env python3
-# -*- coding: utf-8 -*-
-
 import pandas as pd
 import numpy as np
 import seaborn as sns; sns.set()
 import matplotlib.pyplot as plt
+
 
 # Import csv file
     #All values
@@ -69,10 +67,10 @@ sample_mean = df1.groupby('Sample').mean()
 populations = df1[['Sample','Population']].drop_duplicates('Sample')
 
 # Merge two dataframes
-merge = pd.merge(populations, sample_mean, how = 'right', left_on= "Sample", right_on = sample_mean.index)
+merge_mean = pd.merge(populations, sample_mean, how = 'right', left_on= "Sample", right_on = sample_mean.index)
 
 # Set index
-merge = merge.set_index('Sample')
+merge_mean = merge_mean.set_index('Sample')
 #print (merge.head())
 
 # Calculate stdev for each sample (messy)
@@ -90,19 +88,25 @@ sample_std = pd.merge(populations, sample_std, how = 'right', left_on= "Sample",
 sample_std = sample_std.set_index('Sample')
 #print (sample_std.head())
 
+
 # Plotting
 #       Slicing dataframe
-MG = merge.loc[['ORA-2A-001','ORA-2A-005','ORA-2A-018','ORA-2A-031','ORA-2A-032','ORA-2A-035','ORA-2A-040']]
+MG = merge_mean.loc[['ORA-2A-001','ORA-2A-005','ORA-2A-018','ORA-2A-031','ORA-2A-032','ORA-2A-035','ORA-2A-040']]
 MG_index = MG.index
 
-VCCR1 = merge.loc [['ORA-5B-404A','ORA-5B-404B','ORA-5B-405','ORA-5B-406','ORA-5B-408-SITE7','ORA-5B-408-SITE8','ORA-5B-411','ORA-5B-416']]
+VCCR1 = merge_mean.loc [['ORA-5B-404A','ORA-5B-404B','ORA-5B-405','ORA-5B-406','ORA-5B-408-SITE7','ORA-5B-408-SITE8','ORA-5B-411','ORA-5B-416']]
 VCCR1_index = VCCR1.index
 
 #VCCR1 = df.loc [['ORA-5B-402','ORA-5B-404A','ORA-5B-406','ORA-5B-409','ORA-5B-411','ORA-5B-415','ORA-5B-416','ORA-5B-417']]
 #VCCR1_index = VCCR1.index
 
-VCCR = merge.loc [['ORA-5B-402','ORA-5B-404A','ORA-5B-404B','ORA-5B-405','ORA-5B-406','ORA-5B-407','ORA-5B-408-SITE2','ORA-5B-408-SITE7','ORA-5B-408-SITE8','ORA-5B-409','ORA-5B-411','ORA-5B-412A-CG','ORA-5B-412B-CG','ORA-5B-413','ORA-5B-414-CG','ORA-5B-415','ORA-5B-416','ORA-5B-417']]
+VCCR = merge_mean.loc [['ORA-5B-402','ORA-5B-404A','ORA-5B-404B','ORA-5B-405','ORA-5B-406','ORA-5B-407','ORA-5B-408-SITE2','ORA-5B-408-SITE7','ORA-5B-408-SITE8','ORA-5B-409','ORA-5B-411','ORA-5B-412A-CG','ORA-5B-412B-CG','ORA-5B-413','ORA-5B-414-CG','ORA-5B-415','ORA-5B-416','ORA-5B-417']]
 VCCR_index = VCCR.index
+
+VCCR_mean = merge_mean[merge_mean['Population'].isin(['VCCR 1', 'VCCR 2', 'VCCR 3'])]
+VCCR_mean = VCCR_mean.drop(['ORA-5B-405-B', 'ORA-5B-406-B','ORA-5B-409-B','ORA-5B-416-B'], axis = 0)
+
+VCCR.equals(VCCR, VCCR_mean)
 
 # Set background color
 sns.set_style("darkgrid")
@@ -155,39 +159,32 @@ plot = sns.scatterplot(data = VCCR, x= 'Sr', y='Ba',hue = "Population", palette=
 plt.errorbar(x = VCCR['Sr'], y = VCCR['Ba'], xerr = xerr2, yerr = yerr2, ls = 'none', ecolor = 'palevioletred', elinewidth = 1, capsize = 2, barsabove = False, alpha = 0.5)
 
 
-#   Different symbol for each population
-#plot = sns.scatterplot(data = VCCR, x= 'Sr', y='Ba',hue = "Population", style = "Population", palette="PuRd_r", marker = '^', edgecolor="black", s=150, legend = "brief", alpha = 0.5, hue_order = ['VCCR 1', 'VCCR 2', 'VCCR 3'])
 
-#plot = sns.scatterplot(data = FG, x= 'Y', y='Nb',hue = FG_index, palette="Blues",legend="brief", marker = 's', edgecolor="black", s=150)
-#plot = sns.scatterplot(data = FGCP, x= 'Y', y='Nb',hue = FGCP_index, palette="Blues",legend="brief", marker = 's', edgecolor="black", s=150)
 
-# Set y axis to log scale
-#plot.set(yscale='log')
-#plot.set(xscale='log')
 
-# Set location of legend
-#plt.legend(loc='upper left')
-#plt.legend(loc='center left', bbox_to_anchor=(1, 0.5), ncol=1)
 
-# Configure legend
-h,l = plot.get_legend_handles_labels()
 
-# Legend outside of plot
-#plt.legend(h[1:4]+h[5:8],l[1:4]+l[5:8],loc='center left', bbox_to_anchor=(1, 0.5), ncol=1)
+#define a color palette index based on column 'B'
+df['cind'] = pd.Categorical(df['B']).labels
 
-# Legend inside of plot
-plt.legend(h[1:4]+h[5:8],l[1:4]+l[5:8],loc='best', ncol=1)
 
-# Populations
-#plt.legend(h[1:4]+h[13:16],l[1:4]+l[13:16],loc='center left', bbox_to_anchor=(1, 0.5), ncol=1)
 
-# Samples + populations
-#plt.legend(h[0:4]+ h[5:12]+h[13:16]+h[17:27],l[0:4]+l[5:12]+ l[13:16]+l[17:27],loc='center left', bbox_to_anchor=(1, 0.5), ncol=2)
+df1['PuRd_r'] = pd.Categorical(df1['Population'])
 
-# General title
-plt.suptitle("High-Silica Rhyolite (MG + VCCR) Fiamme Glass", fontsize=15, fontweight=0, color='black', y = 0.95)
+#how many categories in column 'A'
+cats = df['A'].unique()
+cats.sort()
 
-# Set size of plot
-sns.set_context("paper")
+#get the seaborn colour palette and convert to array
+cp = sns.color_palette()
+cpa = np.array(cp)
 
-plt.show()
+#draw a subplot for each category in column "A"
+fig, axs = plt.subplots(nrows=1, ncols=len(cats), sharey=True)
+for i,ax in enumerate(axs):
+    df_sub = df[df['A'] == cats[i]]
+    col = cpa[df_sub['cind']]
+    ax.scatter(df_sub['C'], df_sub['D'], c=col)
+    eb = ax.errorbar(df_sub['C'], df_sub['D'], yerr=df_sub['E'], fmt=None)
+    a, (b, c), (d,) = eb.lines
+    d.set_color(col)

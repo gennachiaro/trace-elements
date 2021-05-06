@@ -57,7 +57,17 @@ melt = (df1.melt(id_vars=['Sample','Spot', 'Population'], value_vars=['Li','Mg',
 
 # Calculate means for each sample (messy)
 sample_mean = df1.groupby('Sample').mean()
-#print(sample_mean.head())
+#print(sample_mean1.head())
+
+sample_mean = sample_mean.reset_index()
+# DataFrameMelt to get all values for each spot in tidy data
+#   every element for each spot corresponds to a separate row
+
+# Reset index so we can melt data into one row
+sample_mean = sample_mean.reset_index()
+mean_melt = (sample_mean.melt(id_vars=['Sample'], value_vars=['Li','Mg','Al','Si','Ca','Sc','Ti','Ti.1','V','Cr','Mn','Fe','Co','Ni','Zn','Rb','Sr','Y','Zr','Nb','Ba','La','Ce','Pr','Nd','Sm','Eu','Gd','Tb','Gd.1','Dy','Ho','Er','Tm','Yb','Lu','Hf','Ta','Pb','Th','U','Rb/Sr','Ba/Y','Zr/Y','Zr/Ce','Zr/Nb','U/Ce','Ce/Th','Rb/Th','Th/Nb','U/Y','Sr/Nb','Gd/Yb','U/Yb','Zr/Hf','Ba + Sr'], ignore_index=False))
+mean_melt = mean_melt.set_index('Sample')
+print(mean_melt)
 
 # Another way to calculate means, but need an indexed df to use "level"
 #   we need to use a non-indexed dataframe to make our "populations" dataframe 
@@ -136,7 +146,7 @@ yerr2 = VCCR_std['Ba']
 
 # Create plot
 #   All one symbol
-plot = sns.scatterplot(data = MG, x= 'Sr', y= 'Ba', hue = "Population", palette="Blues_d",marker = 's', edgecolor="black", s=150, alpha = 0.5, legend = "brief")
+g = sns.scatterplot(data = MG, x= 'Sr', y= 'Ba', hue = "Population", palette="Blues_d",marker = 's', edgecolor="black", s=150, alpha = 0.5, legend = "brief")
 # Plot Error bars
 #plt.errorbar(data = MG, x = 'Sr', y = 'Ba', xerr = xerr1, yerr = yerr1)
 plt.errorbar(x = MG['Sr'], y = MG['Ba'], xerr = xerr1, yerr = yerr1, ls = 'none', ecolor = 'cornflowerblue', elinewidth = 1, capsize = 2, alpha = 0.5)
@@ -149,12 +159,12 @@ plt.errorbar(x = MG['Sr'], y = MG['Ba'], xerr = xerr1, yerr = yerr1, ls = 'none'
 
 # Population based to fit all the types
 #   All one symbol
-plot = sns.scatterplot(data = VCCR, x= 'Sr', y='Ba',hue = "Population", palette="PuRd_r", marker = '^', edgecolor="black", s=150, legend = "brief", alpha = 0.5, hue_order = ['VCCR 1', 'VCCR 2', 'VCCR 3'])
+g = sns.scatterplot(data = VCCR, x= 'Sr', y='Ba',hue = "Population", palette="PuRd_r", marker = '^', edgecolor="black", s=150, legend = "brief", alpha = 0.5, hue_order = ['VCCR 1', 'VCCR 2', 'VCCR 3'])
 #plt.errorbar(data = VCCR, x = 'Sr', y = 'Ba', xerr = xerr2, yerr = yerr2)
 
-plt.errorbar(x = VCCR['Sr'], y = VCCR['Ba'], xerr = xerr2, yerr = yerr2, ls = 'none', ecolor = 'palevioletred', elinewidth = 1, capsize = 2, barsabove = False, alpha = 0.5)
+#plt.errorbar(x = VCCR['Sr'], y = VCCR['Ba'], xerr = xerr2, yerr = yerr2, ls = 'none', ecolor = 'palevioletred', elinewidth = 1, capsize = 2, barsabove = False, alpha = 0.5)
 
-
+g.map(plt.errorbar(x = VCCR['Sr'], y = VCCR['Ba'], xerr = xerr2, yerr = yerr2, ls = 'none', ecolor = 'palevioletred', elinewidth = 1, capsize = 2, barsabove = False, alpha = 0.5))
 #   Different symbol for each population
 #plot = sns.scatterplot(data = VCCR, x= 'Sr', y='Ba',hue = "Population", style = "Population", palette="PuRd_r", marker = '^', edgecolor="black", s=150, legend = "brief", alpha = 0.5, hue_order = ['VCCR 1', 'VCCR 2', 'VCCR 3'])
 
