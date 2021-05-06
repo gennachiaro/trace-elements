@@ -59,17 +59,15 @@ melt = (df1.melt(id_vars=['Sample','Spot', 'Population'], value_vars=['Li','Mg',
 sample_mean = df1.groupby('Sample').mean()
 #print(sample_mean1.head())
 
-#sample_mean = sample_mean.reset_index()
 # DataFrameMelt to get all values for each spot in tidy data
 #   every element for each spot corresponds to a separate row
 
-# Reset index so we can melt data into one row
+#NEEDS TO BE FIXED!!!! CHANGE POPULATIONS TO OBJECT OR USE PD.CONCAT!
+# Reset index so we can melt data into one row [FIX THIS!!!!
 sample_mean = sample_mean.reset_index()
 mean_melt = (sample_mean.melt(id_vars=['Sample'], value_vars=['Li','Mg','Al','Si','Ca','Sc','Ti','Ti.1','V','Cr','Mn','Fe','Co','Ni','Zn','Rb','Sr','Y','Zr','Nb','Ba','La','Ce','Pr','Nd','Sm','Eu','Gd','Tb','Gd.1','Dy','Ho','Er','Tm','Yb','Lu','Hf','Ta','Pb','Th','U','Rb/Sr','Ba/Y','Zr/Y','Zr/Ce','Zr/Nb','U/Ce','Ce/Th','Rb/Th','Th/Nb','U/Y','Sr/Nb','Gd/Yb','U/Yb','Zr/Hf','Ba + Sr'], ignore_index=False))
-#mean_melt = mean_melt.set_index('Sample')
+mean_melt = mean_melt.set_index('Sample')
 print(mean_melt)
-
-
 
 # Another way to calculate means, but need an indexed df to use "level"
 #   we need to use a non-indexed dataframe to make our "populations" dataframe 
@@ -80,9 +78,12 @@ print(mean_melt)
 #   this is so we can merge this with the mean dataframe because the groupby fx just gives sample name and value for each element
 populations = df1[['Sample','Population']].drop_duplicates('Sample')
 
+populations.reset_index()
+# Columns converted to objects
+populations.astype('object')
+
 # Merge two dataframes
-#merge = pd.merge(populations, sample_mean, how = 'right', left_on= "Sample", right_on = sample_mean.index)
-merge = pd.merge(populations, mean_melt, how = 'right', left_on= "Sample", right_on = mean_melt.index)
+merge = pd.merge(populations, sample_mean, how = 'right', left_on= "Sample", right_on = sample_mean.index)
 
 # Set index
 merge = merge.set_index('Sample')
@@ -147,60 +148,3 @@ yerr1 = MG_std['Ba']
 xerr2 = VCCR_std['Sr']
 yerr2 = VCCR_std['Ba']
 
-# Create plot
-#   All one symbol
-g = sns.scatterplot(data = MG, x= 'Sr', y= 'Ba', hue = "Population", palette="Blues_d",marker = 's', edgecolor="black", s=150, alpha = 0.5, legend = "brief")
-# Plot Error bars
-#plt.errorbar(data = MG, x = 'Sr', y = 'Ba', xerr = xerr1, yerr = yerr1)
-plt.errorbar(x = MG['Sr'], y = MG['Ba'], xerr = xerr1, yerr = yerr1, ls = 'none', ecolor = 'cornflowerblue', elinewidth = 1, capsize = 2, alpha = 0.5)
-
-#   Different symbol for each population
-#plot = sns.scatterplot(data = MG, x= 'Sr', y= 'Ba',hue = "Population" , style = MG.index, palette="Blues_d",marker = 's', edgecolor="black", s=150, alpha = 0.5, legend = "brief")
-
-# Seperated based on types
-#plot = sns.scatterplot(data = VCCR1, x= 'Sr', y='Ba',hue = "Population", palette="PuRd_r", marker = '^', edgecolor="black", s=150, style = VCCR1_index, alpha = 0.5, hue_order = ['VCCR 1', 'VCCR 2', 'VCCR 3'], legend = "brief")
-
-# Population based to fit all the types
-#   All one symbol
-g = sns.scatterplot(data = VCCR, x= 'Sr', y='Ba',hue = "Population", palette="PuRd_r", marker = '^', edgecolor="black", s=150, legend = "brief", alpha = 0.5, hue_order = ['VCCR 1', 'VCCR 2', 'VCCR 3'])
-#plt.errorbar(data = VCCR, x = 'Sr', y = 'Ba', xerr = xerr2, yerr = yerr2)
-
-#plt.errorbar(x = VCCR['Sr'], y = VCCR['Ba'], xerr = xerr2, yerr = yerr2, ls = 'none', ecolor = 'palevioletred', elinewidth = 1, capsize = 2, barsabove = False, alpha = 0.5)
-
-g.map(plt.errorbar(x = VCCR['Sr'], y = VCCR['Ba'], xerr = xerr2, yerr = yerr2, ls = 'none', ecolor = 'palevioletred', elinewidth = 1, capsize = 2, barsabove = False, alpha = 0.5))
-#   Different symbol for each population
-#plot = sns.scatterplot(data = VCCR, x= 'Sr', y='Ba',hue = "Population", style = "Population", palette="PuRd_r", marker = '^', edgecolor="black", s=150, legend = "brief", alpha = 0.5, hue_order = ['VCCR 1', 'VCCR 2', 'VCCR 3'])
-
-#plot = sns.scatterplot(data = FG, x= 'Y', y='Nb',hue = FG_index, palette="Blues",legend="brief", marker = 's', edgecolor="black", s=150)
-#plot = sns.scatterplot(data = FGCP, x= 'Y', y='Nb',hue = FGCP_index, palette="Blues",legend="brief", marker = 's', edgecolor="black", s=150)
-
-# Set y axis to log scale
-#plot.set(yscale='log')
-#plot.set(xscale='log')
-
-# Set location of legend
-#plt.legend(loc='upper left')
-#plt.legend(loc='center left', bbox_to_anchor=(1, 0.5), ncol=1)
-
-# Configure legend
-h,l = plot.get_legend_handles_labels()
-
-# Legend outside of plot
-#plt.legend(h[1:4]+h[5:8],l[1:4]+l[5:8],loc='center left', bbox_to_anchor=(1, 0.5), ncol=1)
-
-# Legend inside of plot
-plt.legend(h[1:4]+h[5:8],l[1:4]+l[5:8],loc='best', ncol=1)
-
-# Populations
-#plt.legend(h[1:4]+h[13:16],l[1:4]+l[13:16],loc='center left', bbox_to_anchor=(1, 0.5), ncol=1)
-
-# Samples + populations
-#plt.legend(h[0:4]+ h[5:12]+h[13:16]+h[17:27],l[0:4]+l[5:12]+ l[13:16]+l[17:27],loc='center left', bbox_to_anchor=(1, 0.5), ncol=2)
-
-# General title
-plt.suptitle("High-Silica Rhyolite (MG + VCCR) Fiamme Glass", fontsize=15, fontweight=0, color='black', y = 0.95)
-
-# Set size of plot
-sns.set_context("paper")
-
-plt.show()
