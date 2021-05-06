@@ -30,6 +30,9 @@ df1 = pd.read_excel('/Users/gennachiaro/Documents/vanderbilt/research/ora calder
 #df = df.dropna(axis = 1, how = 'all')
 df1 = df1.dropna(axis = 1, how = 'all')
 
+# Drop "Included" column
+df1 = df1.drop(['Included'], axis = 1)
+
 # NaN treatment:
 #   change all negatives and zeroes to NaN
 num = df1._get_numeric_data()

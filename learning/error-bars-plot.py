@@ -170,18 +170,25 @@ plt.errorbar(x = VCCR['Sr'], y = VCCR['Ba'], xerr = xerr2, yerr = yerr2, ls = 'n
 
 # Set location of legend
 #plt.legend(loc='upper left')
-plt.legend(loc='center left', bbox_to_anchor=(1, 0.5), ncol=1)
+#plt.legend(loc='center left', bbox_to_anchor=(1, 0.5), ncol=1)
 
 # Configure legend
 h,l = plot.get_legend_handles_labels()
+
+# Legend outside of plot
+#plt.legend(h[1:4]+h[5:8],l[1:4]+l[5:8],loc='center left', bbox_to_anchor=(1, 0.5), ncol=1)
+
+# Legend inside of plot
+plt.legend(h[1:4]+h[5:8],l[1:4]+l[5:8],loc='best', ncol=1)
+
 # Populations
 #plt.legend(h[1:4]+h[13:16],l[1:4]+l[13:16],loc='center left', bbox_to_anchor=(1, 0.5), ncol=1)
 
-# samples + populations
+# Samples + populations
 #plt.legend(h[0:4]+ h[5:12]+h[13:16]+h[17:27],l[0:4]+l[5:12]+ l[13:16]+l[17:27],loc='center left', bbox_to_anchor=(1, 0.5), ncol=2)
 
 # General title
-plt.suptitle("High-Silica Rhyolite (MG + VCCR) Fiamme Glass", fontsize=15, fontweight=0, color='black')
+plt.suptitle("High-Silica Rhyolite (MG + VCCR) Fiamme Glass", fontsize=15, fontweight=0, color='black', y = 0.95)
 
 # Set size of plot
 sns.set_context("paper")

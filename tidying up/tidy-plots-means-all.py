@@ -26,10 +26,12 @@ na_values = ['<-1.00', '****', '<****', '*****']
 # All with clear mineral analyses removed
 df1 = pd.read_excel('/Users/gennachiaro/Documents/vanderbilt/research/ora caldera/trace-elements/new-spreadsheets/Ora-Glass-All.xlsx',dtype={'Li': np.float64, 'Mg': np.float64, 'V': np.float64, 'Cr': np.float64, 'Ni': np.float64, 'Nb': np.float64,'SiO2': np.float64}, na_values= na_values, sheet_name = 'Data')
 
-
 # drop blank columns
 #df = df.dropna(axis = 1, how = 'all')
 df1 = df1.dropna(axis = 1, how = 'all')
+
+# Drop "Included" column
+df1 = df1.drop(['Included'], axis = 1)
 
 # NaN treatment:
 #   change all negatives and zeroes to NaN
