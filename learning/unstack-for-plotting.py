@@ -79,6 +79,7 @@ means = (merge.melt(id_vars=['Sample', 'Population'], value_vars=['Li','Mg','Al'
 means = means.set_index(['Sample', 'Population', 'variable']).sort_index()
 
 #unstack to get back to what merge looks like
+#       Can just plot with the merge dataframe!!
 means = means.unstack(level=-1)
 
 print(means.head())

@@ -1,10 +1,6 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-"""
-Created on Wed Nov 27 16:32:52 2019
 
-@author: gennachiaro
-"""
 import pandas as pd
 import numpy as np
 import seaborn as sns; sns.set()
@@ -83,7 +79,7 @@ merge = merge.set_index('Sample')
 sample_std = df1.groupby('Sample').std()
 
 # Multiply dataframe by two to get 2 sigma
-sample_std = sample_std *2
+#sample_std = sample_std *2
 #print(sample_std.head())
 
 # Merge two dataframes (stdev and populations)
