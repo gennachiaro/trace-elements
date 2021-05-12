@@ -127,8 +127,8 @@ VCCR_std = sample_std[sample_std['Population'].isin(['VCCR 1', 'VCCR 2', 'VCCR 3
 VCCR_std = VCCR_std.drop(['ORA-5B-405-B', 'ORA-5B-406-B','ORA-5B-409-B','ORA-5B-416-B'], axis = 0)
 
 # Select elements to plot
-x = 'Ba'
-y = 'Sr'
+x = 'Nb'
+y = 'Y'
 
 # MG Error Bar Values
 #xerr1 = MG_std['Sr']
