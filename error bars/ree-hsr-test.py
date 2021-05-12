@@ -106,8 +106,19 @@ sample_std = sample_std.set_index('Sample')
 VCCR = melt[melt['Population'].isin(['VCCR 1', 'VCCR 2', 'VCCR 3'])]
 MG = melt[melt['Population'].isin(['MG 1', 'MG 2', 'MG 3'])]
 
-VCCRREE = VCCR[VCCR['variable'].isin(['La', 'Ce', 'Pr', 'Nd', 'Sm', 'Eu', 'Gd', 'Tb', 'Dy', 'Ho', 'Er', 'Yb', 'Lu'])]
-MGREE = MG[MG['variable'].isin(['La', 'Ce', 'Pr', 'Nd', 'Sm', 'Eu', 'Gd', 'Tb', 'Dy', 'Ho', 'Er', 'Yb', 'Lu'])]
+#VCCRREE = VCCR[VCCR['variable'].isin(['La', 'Ce', 'Pr', 'Nd', 'Sm', 'Eu', 'Gd', 'Tb', 'Dy', 'Ho', 'Er', 'Yb', 'Lu'])]
+#MGREE = MG[MG['variable'].isin(['La', 'Ce', 'Pr', 'Nd', 'Sm', 'Eu', 'Gd', 'Tb', 'Dy', 'Ho', 'Er', 'Yb', 'Lu'])]
+
+# Need to add Pm column!!!
+
+# Need to normalize values!!!
+# Import csv file
+#chondrite = pd.read_csv('/Users/gennachiaro/Documents/vanderbilt/research/ora caldera/trace-elements/MS95_ChondriteValues.csv', index_col=1)
+
+
+
+
+
 
 # Drop bad analyses column
 #MG = MG.set_index('Sample')
