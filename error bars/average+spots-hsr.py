@@ -95,14 +95,35 @@ sample_std = sample_std.set_index('Sample')
 MG = merge.loc[['ORA-2A-001','ORA-2A-005','ORA-2A-018','ORA-2A-031','ORA-2A-032','ORA-2A-035','ORA-2A-040']]
 MG_index = MG.index
 
-VCCR1 = merge.loc [['ORA-5B-404A','ORA-5B-404B','ORA-5B-405','ORA-5B-406','ORA-5B-408-SITE7','ORA-5B-408-SITE8','ORA-5B-411','ORA-5B-416']]
-VCCR1_index = VCCR1.index
-
-#VCCR1 = df.loc [['ORA-5B-402','ORA-5B-404A','ORA-5B-406','ORA-5B-409','ORA-5B-411','ORA-5B-415','ORA-5B-416','ORA-5B-417']]
+#VCCR1 = merge.loc [['ORA-5B-404A','ORA-5B-404B','ORA-5B-405','ORA-5B-406','ORA-5B-408-SITE7','ORA-5B-408-SITE8','ORA-5B-411','ORA-5B-416']]
 #VCCR1_index = VCCR1.index
+
+#VCCR2 = df.loc [['ORA-5B-402','ORA-5B-404A','ORA-5B-406','ORA-5B-409','ORA-5B-411','ORA-5B-415','ORA-5B-416','ORA-5B-417']]
+#VCCR2_index = VCCR2.index
 
 VCCR = merge.loc [['ORA-5B-402','ORA-5B-404A','ORA-5B-404B','ORA-5B-405','ORA-5B-406','ORA-5B-407','ORA-5B-408-SITE2','ORA-5B-408-SITE7','ORA-5B-408-SITE8','ORA-5B-409','ORA-5B-411','ORA-5B-412A-CG','ORA-5B-412B-CG','ORA-5B-413','ORA-5B-414-CG','ORA-5B-415','ORA-5B-416','ORA-5B-417']]
 VCCR_index = VCCR.index
+
+
+# Plot All Spots
+#   Set Dataframe Index
+df1 = df1.set_index('Sample')
+
+# Dataframe Slicing using "isin"
+VCCR_all = df1[df1['Population'].isin(['VCCR 1', 'VCCR 2', 'VCCR 3'])]
+MG_all = df1[df1['Population'].isin(['MG 1', 'MG 2', 'MG 3'])]
+
+# Drop bad analyses column
+MG_all = MG_all.drop(['ORA-2A-004', 'ORA-2A-036'], axis = 0)
+
+# Dataframe slicing using sample names
+#VCCR_all = df1.loc [['ORA-5B-402','ORA-5B-404A','ORA-5B-404B','ORA-5B-405','ORA-5B-406','ORA-5B-407','ORA-5B-408-SITE2','ORA-5B-408-SITE7','ORA-5B-408-SITE8','ORA-5B-409','ORA-5B-411','ORA-5B-412A-CG','ORA-5B-412B-CG','ORA-5B-413','ORA-5B-414-CG','ORA-5B-415','ORA-5B-416','ORA-5B-417']]
+#MG_all = df1.loc[['ORA-2A-001','ORA-2A-005','ORA-2A-018','ORA-2A-031','ORA-2A-032','ORA-2A-035','ORA-2A-040']]
+
+#create trace element plot
+plot = sns.scatterplot(data = VCCR_all, x= 'Ba', y='Sr',hue = "Population", palette= "gray", edgecolor="black", marker = '^', s=150, style = "Population", alpha = 0.2, legend = False, hue_order = ['VCCR 1', 'VCCR 2', 'VCCR 3'])
+plot = sns.scatterplot(data = MG_all, x= 'Ba', y='Sr',hue = "Population" , palette="gray",marker = 's', edgecolor="black", s=150, alpha = 0.2,style = "Population", legend = False, hue_order = ['MG 1', 'MG 2', 'MG 3'])
+
 
 # Set background color
 sns.set_style("darkgrid")
@@ -156,7 +177,7 @@ plt.errorbar(x = MG[x], y = MG[y], xerr = xerr1, yerr = yerr1, ls = 'none', ecol
 
 # Population based to fit all the types
 #   All one symbol
-plot = sns.scatterplot(data = VCCR, x= x, y=y,hue = "Population", palette="PuRd_r", marker = '^', edgecolor="black", s=150, legend = "brief", alpha = 0.8, hue_order = ['VCCR 1', 'VCCR 2', 'VCCR 3'])
+plot = sns.scatterplot(data = VCCR, x= x, y=y, hue = "Population", palette="PuRd_r", marker = '^', edgecolor="black", s=150, legend = "brief", alpha = 0.8, hue_order = ['VCCR 1', 'VCCR 2', 'VCCR 3'])
 #plt.errorbar(data = VCCR, x = 'Sr', y = 'Ba', xerr = xerr2, yerr = yerr2)
 
 plt.errorbar(x = VCCR[x], y = VCCR[y], xerr = xerr2, yerr = yerr2, ls = 'none', ecolor = 'palevioletred', elinewidth = 1, capsize = 2, barsabove = False, alpha = 0.8)
