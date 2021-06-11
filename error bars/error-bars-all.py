@@ -1,17 +1,18 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
+import matplotlib.pyplot as plt
 import pandas as pd
 import numpy as np
-import seaborn as sns; sns.set()
-import matplotlib.pyplot as plt
+import seaborn as sns
+sns.set()
 
 # Import csv file
-    #All values
+# All values
 #df = pd.read_csv('/Users/gennachiaro/Documents/vanderbilt/research/ora caldera/trace-elements/new-spreadsheets/Ora-Glass-All.csv', index_col=1)
 #df1 = pd.read_csv('/Users/gennachiaro/Documents/vanderbilt/research/ora caldera/trace-elements/new-spreadsheets/Ora-Glass-All.csv',dtype={'Li': np.float64, 'Mg': np.float64, 'V': np.float64, 'Cr': np.float64, 'Ni': np.float64}, na_values= na_values)
 
-# Create a custom list of values I want to cast to NaN, and explicitly 
+# Create a custom list of values I want to cast to NaN, and explicitly
 #   define the data types of columns:
 na_values = ['<-1.00', '****', '<****', '*****']
 
@@ -20,14 +21,15 @@ na_values = ['<-1.00', '****', '<****', '*****']
 # read in excel file!
 
 # All with clear mineral analyses removed
-df1 = pd.read_excel('/Users/gennachiaro/Documents/vanderbilt/research/ora caldera/trace-elements/new-spreadsheets/Ora-Glass-All.xlsx',dtype={'Li': np.float64, 'Mg': np.float64, 'V': np.float64, 'Cr': np.float64, 'Ni': np.float64, 'Nb': np.float64,'SiO2': np.float64}, na_values= na_values, sheet_name = 'Data')
+df1 = pd.read_excel('/Users/gennachiaro/Documents/vanderbilt/research/ora caldera/trace-elements/new-spreadsheets/Ora-Glass-All.xlsx', dtype={
+                    'Li': np.float64, 'Mg': np.float64, 'V': np.float64, 'Cr': np.float64, 'Ni': np.float64, 'Nb': np.float64, 'SiO2': np.float64}, na_values=na_values, sheet_name='Data')
 
 # Drop "Included" column
-df1 = df1.drop(['Included'], axis = 1)
+df1 = df1.drop(['Included'], axis=1)
 
 # drop blank columns
 #df = df.dropna(axis = 1, how = 'all')
-df1 = df1.dropna(axis = 1, how = 'all')
+df1 = df1.dropna(axis=1, how='all')
 
 # NaN treatment:
 #   change all negatives and zeroes to NaN
@@ -52,24 +54,26 @@ num[num <= 0] = np.nan
 # DataFrameMelt to get all values for each spot in tidy data
 #   every element for each spot corresponds to a separate row
 #       this is for if we want to plot every single data point
-melt = (df1.melt(id_vars=['Sample','Spot', 'Population'], value_vars=['Li','Mg','Al','Si','Ca','Sc','Ti','Ti.1','V','Cr','Mn','Fe','Co','Ni','Zn','Rb','Sr','Y','Zr','Nb','Ba','La','Ce','Pr','Nd','Sm','Eu','Gd','Tb','Gd.1','Dy','Ho','Er','Tm','Yb','Lu','Hf','Ta','Pb','Th','U','Rb/Sr','Ba/Y','Zr/Y','Zr/Ce','Zr/Nb','U/Ce','Ce/Th','Rb/Th','Th/Nb','U/Y','Sr/Nb','Gd/Yb','U/Yb','Zr/Hf','Ba/Sr','Ba + Sr'], ignore_index=False))
-#print(melt)
+melt = (df1.melt(id_vars=['Sample', 'Spot', 'Population'], value_vars=['Li', 'Mg', 'Al', 'Si', 'Ca', 'Sc', 'Ti', 'Ti.1', 'V', 'Cr', 'Mn', 'Fe', 'Co', 'Ni', 'Zn', 'Rb', 'Sr', 'Y', 'Zr', 'Nb', 'Ba', 'La', 'Ce', 'Pr', 'Nd', 'Sm', 'Eu', 'Gd',
+        'Tb', 'Gd.1', 'Dy', 'Ho', 'Er', 'Tm', 'Yb', 'Lu', 'Hf', 'Ta', 'Pb', 'Th', 'U', 'Rb/Sr', 'Ba/Y', 'Zr/Y', 'Zr/Ce', 'Zr/Nb', 'U/Ce', 'Ce/Th', 'Rb/Th', 'Th/Nb', 'U/Y', 'Sr/Nb', 'Gd/Yb', 'U/Yb', 'Zr/Hf', 'Ba/Sr', 'Ba + Sr'], ignore_index=False))
+# print(melt)
 
 # Calculate means for each sample (messy)
 sample_mean = df1.groupby('Sample').mean()
-#print(sample_mean.head())
+# print(sample_mean.head())
 
 # Another way to calculate means, but need an indexed df to use "level"
-#   we need to use a non-indexed dataframe to make our "populations" dataframe 
+#   we need to use a non-indexed dataframe to make our "populations" dataframe
 #       so might as well just use one dataframe and the groupby fx to make it simpler
-#mean = df.mean(level = 'Sample') # another way to calculate means, but need an indexed df to use "level"
+# mean = df.mean(level = 'Sample') # another way to calculate means, but need an indexed df to use "level"
 
 # Create seperate dataframe with sample populations
 #   this is so we can merge this with the mean dataframe because the groupby fx just gives sample name and value for each element
-populations = df1[['Sample','Population']].drop_duplicates('Sample')
+populations = df1[['Sample', 'Population']].drop_duplicates('Sample')
 
 # Merge two dataframes
-merge = pd.merge(populations, sample_mean, how = 'right', left_on= "Sample", right_on = sample_mean.index)
+merge = pd.merge(populations, sample_mean, how='right',
+                 left_on="Sample", right_on=sample_mean.index)
 
 # Set index
 merge = merge.set_index('Sample')
@@ -80,10 +84,11 @@ sample_std = df1.groupby('Sample').std()
 
 # Multiply dataframe by two to get 2 sigma
 #sample_std = sample_std *2
-#print(sample_std.head())
+# print(sample_std.head())
 
 # Merge two dataframes (stdev and populations)
-sample_std = pd.merge(populations, sample_std, how = 'right', left_on= "Sample", right_on = sample_std.index)
+sample_std = pd.merge(populations, sample_std, how='right',
+                      left_on="Sample", right_on=sample_std.index)
 #print (sample_std.head())
 
 # Set index
@@ -96,12 +101,15 @@ sample_std = sample_std.set_index('Sample')
 # Dataframe Slicing of average values using "isin"
 VCCR = merge[merge['Population'].isin(['VCCR 1', 'VCCR 2', 'VCCR 3'])]
 MG = merge[merge['Population'].isin(['MG 1', 'MG 2', 'MG 3'])]
-FG = merge[merge['Population'].isin(['ORA-5B-410', 'ORA-5B-412', 'ORA-5B-414'])]
-FGCP = merge[merge['Population'].isin(['ORA-2A-002', 'ORA-2A-016','ORA-2A-003','ORA-2A-023', 'ORA-2A-024'])]
+FG = merge[merge['Population'].isin(
+    ['ORA-5B-410', 'ORA-5B-412', 'ORA-5B-414'])]
+FGCP = merge[merge['Population'].isin(
+    ['ORA-2A-002', 'ORA-2A-016', 'ORA-2A-003', 'ORA-2A-023', 'ORA-2A-024'])]
 
 # Drop bad analyses column
-MG = MG.drop(['ORA-2A-004', 'ORA-2A-036'], axis = 0)
-VCCR = VCCR.drop(['ORA-5B-405-B', 'ORA-5B-406-B','ORA-5B-409-B','ORA-5B-416-B'], axis = 0)
+MG = MG.drop(['ORA-2A-004', 'ORA-2A-036'], axis=0)
+VCCR = VCCR.drop(['ORA-5B-405-B', 'ORA-5B-406-B',
+                 'ORA-5B-409-B', 'ORA-5B-416-B'], axis=0)
 
 # Set background color
 sns.set_style("darkgrid")
@@ -111,27 +119,31 @@ sns.set_style("darkgrid")
 #plt.xlim (-0.2,0.4)
 
 # Set color palette
-#sns.set_palette("PuBuGn_d")
+# sns.set_palette("PuBuGn_d")
 
 # Get error bar values
 
 # Select MG standard samples by population
 MG_std = sample_std[sample_std['Population'].isin(['MG 1', 'MG 2', 'MG 3'])]
 # Drop bad samples
-MG_std = MG_std.drop(['ORA-2A-004', 'ORA-2A-036'], axis = 0)
+MG_std = MG_std.drop(['ORA-2A-004', 'ORA-2A-036'], axis=0)
 
 # Select VCCR standard samples by population
-VCCR_std = sample_std[sample_std['Population'].isin(['VCCR 1', 'VCCR 2', 'VCCR 3'])]
+VCCR_std = sample_std[sample_std['Population'].isin(
+    ['VCCR 1', 'VCCR 2', 'VCCR 3'])]
 # Drop bad samples
-VCCR_std = VCCR_std.drop(['ORA-5B-405-B', 'ORA-5B-406-B','ORA-5B-409-B','ORA-5B-416-B'], axis = 0)
+VCCR_std = VCCR_std.drop(
+    ['ORA-5B-405-B', 'ORA-5B-406-B', 'ORA-5B-409-B', 'ORA-5B-416-B'], axis=0)
 
 # Select FG standard samples by population
-FG_std = sample_std[sample_std['Population'].isin(['ORA-5B-410', 'ORA-5B-412', 'ORA-5B-414'])]
+FG_std = sample_std[sample_std['Population'].isin(
+    ['ORA-5B-410', 'ORA-5B-412', 'ORA-5B-414'])]
 # Drop bad samples
 #FG_std = FG_std.drop(['ORA-5B-405-B', 'ORA-5B-406-B','ORA-5B-409-B','ORA-5B-416-B'], axis = 0)
 
 # Select FGCP standard samples by population
-FGCP_std = sample_std[sample_std['Population'].isin(['ORA-2A-002', 'ORA-2A-016','ORA-2A-003','ORA-2A-023', 'ORA-2A-024'])]
+FGCP_std = sample_std[sample_std['Population'].isin(
+    ['ORA-2A-002', 'ORA-2A-016', 'ORA-2A-003', 'ORA-2A-023', 'ORA-2A-024'])]
 # Drop bad samples
 #FGCP_std = FGCP_std.drop(['ORA-2A-002', 'ORA-2A-016','ORA-2A-003','ORA-2A-023', 'ORA-2A-024'], axis = 0)
 
@@ -157,16 +169,20 @@ yerr4 = FG_std[y]
 
 # Create plot
 #   All one symbol
-plot = sns.scatterplot(data = MG, x= x, y= y, hue = "Population", palette="Blues_d",marker = 's', edgecolor="black", s=150, alpha = 0.8, legend = False, hue_order = ['MG 1', 'MG 2', 'MG 3'])
+plot = sns.scatterplot(data=MG, x=x, y=y, hue="Population", palette="Blues_d", marker='s',
+                       edgecolor="black", s=150, alpha=0.8, legend=False, hue_order=['MG 1', 'MG 2', 'MG 3'])
 #plt.errorbar(x = MG[x], y = MG[y], xerr = xerr1, yerr = yerr1, ls = 'none', ecolor = 'cornflowerblue', elinewidth = 1, capsize = 2, alpha = 0.8)
 
-plot = sns.scatterplot(data = VCCR, x= x, y=y, hue = "Population", palette="PuRd_r", marker = '^', edgecolor="black", s=150, legend = False, alpha = 0.8, hue_order = ['VCCR 1', 'VCCR 2', 'VCCR 3'])
+plot = sns.scatterplot(data=VCCR, x=x, y=y, hue="Population", palette="PuRd_r", marker='^',
+                       edgecolor="black", s=150, legend=False, alpha=0.8, hue_order=['VCCR 1', 'VCCR 2', 'VCCR 3'])
 #plt.errorbar(x = VCCR[x], y = VCCR[y], xerr = xerr2, yerr = yerr2, ls = 'none', ecolor = 'palevioletred', elinewidth = 1, capsize = 2, barsabove = False, alpha = 0.8)
 
-plot = sns.scatterplot(data = FGCP, x= x, y=y, hue = "Population", palette="Greens_r", style = "Population", edgecolor="black", s=150, legend = False, alpha = 0.8, hue_order = ['ORA-2A-002', 'ORA-2A-003', 'ORA-2A-016', 'ORA-2A-023', 'ORA-2A-024'])
+plot = sns.scatterplot(data=FGCP, x=x, y=y, hue="Population", palette="Greens_r", style="Population", edgecolor="black",
+                       s=150, legend=False, alpha=0.8, hue_order=['ORA-2A-002', 'ORA-2A-003', 'ORA-2A-016', 'ORA-2A-023', 'ORA-2A-024'])
 #plt.errorbar(x = FGCP[x], y = FGCP[y], xerr = xerr3, yerr = yerr3, ls = 'none', ecolor = 'green', elinewidth = 1, capsize = 2, barsabove = False, alpha = 0.8)
 
-plot = sns.scatterplot(data = FG, x= x, y=y, hue = "Population", palette="OrRd_r", style = 'Population', edgecolor="black", s=150, legend = False, alpha = 0.8, markers=('^', 'X', 's'), hue_order = ['ORA-5B-412','ORA-5B-410', 'ORA-5B-414'])
+plot = sns.scatterplot(data=FG, x=x, y=y, hue="Population", palette="OrRd_r", style='Population', edgecolor="black",
+                       s=150, legend=False, alpha=0.8, markers=('^', 'X', 's'), hue_order=['ORA-5B-412', 'ORA-5B-410', 'ORA-5B-414'])
 #plt.errorbar(x = FG[x], y = FG[y], xerr = xerr4, yerr = yerr4, ls = 'none', ecolor = 'orange', elinewidth = 1, capsize = 2, barsabove = False, alpha = 0.8)
 
 
@@ -177,21 +193,21 @@ plot = sns.scatterplot(data = FG, x= x, y=y, hue = "Population", palette="OrRd_r
 #plot = sns.scatterplot(data = FGCP, x= 'Y', y='Nb',hue = FGCP_index, palette="Blues",legend="brief", marker = 's', edgecolor="black", s=150)
 
 # Set y axis to log scale
-#plot.set(yscale='log')
-#plot.set(xscale='log')
+# plot.set(yscale='log')
+# plot.set(xscale='log')
 
 # Set location of legend
 #plt.legend(loc='upper left')
 #plt.legend(loc='center left', bbox_to_anchor=(1, 0.5), ncol=1)
 
 # Configure legend
-h,l = plot.get_legend_handles_labels()
+h, l = plot.get_legend_handles_labels()
 
 # Legend outside of plot
 #plt.legend(h[1:4]+h[5:8],l[1:4]+l[5:8],loc='center left', bbox_to_anchor=(1, 0.5), ncol=1)
 
 # Legend inside of plot
-plt.legend(h[1:4]+h[5:8],l[1:4]+l[5:8],loc='best', ncol=1)
+plt.legend(h[1:4]+h[5:8], l[1:4]+l[5:8], loc='best', ncol=1)
 
 # Populations
 #plt.legend(h[1:4]+h[13:16],l[1:4]+l[13:16],loc='center left', bbox_to_anchor=(1, 0.5), ncol=1)
@@ -200,7 +216,8 @@ plt.legend(h[1:4]+h[5:8],l[1:4]+l[5:8],loc='best', ncol=1)
 #plt.legend(h[0:4]+ h[5:12]+h[13:16]+h[17:27],l[0:4]+l[5:12]+ l[13:16]+l[17:27],loc='center left', bbox_to_anchor=(1, 0.5), ncol=2)
 
 # General title
-plt.suptitle("All Fiamme Glass", fontsize=15, fontweight=0, color='black', y = 0.95)
+plt.suptitle("All Fiamme Glass", fontsize=15,
+             fontweight=0, color='black', y=0.95)
 
 # Set size of plot
 sns.set_context("paper")
