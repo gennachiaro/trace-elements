@@ -20,7 +20,7 @@ na_values = ['<-1.00', '****', '<****', '*****']
 #df1 = pd.read_csv('/Users/gennachiaro/Documents/vanderbilt/research/ora caldera/trace-elements/new-spreadsheets/Ora-Glass-All.csv',dtype={'Li': np.float64, 'Mg': np.float64, 'V': np.float64, 'Cr': np.float64, 'Ni': np.float64, 'Nb': np.float64,'SiO2': np.float64}, na_values= na_values)
 # read in excel file!
 
-# All with clear mineral analyses removed
+# All data with clear mineral analyses removed (manually in excel file)
 df1 = pd.read_excel('/Users/gennachiaro/Documents/vanderbilt/research/ora caldera/trace-elements/new-spreadsheets/Ora-Glass-All.xlsx', dtype={
                     'Li': np.float64, 'Mg': np.float64, 'V': np.float64, 'Cr': np.float64, 'Ni': np.float64, 'Nb': np.float64, 'SiO2': np.float64}, na_values=na_values, sheet_name='Data')
 
@@ -149,8 +149,8 @@ FGCP_std = sample_std[sample_std['Population'].isin(
 
 # Plotting
 # Select elements to plot
-x = 'Zr'
-y = 'Ba/Sr'
+x = 'Sr'
+y = 'Ba'
 
 xerr1 = MG_std[x]
 yerr1 = MG_std[y]
