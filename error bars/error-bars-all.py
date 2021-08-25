@@ -149,8 +149,8 @@ FGCP_std = sample_std[sample_std['Population'].isin(
 
 # Plotting
 # Select elements to plot
-x = 'Zr'
-y = 'Ba/Sr'
+x = 'Pb'
+y = 'Sr'
 
 xerr1 = MG_std[x]
 yerr1 = MG_std[y]
