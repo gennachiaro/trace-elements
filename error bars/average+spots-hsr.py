@@ -218,7 +218,7 @@ h, l = plot.get_legend_handles_labels()
 #plt.legend(h[1:4]+h[5:8],l[1:4]+l[5:8],loc='center left', bbox_to_anchor=(1, 0.5), ncol=1)
 
 # Legend inside of plot
-plt.legend(h[1:4]+h[5:8], l[1:4]+l[5:8], loc='best', ncol=1)
+plt.legend(h[1:4]+h[5:8], l[1:4]+l[5:8], loc='best', ncol=2)
 
 # Populations
 #plt.legend(h[1:4]+h[13:16],l[1:4]+l[13:16],loc='center left', bbox_to_anchor=(1, 0.5), ncol=1)
