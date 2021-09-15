@@ -171,19 +171,19 @@ yerr4 = FG_std[y]
 #   All one symbol
 plot = sns.scatterplot(data=MG, x=x, y=y, hue="Population", palette="Blues_d", marker='s',
                        edgecolor="black", s=150, alpha=0.8, legend=False, hue_order=['MG 1', 'MG 2', 'MG 3'])
-#plt.errorbar(x = MG[x], y = MG[y], xerr = xerr1, yerr = yerr1, ls = 'none', ecolor = 'cornflowerblue', elinewidth = 1, capsize = 2, alpha = 0.8)
+plt.errorbar(x = MG[x], y = MG[y], xerr = xerr1, yerr = yerr1, ls = 'none', ecolor = 'cornflowerblue', elinewidth = 1, capsize = 2, alpha = 0.8)
 
 plot = sns.scatterplot(data=VCCR, x=x, y=y, hue="Population", palette="PuRd_r", marker='^',
                        edgecolor="black", s=150, legend=False, alpha=0.8, hue_order=['VCCR 1', 'VCCR 2', 'VCCR 3'])
-#plt.errorbar(x = VCCR[x], y = VCCR[y], xerr = xerr2, yerr = yerr2, ls = 'none', ecolor = 'palevioletred', elinewidth = 1, capsize = 2, barsabove = False, alpha = 0.8)
+plt.errorbar(x = VCCR[x], y = VCCR[y], xerr = xerr2, yerr = yerr2, ls = 'none', ecolor = 'palevioletred', elinewidth = 1, capsize = 2, barsabove = False, alpha = 0.8)
 
 plot = sns.scatterplot(data=FGCP, x=x, y=y, hue="Population", palette="Greens_r", style="Population", edgecolor="black",
                        s=150, legend=False, alpha=0.8, hue_order=['ORA-2A-002', 'ORA-2A-003', 'ORA-2A-016', 'ORA-2A-023', 'ORA-2A-024'])
-#plt.errorbar(x = FGCP[x], y = FGCP[y], xerr = xerr3, yerr = yerr3, ls = 'none', ecolor = 'green', elinewidth = 1, capsize = 2, barsabove = False, alpha = 0.8)
+plt.errorbar(x = FGCP[x], y = FGCP[y], xerr = xerr3, yerr = yerr3, ls = 'none', ecolor = 'green', elinewidth = 1, capsize = 2, barsabove = False, alpha = 0.8)
 
 plot = sns.scatterplot(data=FG, x=x, y=y, hue="Population", palette="OrRd_r", style='Population', edgecolor="black",
                        s=150, legend=False, alpha=0.8, markers=('^', 'X', 's'), hue_order=['ORA-5B-412', 'ORA-5B-410', 'ORA-5B-414'])
-#plt.errorbar(x = FG[x], y = FG[y], xerr = xerr4, yerr = yerr4, ls = 'none', ecolor = 'orange', elinewidth = 1, capsize = 2, barsabove = False, alpha = 0.8)
+plt.errorbar(x = FG[x], y = FG[y], xerr = xerr4, yerr = yerr4, ls = 'none', ecolor = 'orange', elinewidth = 1, capsize = 2, barsabove = False, alpha = 0.8)
 
 
 #   Different symbol for each population

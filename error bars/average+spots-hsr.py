@@ -128,14 +128,14 @@ MG_all = MG_all.drop(['ORA-2A-004', 'ORA-2A-036'], axis=0)
 
 # Plotting
 # Select elements to plot
-x = 'Nb'
-y = 'Pb'
+x = 'Ba'
+y = 'Sr'
 
 # create trace element plot
 plot = sns.scatterplot(data=VCCR_all, x=x, y=y, hue="Population", palette="gray", edgecolor="black",
-                       marker='^', s=150, style="Population", alpha=0.2, legend=False, hue_order=['VCCR 1', 'VCCR 2', 'VCCR 3'])
+                       marker='^', s=150, alpha=0.2, legend=False, hue_order=['VCCR 1', 'VCCR 2', 'VCCR 3'])
 plot = sns.scatterplot(data=MG_all, x=x, y=y, hue="Population", palette="gray", marker='s', edgecolor="black",
-                       s=150, alpha=0.2, style="Population", legend=False, hue_order=['MG 1', 'MG 2', 'MG 3'])
+                       s=150, alpha=0.2, legend=False, hue_order=['MG 1', 'MG 2', 'MG 3'])
 
 # Set background color
 sns.set_style("darkgrid")

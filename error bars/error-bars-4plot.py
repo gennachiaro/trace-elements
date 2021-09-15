@@ -101,11 +101,51 @@ sample_std = sample_std.set_index('Sample')
 
 # Plotting
 #       Slicing dataframe for averages
-#MG = merge.loc[['ORA-2A-001','ORA-2A-005','ORA-2A-018','ORA-2A-031','ORA-2A-032','ORA-2A-035','ORA-2A-040']]
-#MG_index = MG.index
 
-#VCCR = merge.loc [['ORA-5B-402','ORA-5B-404A','ORA-5B-404B','ORA-5B-405','ORA-5B-406','ORA-5B-407','ORA-5B-408-SITE2','ORA-5B-408-SITE7','ORA-5B-408-SITE8','ORA-5B-409','ORA-5B-411','ORA-5B-412A-CG','ORA-5B-412B-CG','ORA-5B-413','ORA-5B-414-CG','ORA-5B-415','ORA-5B-416','ORA-5B-417']]
-#VCCR_index = VCCR.index
+VCCR = merge[merge['Population'].isin(['VCCR 1', 'VCCR 2', 'VCCR 3'])]
+MG = merge[merge['Population'].isin(['MG 1', 'MG 2', 'MG 3'])]
+FG = merge[merge['Population'].isin(
+    ['ORA-5B-410', 'ORA-5B-412', 'ORA-5B-414'])]
+FGCP = merge[merge['Population'].isin(
+    ['ORA-2A-016', 'ORA-2A-003', 'ORA-2A-023', 'ORA-2A-024'])]
+
+# Drop bad analyses column
+MG = MG.drop(['ORA-2A-004', 'ORA-2A-036', 'ORA-2A-001'], axis=0)
+VCCR = VCCR.drop(['ORA-5B-405-B', 'ORA-5B-406-B',
+                 'ORA-5B-409-B', 'ORA-5B-416-B'], axis=0)
+#FGCP = FGCP.drop(['ORA-2A-002'], axis = 0)
+
+# Select MG standard samples by population
+MG_std = sample_std[sample_std['Population'].isin(['MG 1', 'MG 2', 'MG 3'])]
+# Drop bad samples
+MG_std = MG_std.drop(['ORA-2A-004', 'ORA-2A-036', 'ORA-2A-001'], axis=0)
+
+# Select VCCR standard samples by population
+VCCR_std = sample_std[sample_std['Population'].isin(
+    ['VCCR 1', 'VCCR 2', 'VCCR 3'])]
+# Drop bad samples
+VCCR_std = VCCR_std.drop(
+    ['ORA-5B-405-B', 'ORA-5B-406-B', 'ORA-5B-409-B', 'ORA-5B-416-B'], axis=0)
+
+# Select FG standard samples by population
+FG_std = sample_std[sample_std['Population'].isin(
+    ['ORA-5B-410', 'ORA-5B-412', 'ORA-5B-414'])]
+# Drop bad samples
+#FG_std = FG_std.drop(['ORA-5B-405-B', 'ORA-5B-406-B','ORA-5B-409-B','ORA-5B-416-B'], axis = 0)
+
+# Select FGCP standard samples by population
+FGCP_std = sample_std[sample_std['Population'].isin(
+    ['ORA-2A-016', 'ORA-2A-003', 'ORA-2A-023', 'ORA-2A-024'])]
+
+# MG = merge.loc[['ORA-2A-001','ORA-2A-005','ORA-2A-018','ORA-2A-031','ORA-2A-032','ORA-2A-035','ORA-2A-040']]
+# MG_index = MG.index
+
+# VCCR = merge.loc [['ORA-5B-402','ORA-5B-404A','ORA-5B-404B','ORA-5B-405','ORA-5B-406','ORA-5B-407','ORA-5B-408-SITE2','ORA-5B-408-SITE7','ORA-5B-408-SITE8','ORA-5B-409','ORA-5B-411','ORA-5B-412A-CG','ORA-5B-412B-CG','ORA-5B-413','ORA-5B-414-CG','ORA-5B-415','ORA-5B-416','ORA-5B-417']]
+# VCCR_index = VCCR.index
+
+# FG = merge.loc [[['ORA-5B-410', 'ORA-5B-412', 'ORA-5B-414']]
+
+# FGCP = merge.loc [['ORA-2A-002', 'ORA-2A-016', 'ORA-2A-003', 'ORA-2A-023', 'ORA-2A-024']]
 
 # Plot All Spots
 #   Set Dataframe Index
@@ -133,77 +173,143 @@ MG_all = MG_all.drop(['ORA-2A-004', 'ORA-2A-036'], axis=0)
 # Set background color
 sns.set_style("darkgrid")
 
-# Set axes limits
-#plt.ylim(10, 50)
-#plt.xlim (-0.2,0.4)
+# ------------
+# Add in Major Elements: 
 
-# Set color palette
-# sns.set_palette("PuBuGn_d")
+# Specify pathname
+path = '/Users/gennachiaro/Documents/vanderbilt/research/ora caldera/SEM-data/All_SEM_Corrected.xlsx'
+path = os.path.normcase(path) # This changes path to be compatible with windows
+
+# Import all corrected SEM data
+df = pd.read_excel(path, index_col=1)
+
+# Drop "Included" column
+df = df.drop(['Chosen'], axis=1)
+
+# Drop SiO2.1 and K20.1 columns (plotting columns)
+df = df.drop(['SiO2.1', 'K2O.1'], axis=1)
+
+# Drop blank rows
+df = df.dropna(axis=0, how='all')
+
+# Drop blank columns
+df = df.dropna(axis=1, how='all')
+
+# Drop rows with any NaN values
+df = df.dropna()
+
+# Change analysis date to a string
+s = df['Analysis Date']
+df['Analysis Date'] = (s.dt.strftime('%Y.%m.%d'))
+
+# create a new column titled Name with the sample name and the date
+df['Name'] = df['Sample'] + "-" + df['Type'] + "-" + df['Analysis Date']
+
+# Dropping Values:
+# Drop bad analysis dates
+df = df.set_index('Analysis Date')
+df = df.drop(['2018.07.11', '2018.10.02', '2018.10.16','2018.07.20','2018.07.18'], axis=0)
+df = df.reset_index()
+
+# Drop ORA-2A-032 from 2018.07.26 because only 4 analyses
+df = df.set_index('Name')
+df = df.drop(['ORA-2A-032-HSR-2018.07.26'])
+df = df.reset_index()
+
+# Drop values that are not glass
+df = df.set_index('Type')
+df = df.drop(['Quartz Rim', 'HSR (Quartz Rim)', 'Quartz Melt Embayment','Glass (LSR)', 'Quartz Melt Inclusion (Good)','Quartz Melt Inclusion','Plagioclase Melt Inclusion', 'Quartz Rim'], axis=0)
+df = df.reset_index()
+
+# Calculate means for each sample (messy)
+sample_mean = df.groupby(
+    ['Sample', 'Name', 'Type', 'Population', 'Analysis Date']).mean()
+sample_mean = sample_mean.reset_index()
+
+# Add in a column that tells how many samples were calculated for the mean using value_counts
+count = df['Name'].value_counts() #can use .size() but that includes NaN values
+
+sample_mean = sample_mean.set_index('Name')
+sample_mean['Count'] = count
+sample_mean = sample_mean.reset_index()
+
+# Set indexes
+sample_mean = sample_mean.set_index('Sample')
+# print (merge.head())
+
+# Calculate stdev for each sample (messy)
+sample_std = df.groupby(
+    ['Sample', 'Name', 'Type', 'Population', 'Analysis Date']).std()
+sample_std = sample_std.reset_index()
+
+# Add in a column that tells how many samples were calculated for the stdev
+sample_std = sample_std.set_index('Name')
+
+sample_std['Count'] = count
+sample_std = sample_std.reset_index()
+
+
+# Plotting
+#       Slicing dataframe
+
+# Dataframe Slicing of average values using "isin"
+VCCRm = sample_mean[sample_mean['Population'].isin(
+    ['VCCR 1', 'VCCR 2', 'VCCR 3'])]
+MGm = sample_mean[sample_mean['Population'].isin(['MG 1', 'MG 2', 'MG 3'])]
+FGm = sample_mean[sample_mean['Population'].isin(
+    ['ORA-5B-410', 'ORA-5B-412', 'ORA-5B-414'])]
+FGCPm = sample_mean[sample_mean['Population'].isin(
+    ['ORA-2A-002', 'ORA-2A-016', 'ORA-2A-003', 'ORA-2A-023', 'ORA-2A-024'])]
+
+MGm = MGm.reset_index()
+VCCRm = VCCRm.reset_index()
+FGm = FGm.reset_index()
+FGCPm = FGCPm.reset_index()
+
+MGm = MGm.set_index('Name')
+VCCRm = VCCRm.set_index('Name')
+FGCPm = FGCPm.set_index('Name')
+FGm = FGm.set_index('Name')
 
 # Get error bar values
+# Select Standard Samples by population
+MGm_std=sample_std[sample_std['Population'].isin(['MG 1', 'MG 2', 'MG 3'])]
+VCCRm_std=sample_std[sample_std['Population'].isin(['VCCR 1', 'VCCR 2', 'VCCR 3'])]
+FGm_std = sample_std[sample_std['Population'].isin(['ORA-5B-410', 'ORA-5B-412', 'ORA-5B-414'])]
+FGCPm_std = sample_std[sample_std['Population'].isin(['ORA-2A-002','ORA-2A-016', 'ORA-2A-003', 'ORA-2A-023', 'ORA-2A-024'])]
 
-# Select MG standard samples by population
-MG_std = sample_std[sample_std['Population'].isin(['MG 1', 'MG 2', 'MG 3'])]
-# Drop bad samples
-MG_std = MG_std.drop(['ORA-2A-004', 'ORA-2A-036'], axis=0)
+MGm_std = MGm_std.reset_index()
+VCCRm_std = VCCRm_std.reset_index()
+FGm_std = FGm_std.reset_index()
+FGCPm_std = FGCPm_std.reset_index()
 
-# Select VCCR standard samples by population
-VCCR_std = sample_std[sample_std['Population'].isin(
-    ['VCCR 1', 'VCCR 2', 'VCCR 3'])]
-# Drop bad samples
-VCCR_std = VCCR_std.drop(
-    ['ORA-5B-405-B', 'ORA-5B-406-B', 'ORA-5B-409-B', 'ORA-5B-416-B'], axis=0)
-
-# Select FG standard samples by population
-FG_std = sample_std[sample_std['Population'].isin(
-    ['ORA-5B-410', 'ORA-5B-412', 'ORA-5B-414'])]
-# Drop bad samples
-#FG_std = FG_std.drop(['ORA-5B-405-B', 'ORA-5B-406-B','ORA-5B-409-B','ORA-5B-416-B'], axis = 0)
-
-# Select FGCP standard samples by population
-FGCP_std = sample_std[sample_std['Population'].isin(
-    ['ORA-2A-002', 'ORA-2A-016', 'ORA-2A-003', 'ORA-2A-023', 'ORA-2A-024'])]
-# Drop bad samples
-#FGCP_std = FGCP_std.drop(['ORA-2A-002', 'ORA-2A-016','ORA-2A-003','ORA-2A-023', 'ORA-2A-024'], axis = 0)
+MGm_std = MGm_std.set_index('Name')
+VCCRm_std = VCCRm_std.set_index('Name')
+FGCPm_std = FGCPm_std.set_index('Name')
+FGm_std = FGm_std.set_index('Name')
 
 
-# import csv file for major elements
-df = pd.read_csv(
-    '/Users/gennachiaro/Documents/vanderbilt/research/ora caldera/SEM-data/ora-major-elements.csv', index_col=0)
+# df = pd.read_csv(
+#     '/Users/gennachiaro/Documents/vanderbilt/research/ora caldera/SEM-data/ora-major-elements.csv', index_col=0)
 
-MGm = df.loc[['ORA-2A-001', 'ORA-2A-005', 'ORA-2A-018',
-              'ORA-2A-031', 'ORA-2A-032', 'ORA-2A-035', 'ORA-2A-040']]
-MGm_index = MGm.index
+# MGm = df.loc[['ORA-2A-001', 'ORA-2A-005', 'ORA-2A-018',
+#               'ORA-2A-031', 'ORA-2A-032', 'ORA-2A-035', 'ORA-2A-040']]
+# MGm_index = MGm.index
 
-VCCRm = df.loc[['ORA-5B-402', 'ORA-5B-404A', 'ORA-5B-406',
-                'ORA-5B-409', 'ORA-5B-411', 'ORA-5B-415', 'ORA-5B-416', 'ORA-5B-417']]
-VCCRm_index = VCCRm.index
+# VCCRm = df.loc[['ORA-5B-402', 'ORA-5B-404A', 'ORA-5B-406',
+#                 'ORA-5B-409', 'ORA-5B-411', 'ORA-5B-415', 'ORA-5B-416', 'ORA-5B-417']]
+# VCCRm_index = VCCRm.index
 
 # fine grained
-df2 = pd.read_csv(
-    '/Users/gennachiaro/Documents/vanderbilt/research/ora caldera/SEM-data/majors-fgcp-grouped.csv', index_col=0)
+# df2 = pd.read_csv(
+#     '/Users/gennachiaro/Documents/vanderbilt/research/ora caldera/SEM-data/majors-fgcp-grouped.csv', index_col=0)
 
-FGCPm = df2.loc[['ORA-2A-002', 'ORA-2A-003',
-                 'ORA-2A-016', 'ORA-2A-023', 'ORA-2A-024']]
-FGCPm_index = FGCPm.index
+# FGCPm = df2.loc[['ORA-2A-002', 'ORA-2A-003',
+#                  'ORA-2A-016', 'ORA-2A-023', 'ORA-2A-024']]
+# FGCPm_index = FGCPm.index
 
-FGm = df2.loc[['ORA-5B-414', 'ORA-5B-410', 'ORA-5B-412A', 'ORA-5B-412B']]
-FGm_index = FGm.index
-
-# import csv file for trace elements
-#tr = pd.read_csv('/Users/gennachiaro/Documents/vanderbilt/research/ora caldera/trace-elements/TraceElements_All.csv', index_col=1)
-
-#FGCP = tr.loc[['ORA-2A-002-Type1','ORA-2A-002-Type2','ORA-2A-002-Type3','ORA-2A-016-Type1', 'ORA-2A-016-Type2', 'ORA-2A-016-Type3', 'ORA-2A-016-Type4','ORA-2A-003','ORA-2A-023','ORA-2A-024-TYPE1','ORA-2A-024-TYPE2','ORA-2A-024-TYPE3','ORA-2A-024-TYPE4']]
-#FGCP_index = FGCP.index
-
-#MG = tr.loc[['ORA-2A-001','ORA-2A-005','ORA-2A-018','ORA-2A-031','ORA-2A-032','ORA-2A-035','ORA-2A-040']]
-#MG_index = MG.index
-
-#VCCR = tr.loc [['ORA-5B-404A','ORA-5B-404B','ORA-5B-405','ORA-5B-406','ORA-5B-408-SITE7','ORA-5B-408-SITE8','ORA-5B-411','ORA-5B-416']]
-#VCCR_index = VCCR.index
-
-#FG = tr.loc [['ORA-5B-410-FG','ORA-5B-412-FG','ORA-5B-414-FG']]
-#FG_index = FG.index
+# FGm = df2.loc[['ORA-5B-414', 'ORA-5B-410', 'ORA-5B-412A', 'ORA-5B-412B']]
+# FGm_index = FGm.index
 
 # set background color
 sns.set_style("darkgrid")
@@ -215,22 +321,78 @@ fig = plt.figure(figsize=(10, 7))
 title = fig.suptitle("All Ora Fiamme Glass", fontsize=16, y=0.925)
 
 # plot 1
-
 # create major element plot
 plt.subplot(2, 2, 1)
-plot = sns.scatterplot(data=FGCPm, x='SiO2', y='K2O', hue="Population", style="Population", palette="Greens_r", legend="brief", markers=(
-    'o', 's', 'X', 'P', 'D'), edgecolor="black", s=150, alpha=0.5, hue_order=['ORA-2A-002', 'ORA-2A-003', 'ORA-2A-016', 'ORA-2A-023', 'ORA-2A-024'])
-plot = sns.scatterplot(data=FGm, x='SiO2', y='K2O', hue="Population", style="Population", palette="OrRd_r", legend="brief", markers=(
-    's', '^', 'X'), edgecolor="black", alpha=0.5, s=150, hue_order=['ORA-5B-412', 'ORA-5B-410', 'ORA-5B-414'])
-plot = sns.scatterplot(data=MGm, x='SiO2', y='K2O', hue="Population", style=MGm_index,
-                       marker='^', palette="Blues_r", edgecolor="black", s=150, alpha=0.5, legend="brief")
-plot = sns.scatterplot(data=VCCRm, x='SiO2', y='K2O', hue="Population", style=VCCRm_index, marker='s',
-                       palette="PuRd_r", edgecolor="black", s=150, legend="brief", alpha=0.5, hue_order=['VCCR 1', 'VCCR 2', 'VCCR 3'])
 
-plt.xticks(range(64, 82, 2))
-plt.ylim(0.2, 4.9)
+# Plotting
+# Select elements to plot
+x = 'SiO2'
+y = 'K2O'
 
-# set location of legend
+xerr1 = MGm_std[x]
+yerr1 = MGm_std[y]
+
+# VCCR Error Bar Values
+xerr2 = VCCRm_std[x]
+yerr2 = VCCRm_std[y]
+
+# FGCP Error Bar Values
+xerr3 = FGCPm_std[x]
+yerr3 = FGCPm_std[y]
+
+# FG Error Bar Values
+xerr4 = FGm_std[x]
+yerr4 = FGm_std[y]
+
+# Create plot
+#   All one symbol
+plot = sns.scatterplot(data=MGm, x=x, y=y, hue="Population", palette="Blues_d", marker='s',
+                       edgecolor="black", s=150, alpha=0.8, legend= 'brief', hue_order=['MG 1', 'MG 2', 'MG 3'])
+plt.errorbar(x=MGm[x], y=MGm[y], xerr=xerr1, yerr=yerr1, ls='none',
+             ecolor='cornflowerblue', elinewidth=1, capsize=2, alpha=0.8)
+
+plot = sns.scatterplot(data=VCCRm, x=x, y=y, hue="Population", palette="PuRd_r", marker='^',
+                       edgecolor="black", s=150, legend= 'brief', alpha=0.8, hue_order=['VCCR 1', 'VCCR 2', 'VCCR 3'])
+plt.errorbar(x=VCCRm[x], y=VCCRm[y], xerr=xerr2, yerr=yerr2, ls='none',
+             ecolor='palevioletred', elinewidth=1, capsize=2, barsabove=False, alpha=0.8)
+
+plot = sns.scatterplot(data=FGCPm, x=x, y=y, hue="Population", palette="Greens_r", style="Population", edgecolor="black",
+                      s=150, legend=False, alpha=0.8, hue_order=['ORA-2A-002','ORA-2A-003', 'ORA-2A-016', 'ORA-2A-023', 'ORA-2A-024'])
+plt.errorbar(x=FGCPm[x], y=FGCPm[y], xerr=xerr3, yerr=yerr3, ls='none',
+            ecolor='green', elinewidth=1, capsize=2, barsabove=False, alpha=0.8)
+
+plot = sns.scatterplot(data=FGm, x=x, y=y, hue="Population", palette="OrRd_r", style='Population', edgecolor="black",
+                      s=150, legend=False, alpha=0.8, markers=('^', 'X', 's'), hue_order=['ORA-5B-412', 'ORA-5B-410', 'ORA-5B-414'])
+plt.errorbar(x=FGm[x], y=FGm[y], xerr=xerr4, yerr=yerr4, ls='none',
+            ecolor='orange', elinewidth=1, capsize=2, barsabove=False, alpha=0.8)
+
+
+# h, l = plot.get_legend_handles_labels()
+# plt.legend(h[1:7]+h[7:10]+h[11:14]+h[23:26], l[1:7]+l[7:10]+l[11:14] +
+#            l[23:26], loc='lower right', bbox_to_anchor=(2, -3), ncol=5, fontsize=11)
+
+# Legend inside of plot
+#plt.legend(h[1:4]+h[5:8], l[1:4]+l[5:8], loc='best', ncol=1)
+
+# plt.xticks(range(64, 82, 2))
+# plt.ylim(0.2, 4.9)
+
+
+# # create major element plot
+# plt.subplot(2, 2, 1)
+# plot = sns.scatterplot(data=FGCPm, x='SiO2', y='K2O', hue="Population", style="Population", palette="Greens_r", legend="brief", markers=(
+#     'o', 's', 'X', 'P', 'D'), edgecolor="black", s=150, alpha=0.5, hue_order=['ORA-2A-002', 'ORA-2A-003', 'ORA-2A-016', 'ORA-2A-023', 'ORA-2A-024'])
+# plot = sns.scatterplot(data=FGm, x='SiO2', y='K2O', hue="Population", style="Population", palette="OrRd_r", legend="brief", markers=(
+#     's', '^', 'X'), edgecolor="black", alpha=0.5, s=150, hue_order=['ORA-5B-412', 'ORA-5B-410', 'ORA-5B-414'])
+# plot = sns.scatterplot(data=MGm, x='SiO2', y='K2O', hue="Population", style=MGm_index,
+#                        marker='^', palette="Blues_r", edgecolor="black", s=150, alpha=0.5, legend="brief")
+# plot = sns.scatterplot(data=VCCRm, x='SiO2', y='K2O', hue="Population", style=VCCRm_index, marker='s',
+#                        palette="PuRd_r", edgecolor="black", s=150, legend="brief", alpha=0.5, hue_order=['VCCR 1', 'VCCR 2', 'VCCR 3'])
+
+# plt.xticks(range(64, 82, 2))
+# plt.ylim(0.2, 4.9)
+
+# # set location of legend
 
 h, l = plot.get_legend_handles_labels()
 plt.legend(h[1:7]+h[7:10]+h[11:14]+h[23:26], l[1:7]+l[7:10]+l[11:14] +
