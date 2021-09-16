@@ -150,7 +150,7 @@ FGCP_std = sample_std[sample_std['Population'].isin(
 # Plotting
 # Select elements to plot
 x = 'Sr'
-y = 'Pb'
+y = 'Ba'
 
 xerr1 = MG_std[x]
 yerr1 = MG_std[y]
@@ -189,6 +189,8 @@ plot = sns.scatterplot(data=FG, x=x, y=y, hue="Population", palette="OrRd_r", st
 plt.errorbar(x=FG[x], y=FG[y], xerr=xerr4, yerr=yerr4, ls='none',
              ecolor='orange', elinewidth=1, capsize=2, barsabove=False, alpha=0.8)
 
+plt.xlabel(x + ' [ppm]')
+plt.ylabel(y + " [ppm]")
 
 #   Different symbol for each population
 #plot = sns.scatterplot(data = VCCR, x= 'Sr', y='Ba',hue = "Population", style = "Population", palette="PuRd_r", marker = '^', edgecolor="black", s=150, legend = "brief", alpha = 0.5, hue_order = ['VCCR 1', 'VCCR 2', 'VCCR 3'])
@@ -226,4 +228,8 @@ plt.suptitle("All Fiamme Glass", fontsize=15,
 # Set size of plot
 sns.set_context("paper")
 
+plt.figure(figsize=(18, 12), dpi=400)
+
 plt.show()
+
+#plt.savefig("myplot.png", dpi = 400)
