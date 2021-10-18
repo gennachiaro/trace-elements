@@ -7,6 +7,8 @@ import numpy as np
 import seaborn as sns
 sns.set()
 
+##FROM BA-SR-ALL.PY
+
 # Import csv file
 # All values
 #df = pd.read_csv('/Users/gennachiaro/Documents/vanderbilt/research/ora caldera/trace-elements/new-spreadsheets/Ora-Glass-All.csv', index_col=1)
@@ -20,7 +22,7 @@ na_values = ['<-1.00', '****', '<****', '*****']
 #df1 = pd.read_csv('/Users/gennachiaro/Documents/vanderbilt/research/ora caldera/trace-elements/new-spreadsheets/Ora-Glass-All.csv',dtype={'Li': np.float64, 'Mg': np.float64, 'V': np.float64, 'Cr': np.float64, 'Ni': np.float64, 'Nb': np.float64,'SiO2': np.float64}, na_values= na_values)
 # read in excel file!
 
-# All with clear mineral analyses removed
+# All data with clear mineral analyses removed (manually in excel file)
 df1 = pd.read_excel('/Users/gennachiaro/Documents/vanderbilt/research/ora caldera/trace-elements/new-spreadsheets/Ora-Glass-All.xlsx', dtype={
                     'Li': np.float64, 'Mg': np.float64, 'V': np.float64, 'Cr': np.float64, 'Ni': np.float64, 'Nb': np.float64, 'SiO2': np.float64}, na_values=na_values, sheet_name='Data')
 
@@ -104,12 +106,13 @@ MG = merge[merge['Population'].isin(['MG 1', 'MG 2', 'MG 3'])]
 FG = merge[merge['Population'].isin(
     ['ORA-5B-410', 'ORA-5B-412', 'ORA-5B-414'])]
 FGCP = merge[merge['Population'].isin(
-    ['ORA-2A-002', 'ORA-2A-016', 'ORA-2A-003', 'ORA-2A-023', 'ORA-2A-024'])]
+    ['ORA-2A-016', 'ORA-2A-003', 'ORA-2A-023', 'ORA-2A-024'])]
 
 # Drop bad analyses column
-MG = MG.drop(['ORA-2A-004', 'ORA-2A-036'], axis=0)
+MG = MG.drop(['ORA-2A-004', 'ORA-2A-036', 'ORA-2A-001'], axis=0)
 VCCR = VCCR.drop(['ORA-5B-405-B', 'ORA-5B-406-B',
                  'ORA-5B-409-B', 'ORA-5B-416-B'], axis=0)
+#FGCP = FGCP.drop(['ORA-2A-002'], axis = 0)
 
 # Set background color
 sns.set_style("darkgrid")
@@ -126,7 +129,7 @@ sns.set_style("darkgrid")
 # Select MG standard samples by population
 MG_std = sample_std[sample_std['Population'].isin(['MG 1', 'MG 2', 'MG 3'])]
 # Drop bad samples
-MG_std = MG_std.drop(['ORA-2A-004', 'ORA-2A-036'], axis=0)
+MG_std = MG_std.drop(['ORA-2A-004', 'ORA-2A-036', 'ORA-2A-001'], axis=0)
 
 # Select VCCR standard samples by population
 VCCR_std = sample_std[sample_std['Population'].isin(
@@ -143,9 +146,8 @@ FG_std = sample_std[sample_std['Population'].isin(
 
 # Select FGCP standard samples by population
 FGCP_std = sample_std[sample_std['Population'].isin(
-    ['ORA-2A-002', 'ORA-2A-016', 'ORA-2A-003', 'ORA-2A-023', 'ORA-2A-024'])]
+    ['ORA-2A-016', 'ORA-2A-003', 'ORA-2A-023', 'ORA-2A-024'])]
 # Drop bad samples
-#FGCP_std = FGCP_std.drop(['ORA-2A-002', 'ORA-2A-016','ORA-2A-003','ORA-2A-023', 'ORA-2A-024'], axis = 0)
 
 # Plotting
 # Select elements to plot
@@ -171,19 +173,23 @@ yerr4 = FG_std[y]
 #   All one symbol
 plot = sns.scatterplot(data=MG, x=x, y=y, hue="Population", palette="Blues_d", marker='s',
                        edgecolor="black", s=150, alpha=0.8, legend=False, hue_order=['MG 1', 'MG 2', 'MG 3'])
-plt.errorbar(x = MG[x], y = MG[y], xerr = xerr1, yerr = yerr1, ls = 'none', ecolor = 'cornflowerblue', elinewidth = 1, capsize = 2, alpha = 0.8)
+plt.errorbar(x=MG[x], y=MG[y], xerr=xerr1, yerr=yerr1, ls='none',
+             ecolor='cornflowerblue', elinewidth=1, capsize=2, alpha=0.8)
 
 # plot = sns.scatterplot(data=VCCR, x=x, y=y, hue="Population", palette="PuRd_r", marker='^',
 #                        edgecolor="black", s=150, legend=False, alpha=0.8, hue_order=['VCCR 1', 'VCCR 2', 'VCCR 3'])
-# plt.errorbar(x = VCCR[x], y = VCCR[y], xerr = xerr2, yerr = yerr2, ls = 'none', ecolor = 'palevioletred', elinewidth = 1, capsize = 2, barsabove = False, alpha = 0.8)
+# plt.errorbar(x=VCCR[x], y=VCCR[y], xerr=xerr2, yerr=yerr2, ls='none',
+#              ecolor='palevioletred', elinewidth=1, capsize=2, barsabove=False, alpha=0.8)
 
 # plot = sns.scatterplot(data=FGCP, x=x, y=y, hue="Population", palette="Greens_r", style="Population", edgecolor="black",
-#                        s=150, legend=False, alpha=0.8, hue_order=['ORA-2A-002', 'ORA-2A-003', 'ORA-2A-016', 'ORA-2A-023', 'ORA-2A-024'])
-# plt.errorbar(x = FGCP[x], y = FGCP[y], xerr = xerr3, yerr = yerr3, ls = 'none', ecolor = 'green', elinewidth = 1, capsize = 2, barsabove = False, alpha = 0.8)
+#                        s=150, legend=False, alpha=0.8, hue_order=['ORA-2A-003', 'ORA-2A-016', 'ORA-2A-023', 'ORA-2A-024'])
+# plt.errorbar(x=FGCP[x], y=FGCP[y], xerr=xerr3, yerr=yerr3, ls='none',
+#              ecolor='green', elinewidth=1, capsize=2, barsabove=False, alpha=0.8)
 
 # plot = sns.scatterplot(data=FG, x=x, y=y, hue="Population", palette="OrRd_r", style='Population', edgecolor="black",
 #                        s=150, legend=False, alpha=0.8, markers=('^', 'X', 's'), hue_order=['ORA-5B-412', 'ORA-5B-410', 'ORA-5B-414'])
-# plt.errorbar(x = FG[x], y = FG[y], xerr = xerr4, yerr = yerr4, ls = 'none', ecolor = 'orange', elinewidth = 1, capsize = 2, barsabove = False, alpha = 0.8)
+# plt.errorbar(x=FG[x], y=FG[y], xerr=xerr4, yerr=yerr4, ls='none',
+#              ecolor='orange', elinewidth=1, capsize=2, barsabove=False, alpha=0.8)
 
 plt.xlabel(x + ' [ppm]')
 plt.ylabel(y + " [ppm]")
@@ -224,5 +230,8 @@ plt.suptitle("All Fiamme Glass", fontsize=15,
 # Set size of plot
 sns.set_context("paper")
 
+plt.figure(figsize=(18, 12), dpi=400)
+
 plt.show()
 
+#plt.savefig("myplot.png", dpi = 400)

@@ -137,8 +137,8 @@ VCCR_std = VCCR_std.drop(
     ['ORA-5B-405-B', 'ORA-5B-406-B', 'ORA-5B-409-B', 'ORA-5B-416-B'], axis=0)
 
 # Select elements to plot
-x = 'Zr'
-y = 'Ba/Sr'
+x = 'Ba'
+y = 'Sr'
 
 # MG Error Bar Values
 #xerr1 = MG_std['Sr']

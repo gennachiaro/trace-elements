@@ -149,8 +149,8 @@ FGCP_std = sample_std[sample_std['Population'].isin(
 
 # Plotting
 # Select elements to plot
-x = 'Sr'
-y = 'Ba'
+x = 'Ba'
+y = 'Sr'
 
 xerr1 = MG_std[x]
 yerr1 = MG_std[y]
@@ -233,3 +233,4 @@ plt.figure(figsize=(18, 12), dpi=400)
 plt.show()
 
 #plt.savefig("myplot.png", dpi = 400)
+
