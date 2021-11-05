@@ -106,19 +106,34 @@ sample_std = sample_std.set_index('Sample')
 VCCR = melt[melt['Population'].isin(['VCCR 1', 'VCCR 2', 'VCCR 3'])]
 MG = melt[melt['Population'].isin(['MG 1', 'MG 2', 'MG 3'])]
 
-#VCCRREE = VCCR[VCCR['variable'].isin(['La', 'Ce', 'Pr', 'Nd', 'Sm', 'Eu', 'Gd', 'Tb', 'Dy', 'Ho', 'Er', 'Yb', 'Lu'])]
-#MGREE = MG[MG['variable'].isin(['La', 'Ce', 'Pr', 'Nd', 'Sm', 'Eu', 'Gd', 'Tb', 'Dy', 'Ho', 'Er', 'Yb', 'Lu'])]
+VCCRREE = VCCR[VCCR['variable'].isin(['La', 'Ce', 'Pr', 'Nd', 'Sm', 'Eu', 'Gd', 'Tb', 'Dy', 'Ho', 'Er', 'Yb', 'Lu'])]
+MGREE = MG[MG['variable'].isin(['La', 'Ce', 'Pr', 'Nd', 'Sm', 'Eu', 'Gd', 'Tb', 'Dy', 'Ho', 'Er', 'Yb', 'Lu'])]
 
 # Need to add Pm column!!!
 
+
 # Need to normalize values!!!
 # Import csv file
-#chondrite = pd.read_csv('/Users/gennachiaro/Documents/vanderbilt/research/ora caldera/trace-elements/MS95_ChondriteValues.csv', index_col=1)
+chondrite = pd.read_csv('/Users/gennachiaro/Documents/vanderbilt/research/ora caldera/trace-elements/MS95_ChondriteValues.csv', index_col=1)
 
+import pyrolite.plot
+from pyrolite.geochem.ind import REE
+from pyrolite.geochem.norm import get_reference_composition, all_reference_compositions
 
+chondrite = get_reference_composition("Chondrite_MS95")
+CI = chondrite.set_units("ppm")
 
+fig, ax = plt.subplots(1)
 
+for name, ref in list(all_reference_compositions().items())[::2]:
+    if name != "Chondrite_MS95":
+        ref.set_units("ppm")
+        df1 = ref.comp.pyrochem.REE.pyrochem.normalize_to(CI, units="ppm")
+        df1.pyroplot.REE(unity_line=True, ax=ax, label=name)
 
+ax.set_ylabel("X/X$_{Chondrite}$")
+ax.legend()
+plt.show()
 
 # Drop bad analyses column
 #MG = MG.set_index('Sample')

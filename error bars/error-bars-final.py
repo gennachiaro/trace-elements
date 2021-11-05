@@ -22,9 +22,23 @@ na_values = ['<-1.00', '****', '<****', '*****']
 #df1 = pd.read_csv('/Users/gennachiaro/Documents/vanderbilt/research/ora caldera/trace-elements/new-spreadsheets/Ora-Glass-All.csv',dtype={'Li': np.float64, 'Mg': np.float64, 'V': np.float64, 'Cr': np.float64, 'Ni': np.float64, 'Nb': np.float64,'SiO2': np.float64}, na_values= na_values)
 # read in excel file!
 
-# All data with clear mineral analyses removed (manually in excel file)
-df1 = pd.read_excel('/Users/gennachiaro/Documents/vanderbilt/research/ora caldera/trace-elements/new-spreadsheets/Ora-Glass-All.xlsx', dtype={
-                    'Li': np.float64, 'Mg': np.float64, 'V': np.float64, 'Cr': np.float64, 'Ni': np.float64, 'Nb': np.float64, 'SiO2': np.float64}, na_values=na_values, sheet_name='Data')
+# # All data with clear mineral analyses removed (manually in excel file)
+# df1 = pd.read_excel('/Users/gennachiaro/Documents/vanderbilt/research/ora caldera/trace-elements/new-spreadsheets/Ora-Glass-All.xlsx', dtype=({
+#                     'Li': np.float64, 'Mg': np.float64, 'V': np.float64, 'Cr': np.float64, 'Ni': np.float64, 'Nb': np.float64, 'SiO2': np.float64}), na_values=na_values, sheet_name='Data')
+
+
+# Columns converted to np.float
+data = ({'Li': np.float64, 'Mg': np.float64, 'Al': np.float64,'Si': np.float64,'Ca': np.float64,'Sc': np.float64,'Ti': np.float64,'Ti.1': np.float64,'V': np.float64, 'Cr': np.float64, 'Mn': np.float64,'Fe': np.float64,'Co': np.float64,'Ni': np.float64, 'Zn': np.float64,'Rb': np.float64,'Sr': np.float64,'Y': np.float64,'Zr': np.float64,'Nb': np.float64,'Ba': np.float64,'La': np.float64,'Ce': np.float64,'Pr': np.float64,'Nd': np.float64,'Sm':np.float64,'Eu': np.float64,'Gd': np.float64,'Tb': np.float64,'Gd.1': np.float64,'Dy': np.float64,'Ho': np.float64,'Er': np.float64,'Tm': np.float64,'Yb': np.float64,'Lu':np.float64,'Hf': np.float64,'Ta': np.float64,'Pb': np.float64,'Th': np.float64,'U': np.float64})
+
+# Specify pathname
+path = '/Users/gennachiaro/Documents/vanderbilt/research/ora caldera/trace-elements/new-spreadsheets/Ora-Glass-MASTER.xlsx'
+
+#path = os.path.normcase(path) # This changes path to be compatible with windows
+
+# Master spreadsheet with clear mineral analyses removed (excel file!)
+df1 = pd.read_excel(path, sheet_name = 'Data', skiprows = [1], dtype = data, na_values = na_values)
+
+
 
 # Drop "Included" column
 df1 = df1.drop(['Included'], axis=1)
@@ -74,12 +88,29 @@ sample_mean = df1.groupby('Sample').mean()
 populations = df1[['Sample', 'Population']].drop_duplicates('Sample')
 
 # Merge two dataframes
-merge = pd.merge(populations, sample_mean, how='right',
+sample_mean = pd.merge(populations, sample_mean, how='right',
                  left_on="Sample", right_on=sample_mean.index)
 
 # Set index
-merge = merge.set_index('Sample')
-#print (merge.head())
+sample_mean = sample_mean.set_index('Sample')
+
+
+# Drop bad analyses column
+# Drop MG samples
+sample_mean = sample_mean.drop(['ORA-2A-004', 'ORA-2A-036', 'ORA-2A-032', 'ORA-2A-018', 'ORA-2A-035'], axis= 0)
+# Drop VCCR samples
+sample_mean = sample_mean.drop(['ORA-5B-405-B', 'ORA-5B-406-B','ORA-5B-409-B', 'ORA-5B-416-B'], axis= 0)
+
+# Dataframe Slicing of average values using "isin"
+VCCR = sample_mean[sample_mean['Population'].isin(['VCCR 1', 'VCCR 2', 'VCCR 3'])]
+MG = sample_mean[sample_mean['Population'].isin(['MG 1', 'MG 2', 'MG 3'])]
+FG = sample_mean[sample_mean['Population'].isin(
+    ['ORA-5B-410', 'ORA-5B-412', 'ORA-5B-414'])]
+FGCP = sample_mean[sample_mean['Population'].isin(
+    ['ORA-2A-016', 'ORA-2A-003', 'ORA-2A-023', 'ORA-2A-024'])]
+
+
+# #FGCP = FGCP.drop(['ORA-2A-002'], axis = 0)
 
 # Calculate stdev for each sample (messy)
 sample_std = df1.groupby('Sample').std()
@@ -97,22 +128,24 @@ sample_std = pd.merge(populations, sample_std, how='right',
 sample_std = sample_std.set_index('Sample')
 #print (sample_std.head())
 
-# Plotting
-#       Slicing dataframe
+# Drop bad samples
+# Drop MG samples
+sample_std = sample_std.drop(['ORA-2A-004', 'ORA-2A-036', 'ORA-2A-032', 'ORA-2A-018', 'ORA-2A-035'], axis= 0)
+# Drop VCCR samples
+sample_std = sample_std.drop(['ORA-5B-405-B', 'ORA-5B-406-B','ORA-5B-409-B', 'ORA-5B-416-B'], axis= 0)
 
-# Dataframe Slicing of average values using "isin"
-VCCR = merge[merge['Population'].isin(['VCCR 1', 'VCCR 2', 'VCCR 3'])]
-MG = merge[merge['Population'].isin(['MG 1', 'MG 2', 'MG 3'])]
-FG = merge[merge['Population'].isin(
+
+# Select sample stdev by population
+MG_std = sample_std[sample_std['Population'].isin(['MG 1', 'MG 2', 'MG 3'])]
+VCCR_std = sample_std[sample_std['Population'].isin(
+    ['VCCR 1', 'VCCR 2', 'VCCR 3'])]
+FG_std = sample_std[sample_std['Population'].isin(
     ['ORA-5B-410', 'ORA-5B-412', 'ORA-5B-414'])]
-FGCP = merge[merge['Population'].isin(
+FGCP_std = sample_std[sample_std['Population'].isin(
     ['ORA-2A-016', 'ORA-2A-003', 'ORA-2A-023', 'ORA-2A-024'])]
 
-# Drop bad analyses column
-MG = MG.drop(['ORA-2A-004', 'ORA-2A-036', 'ORA-2A-001'], axis=0)
-VCCR = VCCR.drop(['ORA-5B-405-B', 'ORA-5B-406-B',
-                 'ORA-5B-409-B', 'ORA-5B-416-B'], axis=0)
-#FGCP = FGCP.drop(['ORA-2A-002'], axis = 0)
+# Plotting
+#       Slicing dataframe
 
 # Set background color
 sns.set_style("darkgrid")
@@ -123,31 +156,6 @@ sns.set_style("darkgrid")
 
 # Set color palette
 # sns.set_palette("PuBuGn_d")
-
-# Get error bar values
-
-# Select MG standard samples by population
-MG_std = sample_std[sample_std['Population'].isin(['MG 1', 'MG 2', 'MG 3'])]
-# Drop bad samples
-MG_std = MG_std.drop(['ORA-2A-004', 'ORA-2A-036', 'ORA-2A-001'], axis=0)
-
-# Select VCCR standard samples by population
-VCCR_std = sample_std[sample_std['Population'].isin(
-    ['VCCR 1', 'VCCR 2', 'VCCR 3'])]
-# Drop bad samples
-VCCR_std = VCCR_std.drop(
-    ['ORA-5B-405-B', 'ORA-5B-406-B', 'ORA-5B-409-B', 'ORA-5B-416-B'], axis=0)
-
-# Select FG standard samples by population
-FG_std = sample_std[sample_std['Population'].isin(
-    ['ORA-5B-410', 'ORA-5B-412', 'ORA-5B-414'])]
-# Drop bad samples
-#FG_std = FG_std.drop(['ORA-5B-405-B', 'ORA-5B-406-B','ORA-5B-409-B','ORA-5B-416-B'], axis = 0)
-
-# Select FGCP standard samples by population
-FGCP_std = sample_std[sample_std['Population'].isin(
-    ['ORA-2A-016', 'ORA-2A-003', 'ORA-2A-023', 'ORA-2A-024'])]
-# Drop bad samples
 
 # Plotting
 # Select elements to plot
@@ -172,14 +180,14 @@ yerr4 = FG_std[y]
 # Create plot
 #   All one symbol
 plot = sns.scatterplot(data=MG, x=x, y=y, hue="Population", palette="Blues_d", marker='s',
-                       edgecolor="black", s=150, alpha=0.8, legend=False, hue_order=['MG 1', 'MG 2', 'MG 3'])
+                       edgecolor="black", s=150, alpha=0.8, legend= 'brief', hue_order=['MG 1', 'MG 2', 'MG 3'])
 plt.errorbar(x=MG[x], y=MG[y], xerr=xerr1, yerr=yerr1, ls='none',
              ecolor='cornflowerblue', elinewidth=1, capsize=2, alpha=0.8)
 
-# plot = sns.scatterplot(data=VCCR, x=x, y=y, hue="Population", palette="PuRd_r", marker='^',
-#                        edgecolor="black", s=150, legend=False, alpha=0.8, hue_order=['VCCR 1', 'VCCR 2', 'VCCR 3'])
-# plt.errorbar(x=VCCR[x], y=VCCR[y], xerr=xerr2, yerr=yerr2, ls='none',
-#              ecolor='palevioletred', elinewidth=1, capsize=2, barsabove=False, alpha=0.8)
+plot = sns.scatterplot(data=VCCR, x=x, y=y, hue="Population", palette="PuRd_r", marker='^',
+                       edgecolor="black", s=150, legend= 'brief', alpha=0.8, hue_order=['VCCR 1', 'VCCR 2', 'VCCR 3'])
+plt.errorbar(x=VCCR[x], y=VCCR[y], xerr=xerr2, yerr=yerr2, ls='none',
+             ecolor='palevioletred', elinewidth=1, capsize=2, barsabove=False, alpha=0.8)
 
 # plot = sns.scatterplot(data=FGCP, x=x, y=y, hue="Population", palette="Greens_r", style="Population", edgecolor="black",
 #                        s=150, legend=False, alpha=0.8, hue_order=['ORA-2A-003', 'ORA-2A-016', 'ORA-2A-023', 'ORA-2A-024'])
@@ -193,6 +201,9 @@ plt.errorbar(x=MG[x], y=MG[y], xerr=xerr1, yerr=yerr1, ls='none',
 
 plt.xlabel(x + ' [ppm]')
 plt.ylabel(y + " [ppm]")
+
+#plt.text(x=MG[MG[x]], y=MG[MG[y]], s='Sample')
+
 
 #   Different symbol for each population
 #plot = sns.scatterplot(data = VCCR, x= 'Sr', y='Ba',hue = "Population", style = "Population", palette="PuRd_r", marker = '^', edgecolor="black", s=150, legend = "brief", alpha = 0.5, hue_order = ['VCCR 1', 'VCCR 2', 'VCCR 3'])
@@ -224,14 +235,19 @@ plt.legend(h[1:4]+h[5:8], l[1:4]+l[5:8], loc='best', ncol=1)
 #plt.legend(h[0:4]+ h[5:12]+h[13:16]+h[17:27],l[0:4]+l[5:12]+ l[13:16]+l[17:27],loc='center left', bbox_to_anchor=(1, 0.5), ncol=2)
 
 # General title
-plt.suptitle("All Fiamme Glass", fontsize=15,
+plt.suptitle("High-Silica Rhyolite (MG + VCCR) Fiamme Glass", fontsize=15,
              fontweight=0, color='black', y=0.95)
+
+plt.savefig('/Users/gennachiaro/Documents/vanderbilt/research/ora caldera/trace-elements/graphs/HSR-Ba_Sr_Final.png', dpi=400)
 
 # Set size of plot
 sns.set_context("paper")
 
 plt.figure(figsize=(18, 12), dpi=400)
 
-plt.show()
+#plt.show()
 
 #plt.savefig("myplot.png", dpi = 400)
+#plt.savefig('/Users/gennachiaro/Documents/vanderbilt/research/ora caldera/trace-elements/graphs/HSR-Ba_Sr_Final.png', dpi=400)
+
+plt.show()
