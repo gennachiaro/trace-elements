@@ -38,10 +38,8 @@ path = '/Users/gennachiaro/Documents/vanderbilt/research/ora caldera/trace-eleme
 # Master spreadsheet with clear mineral analyses removed (excel file!)
 df1 = pd.read_excel(path, sheet_name = 'Data', skiprows = [1], dtype = data, na_values = na_values)
 
-
-
-# Drop "Included" column
-df1 = df1.drop(['Included'], axis=1)
+#If Value in included row is equal to zero, drop this row
+df1 = df1.loc[~((df1['Included'] == 0))]
 
 # drop blank columns
 #df = df.dropna(axis = 1, how = 'all')
@@ -99,7 +97,16 @@ sample_mean = sample_mean.set_index('Sample')
 # Drop MG samples
 sample_mean = sample_mean.drop(['ORA-2A-004', 'ORA-2A-036', 'ORA-2A-032', 'ORA-2A-018', 'ORA-2A-035'], axis= 0)
 # Drop VCCR samples
-sample_mean = sample_mean.drop(['ORA-5B-405-B', 'ORA-5B-406-B','ORA-5B-409-B', 'ORA-5B-416-B'], axis= 0)
+sample_mean = sample_mean.drop(['ORA-5B-405-B', 'ORA-5B-406-B','ORA-5B-409-B', 'ORA-5B-416-B', 'ORA-5B-404A-B'], axis= 0)
+
+sample_mean = sample_mean.reset_index()
+
+# Add in a column that tells how many samples were calculated for the mean using value_counts
+count = df1['Sample'].value_counts() #can use .size() but that includes NaN values
+
+sample_mean = sample_mean.set_index('Sample')
+sample_mean['Count'] = count
+
 
 # Dataframe Slicing of average values using "isin"
 VCCR = sample_mean[sample_mean['Population'].isin(['VCCR 1', 'VCCR 2', 'VCCR 3'])]
@@ -107,7 +114,7 @@ MG = sample_mean[sample_mean['Population'].isin(['MG 1', 'MG 2', 'MG 3'])]
 FG = sample_mean[sample_mean['Population'].isin(
     ['ORA-5B-410', 'ORA-5B-412', 'ORA-5B-414'])]
 FGCP = sample_mean[sample_mean['Population'].isin(
-    ['ORA-2A-016', 'ORA-2A-003', 'ORA-2A-023', 'ORA-2A-024'])]
+    ['ORA-2A-002', 'ORA-2A-016', 'ORA-2A-003', 'ORA-2A-023', 'ORA-2A-024'])]
 
 
 # #FGCP = FGCP.drop(['ORA-2A-002'], axis = 0)
@@ -132,7 +139,7 @@ sample_std = sample_std.set_index('Sample')
 # Drop MG samples
 sample_std = sample_std.drop(['ORA-2A-004', 'ORA-2A-036', 'ORA-2A-032', 'ORA-2A-018', 'ORA-2A-035'], axis= 0)
 # Drop VCCR samples
-sample_std = sample_std.drop(['ORA-5B-405-B', 'ORA-5B-406-B','ORA-5B-409-B', 'ORA-5B-416-B'], axis= 0)
+sample_std = sample_std.drop(['ORA-5B-405-B', 'ORA-5B-406-B','ORA-5B-409-B', 'ORA-5B-416-B','ORA-5B-404A-B'], axis= 0)
 
 
 # Select sample stdev by population
@@ -142,7 +149,7 @@ VCCR_std = sample_std[sample_std['Population'].isin(
 FG_std = sample_std[sample_std['Population'].isin(
     ['ORA-5B-410', 'ORA-5B-412', 'ORA-5B-414'])]
 FGCP_std = sample_std[sample_std['Population'].isin(
-    ['ORA-2A-016', 'ORA-2A-003', 'ORA-2A-023', 'ORA-2A-024'])]
+    ['ORA-2A-002','ORA-2A-016', 'ORA-2A-003', 'ORA-2A-023', 'ORA-2A-024'])]
 
 # Plotting
 #       Slicing dataframe
@@ -238,7 +245,7 @@ plt.legend(h[1:4]+h[5:8], l[1:4]+l[5:8], loc='best', ncol=1)
 plt.suptitle("High-Silica Rhyolite (MG + VCCR) Fiamme Glass", fontsize=15,
              fontweight=0, color='black', y=0.95)
 
-plt.savefig('/Users/gennachiaro/Documents/vanderbilt/research/ora caldera/trace-elements/graphs/HSR-Ba_Sr_Final.png', dpi=400)
+#plt.savefig('/Users/gennachiaro/Documents/vanderbilt/research/ora caldera/trace-elements/graphs/HSR-Ba_Sr_Final.png', dpi=400)
 
 # Set size of plot
 sns.set_context("paper")
@@ -251,3 +258,16 @@ plt.figure(figsize=(18, 12), dpi=400)
 #plt.savefig('/Users/gennachiaro/Documents/vanderbilt/research/ora caldera/trace-elements/graphs/HSR-Ba_Sr_Final.png', dpi=400)
 
 plt.show()
+
+#Write summary statistics to excel sheet
+
+#with pd.ExcelWriter("/Users/gennachiaro/Documents/vanderbilt/research/ora caldera/SEM-data/All_SEM_Corrected_Stats.xlsx") as writer:
+with pd.ExcelWriter("/Users/gennachiaro/Documents/vanderbilt/research/ora caldera/trace-elements/new-spreadsheets/stats/All_Trace_Corrected_Stats_Final.xlsx") as writer:
+    MG.to_excel(writer, sheet_name = "MG")
+    VCCR.to_excel(writer, sheet_name = "VCCR")
+    FG.to_excel(writer, sheet_name = "FG")
+    FGCP.to_excel(writer, sheet_name = "FGCP")
+    MG_std.to_excel(writer, sheet_name = "MG_std")
+    VCCR_std.to_excel(writer, sheet_name = "VCCR_std")
+    FG_std.to_excel(writer, sheet_name = "FG_std")
+    FGCP_std.to_excel(writer, sheet_name = "FGCP_std")
