@@ -41,6 +41,9 @@ df1 = pd.read_excel(path, sheet_name = 'Data', skiprows = [1], dtype = data, na_
 #If Value in included row is equal to zero, drop this row
 df1 = df1.loc[~((df1['Included'] == 0))]
 
+#Drop included column
+df1 = df1.drop('Included', axis = 1)
+
 # drop blank columns
 #df = df.dropna(axis = 1, how = 'all')
 df1 = df1.dropna(axis=1, how='all')
@@ -61,9 +64,6 @@ num[num <= 0] = np.nan
 #   fill NaN
 #df = df.fillna(method = 'bfill')
 #df1 = df1.fillna(method = 'bfill')
-
-# map out columns
-#col_mapping = [f"{c[0]}:{c[1]}" for c in enumerate(df1.columns)]
 
 # DataFrameMelt to get all values for each spot in tidy data
 #   every element for each spot corresponds to a separate row
@@ -262,6 +262,7 @@ plt.show()
 #Write summary statistics to excel sheet
 
 #with pd.ExcelWriter("/Users/gennachiaro/Documents/vanderbilt/research/ora caldera/SEM-data/All_SEM_Corrected_Stats.xlsx") as writer:
+
 with pd.ExcelWriter("/Users/gennachiaro/Documents/vanderbilt/research/ora caldera/trace-elements/new-spreadsheets/stats/All_Trace_Corrected_Stats_Final.xlsx") as writer:
     MG.to_excel(writer, sheet_name = "MG")
     VCCR.to_excel(writer, sheet_name = "VCCR")
