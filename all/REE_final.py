@@ -42,6 +42,7 @@ df1 = df1.drop(['Median', 'IQR','Mean','St Dev','Rel Error','Mean (Outliers excl
 # Analyses we measured twice because laser was actin' up
 df1 = df1.drop(['ORA-5B-405-B', 'ORA-5B-406-B', 'ORA-5B-409-B', 'ORA-5B-416-B', 'ORA-2A-004-B', 'ORA-2A-036-B'], axis = 0)
 
+
 # Don't remember why we delete these but we are
 df1 = df1.drop(['ORA-2A-002-Type3', 'ORA-2A-002-Type2'], axis = 0)
 

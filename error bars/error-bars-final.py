@@ -96,6 +96,8 @@ sample_mean = sample_mean.set_index('Sample')
 # Drop bad analyses column
 # Drop MG samples
 sample_mean = sample_mean.drop(['ORA-2A-004', 'ORA-2A-036', 'ORA-2A-032', 'ORA-2A-018', 'ORA-2A-035'], axis= 0)
+#sample_mean = sample_mean.drop(['ORA-2A-004', 'ORA-2A-036'], axis= 0)
+
 # Drop VCCR samples
 sample_mean = sample_mean.drop(['ORA-5B-405-B', 'ORA-5B-406-B','ORA-5B-409-B', 'ORA-5B-416-B', 'ORA-5B-404A-B'], axis= 0)
 
@@ -138,6 +140,8 @@ sample_std = sample_std.set_index('Sample')
 # Drop bad samples
 # Drop MG samples
 sample_std = sample_std.drop(['ORA-2A-004', 'ORA-2A-036', 'ORA-2A-032', 'ORA-2A-018', 'ORA-2A-035'], axis= 0)
+#sample_std = sample_std.drop(['ORA-2A-004', 'ORA-2A-036'], axis= 0)
+
 # Drop VCCR samples
 sample_std = sample_std.drop(['ORA-5B-405-B', 'ORA-5B-406-B','ORA-5B-409-B', 'ORA-5B-416-B','ORA-5B-404A-B'], axis= 0)
 
@@ -166,8 +170,8 @@ sns.set_style("darkgrid")
 
 # Plotting
 # Select elements to plot
-x = 'Ba'
-y = 'Sr'
+x = 'Nb'
+y = 'Y'
 
 xerr1 = MG_std[x]
 yerr1 = MG_std[y]
@@ -219,6 +223,10 @@ plt.ylabel(y + " [ppm]")
 #plot = sns.scatterplot(data = FGCP, x= 'Y', y='Nb',hue = FGCP_index, palette="Blues",legend="brief", marker = 's', edgecolor="black", s=150)
 
 # Set y axis to log scale
+# plt.yscale('log')
+# plt.xscale('log')
+
+
 # plot.set(yscale='log')
 # plot.set(xscale='log')
 
@@ -245,7 +253,7 @@ plt.legend(h[1:4]+h[5:8], l[1:4]+l[5:8], loc='best', ncol=1)
 plt.suptitle("High-Silica Rhyolite (MG + VCCR) Fiamme Glass", fontsize=15,
              fontweight=0, color='black', y=0.95)
 
-#plt.savefig('/Users/gennachiaro/Documents/vanderbilt/research/ora caldera/trace-elements/graphs/HSR-Ba_Sr_Final.png', dpi=400)
+plt.savefig('/Users/gennachiaro/Documents/vanderbilt/research/ora caldera/trace-elements/graphs/HSR-Y_Nb_LOG.png', dpi=400)
 
 # Set size of plot
 sns.set_context("paper")
@@ -255,20 +263,20 @@ plt.figure(figsize=(18, 12), dpi=400)
 #plt.show()
 
 #plt.savefig("myplot.png", dpi = 400)
-#plt.savefig('/Users/gennachiaro/Documents/vanderbilt/research/ora caldera/trace-elements/graphs/HSR-Ba_Sr_Final.png', dpi=400)
+#plt.savefig('/Users/gennachiaro/Documents/vanderbilt/research/ora caldera/trace-elements/graphs/HSR-Y_Nb_Final.png', dpi=400)
 
-plt.show()
+#plt.show()
 
 #Write summary statistics to excel sheet
 
 #with pd.ExcelWriter("/Users/gennachiaro/Documents/vanderbilt/research/ora caldera/SEM-data/All_SEM_Corrected_Stats.xlsx") as writer:
 
-with pd.ExcelWriter("/Users/gennachiaro/Documents/vanderbilt/research/ora caldera/trace-elements/new-spreadsheets/stats/All_Trace_Corrected_Stats_Final.xlsx") as writer:
-    MG.to_excel(writer, sheet_name = "MG")
-    VCCR.to_excel(writer, sheet_name = "VCCR")
-    FG.to_excel(writer, sheet_name = "FG")
-    FGCP.to_excel(writer, sheet_name = "FGCP")
-    MG_std.to_excel(writer, sheet_name = "MG_std")
-    VCCR_std.to_excel(writer, sheet_name = "VCCR_std")
-    FG_std.to_excel(writer, sheet_name = "FG_std")
-    FGCP_std.to_excel(writer, sheet_name = "FGCP_std")
+# with pd.ExcelWriter("/Users/gennachiaro/Documents/vanderbilt/research/ora caldera/trace-elements/new-spreadsheets/stats/All_Trace_Corrected_Stats_Final.xlsx") as writer:
+#     MG.to_excel(writer, sheet_name = "MG")
+#     VCCR.to_excel(writer, sheet_name = "VCCR")
+#     FG.to_excel(writer, sheet_name = "FG")
+#     FGCP.to_excel(writer, sheet_name = "FGCP")
+#     MG_std.to_excel(writer, sheet_name = "MG_std")
+#     VCCR_std.to_excel(writer, sheet_name = "VCCR_std")
+#     FG_std.to_excel(writer, sheet_name = "FG_std")
+#     FGCP_std.to_excel(writer, sheet_name = "FGCP_std")
