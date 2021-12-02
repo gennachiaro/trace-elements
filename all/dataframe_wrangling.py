@@ -49,7 +49,7 @@ df1 = df1.drop(['ORA-2A-002-Type3', 'ORA-2A-002-Type2'], axis = 0)
 df1 = df1.drop(['GlassSlide', 'Epoxy'], axis = 0)
 df1 = df1.reset_index() 
 
-#If Value in included row is equal to zero, drop this row
+# If Value in included row is equal to zero, drop this row
 df1 = df1.loc[~((df1['Included'] == 0))]
 
 # Drop "Included" column
