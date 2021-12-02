@@ -94,6 +94,9 @@ sample_mean = sample_mean.set_index('Sample')
 sample_mean = sample_mean.drop(['ORA-2A-004', 'ORA-2A-036', 'ORA-2A-032', 'ORA-2A-018', 'ORA-2A-035'], axis= 0)
 # Drop VCCR samples
 sample_mean = sample_mean.drop(['ORA-5B-405-B', 'ORA-5B-406-B','ORA-5B-409-B', 'ORA-5B-416-B', 'ORA-5B-404A-B'], axis= 0)
+# Drop to match with SEM-Data!
+sample_mean = sample_mean.drop(['ORA-5B-408-SITE8', 'ORA-5B-408-SITE7','ORA-5B-412B-CG'], axis= 0)
+
 
 sample_mean = sample_mean.reset_index()
 
@@ -136,6 +139,8 @@ sample_std = sample_std.set_index('Sample')
 sample_std = sample_std.drop(['ORA-2A-004', 'ORA-2A-036', 'ORA-2A-032', 'ORA-2A-018', 'ORA-2A-035'], axis= 0)
 # Drop VCCR samples
 sample_std = sample_std.drop(['ORA-5B-405-B', 'ORA-5B-406-B','ORA-5B-409-B', 'ORA-5B-416-B','ORA-5B-404A-B'], axis= 0)
+# Drop to match with SEM-Data!
+sample_std = sample_std.drop(['ORA-5B-408-SITE8', 'ORA-5B-408-SITE7','ORA-5B-412B-CG'], axis= 0)
 
 # Select sample stdev by population
 MG_std = sample_std[sample_std['Population'].isin(['MG 1', 'MG 2', 'MG 3'])]
@@ -154,6 +159,9 @@ REE = pd.read_excel("/Users/gennachiaro/Documents/vanderbilt/research/ora calder
 #       this is for if we want to plot every single data point
 melt = (REE.melt(id_vars=['Sample','Population'], value_vars=['La','Ce','Pr','Nd','Pm','Sm','Eu','Gd','Tb','Dy','Ho','Er','Tm','Yb','Lu'], ignore_index=False))
 melt = melt.set_index('Sample')
+
+#melt = melt.set_index('Sample')
+melt = melt.drop(['ORA-5B-408-SITE8', 'ORA-5B-408-SITE7','ORA-5B-412B-CG'], axis= 0)
 
 # Dataframe Slicing using "isin"
 VCCRREE = melt[melt['Population'].isin(['VCCR 1', 'VCCR 2', 'VCCR 3'])]
@@ -308,4 +316,4 @@ plt.tight_layout()
 # set size of plot
 #sns.set_context("poster")
 
-plt.savefig('/Users/gennachiaro/Documents/vanderbilt/research/ora caldera/trace-elements/graphs/HSR_4Plot_ErrorBars.png', dpi=400)
+#plt.savefig('/Users/gennachiaro/Documents/vanderbilt/research/ora caldera/trace-elements/graphs/HSR_4Plot_ErrorBars.png', dpi=400)
