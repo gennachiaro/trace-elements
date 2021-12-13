@@ -222,7 +222,7 @@ plt.suptitle("High-Silica Rhyolite (MG + VCCR) Fiamme Glass", fontsize=15,
 #plt.savefig('/Users/gennachiaro/Documents/vanderbilt/research/ora caldera/trace-elements/graphs/HSR-Ba-Zr.png', dpi=400)
 
 # Set size of plot
-sns.set_context("paper")
+sns.set_context("paper") 
 
 plt.figure(figsize=(18, 12), dpi=400)
 
