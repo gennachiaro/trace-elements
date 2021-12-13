@@ -162,7 +162,7 @@ VCCR_std = sample_std[sample_std['Population'].isin(
 FG_std = sample_std[sample_std['Population'].isin(
     ['ORA-5B-410', 'ORA-5B-412', 'ORA-5B-414'])]
 FGCP_std = sample_std[sample_std['Population'].isin(
-    ['ORA-2A-002', 'ORA-2A-003', 'ORA-2A-016', 'ORA-2A-023', 'ORA-2A-024'])
+    ['ORA-2A-002', 'ORA-2A-003', 'ORA-2A-016', 'ORA-2A-023', 'ORA-2A-024'])]
 
 # Drop bad analyses
 # Set Indices

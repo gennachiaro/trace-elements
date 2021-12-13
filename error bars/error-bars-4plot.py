@@ -178,7 +178,7 @@ sns.set_style("darkgrid")
 
 # Specify pathname
 path = '/Users/gennachiaro/Documents/vanderbilt/research/ora caldera/SEM-data/All_SEM_Corrected.xlsx'
-path = os.path.normcase(path) # This changes path to be compatible with windows
+#path = os.path.normcase(path) # This changes path to be compatible with windows
 
 # Import all corrected SEM data
 df = pd.read_excel(path, index_col=1)
