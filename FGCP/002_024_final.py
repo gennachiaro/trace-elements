@@ -188,7 +188,11 @@ plt.ylabel(y + " [ppm]")
 #plot = sns.scatterplot(data = FG, x= 'Y', y='Nb',hue = FG_index, palette="Blues",legend="brief", marker = 's', edgecolor="black", s=150)
 #plot = sns.scatterplot(data = FGCP, x= 'Y', y='Nb',hue = FGCP_index, palette="Blues",legend="brief", marker = 's', edgecolor="black", s=150)
 
-## Set y axis to log scale
+# Set y axis to log scale
+# plt.yscale('log')
+# plt.xscale('log')
+
+
 # plot.set(yscale='log')
 # plot.set(xscale='log')
 
