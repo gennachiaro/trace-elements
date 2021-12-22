@@ -91,7 +91,7 @@ sample_mean = sample_mean.set_index('Sample')
 
 # Drop bad analyses column
 # Drop MG samples
-sample_mean = sample_mean.drop(['ORA-2A-004', 'ORA-2A-036', 'ORA-2A-032', 'ORA-2A-018', 'ORA-2A-035'], axis= 0)
+sample_mean = sample_mean.drop(['ORA-2A-036', 'ORA-2A-032', 'ORA-2A-035'], axis= 0)
 # Drop VCCR samples
 sample_mean = sample_mean.drop(['ORA-5B-405-B', 'ORA-5B-406-B','ORA-5B-409-B', 'ORA-5B-416-B', 'ORA-5B-404A-B'], axis= 0)
 # Drop to match with SEM-Data!
@@ -136,7 +136,7 @@ sample_std = sample_std.set_index('Sample')
 
 # Drop bad samples
 # Drop MG samples
-sample_std = sample_std.drop(['ORA-2A-004', 'ORA-2A-036', 'ORA-2A-032', 'ORA-2A-018', 'ORA-2A-035'], axis= 0)
+sample_std = sample_std.drop(['ORA-2A-036', 'ORA-2A-032', 'ORA-2A-035'], axis= 0)
 # Drop VCCR samples
 sample_std = sample_std.drop(['ORA-5B-405-B', 'ORA-5B-406-B','ORA-5B-409-B', 'ORA-5B-416-B','ORA-5B-404A-B'], axis= 0)
 # Drop to match with SEM-Data!
@@ -194,6 +194,8 @@ plt.legend(h[1:4]+h[5:9],l[1:4]+l[5:9],loc='lower right')
 plt.xlabel('')
 plt.ylabel('Sample/Chondrite')
 
+plot1.text(-0.5,0.45, str('error envelopes $\pm$ 1$\sigma$'), fontsize = 11, fontweight = 'normal')
+
 #plt.ylim(0.05, 200)
 
 #set y axis to log scale
@@ -215,27 +217,30 @@ yerr1 = MG_std[y]
 xerr2 = VCCR_std[x]
 yerr2 = VCCR_std[y]
 
+
 plot2 = sns.scatterplot(data=MG, x=x, y=y, hue="Population", palette="Blues_d", marker='s',
-                       edgecolor="black", s=150, alpha=0.8, legend= False, hue_order=['MG 1', 'MG 2', 'MG 3'])
+                       edgecolor="black", s=150, alpha=0.8, legend= "brief", hue_order=['MG 1', 'MG 2', 'MG 3'])
 plt.errorbar(x=MG[x], y=MG[y], xerr=xerr1, yerr=yerr1, ls='none',
              ecolor='cornflowerblue', elinewidth=1, capsize=2, alpha=0.8)
 
 plot2 = sns.scatterplot(data=VCCR, x=x, y=y, hue="Population", palette="PuRd_r", marker='^',
-                       edgecolor="black", s=150, legend= False, alpha=0.8, hue_order=['VCCR 1', 'VCCR 2', 'VCCR 3'])
+                       edgecolor="black", s=150, legend= "brief", alpha=0.8, hue_order=['VCCR 1', 'VCCR 2', 'VCCR 3'])
 plt.errorbar(x=VCCR[x], y=VCCR[y], xerr=xerr2, yerr=yerr2, ls='none',
              ecolor='palevioletred', elinewidth=1, capsize=2, barsabove=False, alpha=0.8)
 
 plt.xlabel(x + ' [ppm]')
 plt.ylabel(y + " [ppm]")
 
+plot2.text(-2.25,20.1, str('error bars $\pm$ 1$\sigma$'), fontsize = 11, fontweight = 'normal')
+
 # Configure legend
-h, l = plot.get_legend_handles_labels()
+h, l = plot2.get_legend_handles_labels()
 
 # Legend outside of plot
 #plt.legend(h[1:4]+h[5:8],l[1:4]+l[5:8],loc='center left', bbox_to_anchor=(1, 0.5), ncol=1)
 
 # Legend inside of plot
-#plt.legend(h[1:4]+h[5:8], l[1:4]+l[5:8], loc='best', ncol=1)
+plt.legend(h[1:4]+h[5:8], l[1:4]+l[5:8], loc='best', ncol=2)
 
 #set location of legend
 #plt.legend(loc='center left', bbox_to_anchor=(1, 0.5), ncol=1)
@@ -254,26 +259,28 @@ xerr2 = VCCR_std[x]
 yerr2 = VCCR_std[y]
 
 plot3 = sns.scatterplot(data=MG, x=x, y=y, hue="Population", palette="Blues_d", marker='s',
-                       edgecolor="black", s=150, alpha=0.8, legend= False, hue_order=['MG 1', 'MG 2', 'MG 3'])
+                       edgecolor="black", s=150, alpha=0.8, legend= "brief", hue_order=['MG 1', 'MG 2', 'MG 3'])
 plt.errorbar(x=MG[x], y=MG[y], xerr=xerr1, yerr=yerr1, ls='none',
              ecolor='cornflowerblue', elinewidth=1, capsize=2, alpha=0.8)
 
 plot3 = sns.scatterplot(data=VCCR, x=x, y=y, hue="Population", palette="PuRd_r", marker='^',
-                       edgecolor="black", s=150, legend= False, alpha=0.8, hue_order=['VCCR 1', 'VCCR 2', 'VCCR 3'])
+                       edgecolor="black", s=150, legend= 'brief', alpha=0.8, hue_order=['VCCR 1', 'VCCR 2', 'VCCR 3'])
 plt.errorbar(x=VCCR[x], y=VCCR[y], xerr=xerr2, yerr=yerr2, ls='none',
              ecolor='palevioletred', elinewidth=1, capsize=2, barsabove=False, alpha=0.8)
 
 plt.xlabel(x + ' [ppm]')
 plt.ylabel(y + " [ppm]")
 
+plot3.text(5.1,109, str('error bars $\pm$ 1$\sigma$'), fontsize = 11, fontweight = 'normal')
+
 # Configure legend
-h, l = plot.get_legend_handles_labels()
+h, l = plot2.get_legend_handles_labels()
 
 # Legend outside of plot
 #plt.legend(h[1:4]+h[5:8],l[1:4]+l[5:8],loc='center left', bbox_to_anchor=(1, 0.5), ncol=1)
 
 # Legend inside of plot
-#plt.legend(h[1:4]+h[5:8], l[1:4]+l[5:8], loc='best', ncol=1)
+plt.legend(h[1:4]+h[5:8], l[1:4]+l[5:8], loc='best', ncol=2)
 
 #plot 4
 plt.subplot(2,2,4)
@@ -288,26 +295,29 @@ xerr2 = VCCR_std[x]
 yerr2 = VCCR_std[y]
 
 plot4 = sns.scatterplot(data=MG, x=x, y=y, hue="Population", palette="Blues_d", marker='s',
-                       edgecolor="black", s=150, alpha=0.8, legend= False, hue_order=['MG 1', 'MG 2', 'MG 3'])
+                       edgecolor="black", s=150, alpha=0.8, legend= 'brief', hue_order=['MG 1', 'MG 2', 'MG 3'])
 plt.errorbar(x=MG[x], y=MG[y], xerr=xerr1, yerr=yerr1, ls='none',
              ecolor='cornflowerblue', elinewidth=1, capsize=2, alpha=0.8)
 
 plot4 = sns.scatterplot(data=VCCR, x=x, y=y, hue="Population", palette="PuRd_r", marker='^',
-                       edgecolor="black", s=150, legend= False, alpha=0.8, hue_order=['VCCR 1', 'VCCR 2', 'VCCR 3'])
+                       edgecolor="black", s=150, legend= 'brief', alpha=0.8, hue_order=['VCCR 1', 'VCCR 2', 'VCCR 3'])
 plt.errorbar(x=VCCR[x], y=VCCR[y], xerr=xerr2, yerr=yerr2, ls='none',
              ecolor='palevioletred', elinewidth=1, capsize=2, barsabove=False, alpha=0.8)
 
 plt.xlabel(x + ' [ppm]')
 plt.ylabel(y + " [ppm]")
 
+plot4.text(33,29.53, str('error bars $\pm$ 1$\sigma$'), fontsize = 11, fontweight = 'normal')
+
+
 # Configure legend
-h, l = plot.get_legend_handles_labels()
+h, l = plot2.get_legend_handles_labels()
 
 # Legend outside of plot
 #plt.legend(h[1:4]+h[5:8],l[1:4]+l[5:8],loc='center left', bbox_to_anchor=(1, 0.5), ncol=1)
 
 # Legend inside of plot
-#plt.legend(h[1:4]+h[5:8], l[1:4]+l[5:8], loc='best', ncol=1)
+plt.legend(h[1:4]+h[5:8], l[1:4]+l[5:8], loc='best', ncol=2)
 
 # set size of plot
 plt.tight_layout()
@@ -316,4 +326,4 @@ plt.tight_layout()
 # set size of plot
 #sns.set_context("poster")
 
-#plt.savefig('/Users/gennachiaro/Documents/vanderbilt/research/ora caldera/trace-elements/graphs/HSR_4Plot_ErrorBars.png', dpi=400)
+#plt.savefig('/Users/gennachiaro/Documents/vanderbilt/research/ora caldera/trace-elements/graphs/HSR_4Plot_ErrorBars.svg', dpi=400)

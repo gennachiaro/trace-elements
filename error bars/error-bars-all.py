@@ -20,12 +20,26 @@ na_values = ['<-1.00', '****', '<****', '*****']
 #df1 = pd.read_csv('/Users/gennachiaro/Documents/vanderbilt/research/ora caldera/trace-elements/new-spreadsheets/Ora-Glass-All.csv',dtype={'Li': np.float64, 'Mg': np.float64, 'V': np.float64, 'Cr': np.float64, 'Ni': np.float64, 'Nb': np.float64,'SiO2': np.float64}, na_values= na_values)
 # read in excel file!
 
-# All with clear mineral analyses removed
-df1 = pd.read_excel('/Users/gennachiaro/Documents/vanderbilt/research/ora caldera/trace-elements/new-spreadsheets/Ora-Glass-All.xlsx', dtype={
-                    'Li': np.float64, 'Mg': np.float64, 'V': np.float64, 'Cr': np.float64, 'Ni': np.float64, 'Nb': np.float64, 'SiO2': np.float64}, na_values=na_values, sheet_name='Data')
+# # All data with clear mineral analyses removed (manually in excel file)
+# df1 = pd.read_excel('/Users/gennachiaro/Documents/vanderbilt/research/ora caldera/trace-elements/new-spreadsheets/Ora-Glass-All.xlsx', dtype=({
+#                     'Li': np.float64, 'Mg': np.float64, 'V': np.float64, 'Cr': np.float64, 'Ni': np.float64, 'Nb': np.float64, 'SiO2': np.float64}), na_values=na_values, sheet_name='Data')
 
-# Drop "Included" column
-df1 = df1.drop(['Included'], axis=1)
+
+# Columns converted to np.float
+data = ({'Li': np.float64, 'Mg': np.float64, 'Al': np.float64,'Si': np.float64,'Ca': np.float64,'Sc': np.float64,'Ti': np.float64,'Ti.1': np.float64,'V': np.float64, 'Cr': np.float64, 'Mn': np.float64,'Fe': np.float64,'Co': np.float64,'Ni': np.float64, 'Zn': np.float64,'Rb': np.float64,'Sr': np.float64,'Y': np.float64,'Zr': np.float64,'Nb': np.float64,'Ba': np.float64,'La': np.float64,'Ce': np.float64,'Pr': np.float64,'Nd': np.float64,'Sm':np.float64,'Eu': np.float64,'Gd': np.float64,'Tb': np.float64,'Gd.1': np.float64,'Dy': np.float64,'Ho': np.float64,'Er': np.float64,'Tm': np.float64,'Yb': np.float64,'Lu':np.float64,'Hf': np.float64,'Ta': np.float64,'Pb': np.float64,'Th': np.float64,'U': np.float64})
+
+# Specify pathname
+path = '/Users/gennachiaro/Documents/vanderbilt/research/ora caldera/trace-elements/new-spreadsheets/Ora-Glass-MASTER.xlsx'
+#path = os.path.normcase(path) # This changes path to be compatible with windows
+
+# Master spreadsheet with clear mineral analyses removed (excel file!)
+df1 = pd.read_excel(path, sheet_name = 'Data', skiprows = [1], dtype = data, na_values = na_values)
+
+#If Value in included row is equal to zero, drop this row
+df1 = df1.loc[~((df1['Included'] == 0))]
+
+#Drop included column
+df1 = df1.drop('Included', axis = 1)
 
 # drop blank columns
 #df = df.dropna(axis = 1, how = 'all')
@@ -35,21 +49,6 @@ df1 = df1.dropna(axis=1, how='all')
 #   change all negatives and zeroes to NaN
 num = df1._get_numeric_data()
 num[num <= 0] = np.nan
-
-#   change all negatives to NaN
-#num = df1._get_numeric_data()
-#num[num < 0] = np.nan
-
-#   drop rows with any NaN values
-#df = df.dropna()
-#df1 = df1.dropna()
-
-#   fill NaN
-#df = df.fillna(method = 'bfill')
-#df1 = df1.fillna(method = 'bfill')
-
-# map out columns
-#col_mapping = [f"{c[0]}:{c[1]}" for c in enumerate(df1.columns)]
 
 # DataFrameMelt to get all values for each spot in tidy data
 #   every element for each spot corresponds to a separate row
@@ -104,7 +103,7 @@ MG = merge[merge['Population'].isin(['MG 1', 'MG 2', 'MG 3'])]
 FG = merge[merge['Population'].isin(
     ['ORA-5B-410', 'ORA-5B-412', 'ORA-5B-414'])]
 FGCP = merge[merge['Population'].isin(
-    ['ORA-2A-002', 'ORA-2A-016', 'ORA-2A-003', 'ORA-2A-023', 'ORA-2A-024'])]
+    ['ORA-2A-002', 'ORA-2A-003', 'ORA-2A-023', 'ORA-2A-024'])]
 
 # Drop bad analyses column
 MG = MG.drop(['ORA-2A-004', 'ORA-2A-036'], axis=0)
@@ -143,14 +142,13 @@ FG_std = sample_std[sample_std['Population'].isin(
 
 # Select FGCP standard samples by population
 FGCP_std = sample_std[sample_std['Population'].isin(
-    ['ORA-2A-002', 'ORA-2A-016', 'ORA-2A-003', 'ORA-2A-023', 'ORA-2A-024'])]
+    ['ORA-2A-002', 'ORA-2A-003', 'ORA-2A-023', 'ORA-2A-024'])]
 # Drop bad samples
-#FGCP_std = FGCP_std.drop(['ORA-2A-002', 'ORA-2A-016','ORA-2A-003','ORA-2A-023', 'ORA-2A-024'], axis = 0)
 
 # Plotting
 # Select elements to plot
-x = 'Ba'
-y = 'Sr'
+x = 'La'
+y = 'Th'
 
 xerr1 = MG_std[x]
 yerr1 = MG_std[y]
@@ -173,17 +171,17 @@ plot = sns.scatterplot(data=MG, x=x, y=y, hue="Population", palette="Blues_d", m
                        edgecolor="black", s=150, alpha=0.8, legend=False, hue_order=['MG 1', 'MG 2', 'MG 3'])
 plt.errorbar(x = MG[x], y = MG[y], xerr = xerr1, yerr = yerr1, ls = 'none', ecolor = 'cornflowerblue', elinewidth = 1, capsize = 2, alpha = 0.8)
 
-# plot = sns.scatterplot(data=VCCR, x=x, y=y, hue="Population", palette="PuRd_r", marker='^',
-#                        edgecolor="black", s=150, legend=False, alpha=0.8, hue_order=['VCCR 1', 'VCCR 2', 'VCCR 3'])
-# plt.errorbar(x = VCCR[x], y = VCCR[y], xerr = xerr2, yerr = yerr2, ls = 'none', ecolor = 'palevioletred', elinewidth = 1, capsize = 2, barsabove = False, alpha = 0.8)
+plot = sns.scatterplot(data=VCCR, x=x, y=y, hue="Population", palette="PuRd_r", marker='^',
+                       edgecolor="black", s=150, legend=False, alpha=0.8, hue_order=['VCCR 1', 'VCCR 2', 'VCCR 3'])
+plt.errorbar(x = VCCR[x], y = VCCR[y], xerr = xerr2, yerr = yerr2, ls = 'none', ecolor = 'palevioletred', elinewidth = 1, capsize = 2, barsabove = False, alpha = 0.8)
 
-# plot = sns.scatterplot(data=FGCP, x=x, y=y, hue="Population", palette="Greens_r", style="Population", edgecolor="black",
-#                        s=150, legend=False, alpha=0.8, hue_order=['ORA-2A-002', 'ORA-2A-003', 'ORA-2A-016', 'ORA-2A-023', 'ORA-2A-024'])
-# plt.errorbar(x = FGCP[x], y = FGCP[y], xerr = xerr3, yerr = yerr3, ls = 'none', ecolor = 'green', elinewidth = 1, capsize = 2, barsabove = False, alpha = 0.8)
+plot = sns.scatterplot(data=FGCP, x=x, y=y, hue="Population", palette="Greens_r", style="Population", edgecolor="black",
+                       s=150, legend=False, alpha=0.8, hue_order=['ORA-2A-002', 'ORA-2A-003', 'ORA-2A-016', 'ORA-2A-023', 'ORA-2A-024'])
+plt.errorbar(x = FGCP[x], y = FGCP[y], xerr = xerr3, yerr = yerr3, ls = 'none', ecolor = 'green', elinewidth = 1, capsize = 2, barsabove = False, alpha = 0.8)
 
-# plot = sns.scatterplot(data=FG, x=x, y=y, hue="Population", palette="OrRd_r", style='Population', edgecolor="black",
-#                        s=150, legend=False, alpha=0.8, markers=('^', 'X', 's'), hue_order=['ORA-5B-412', 'ORA-5B-410', 'ORA-5B-414'])
-# plt.errorbar(x = FG[x], y = FG[y], xerr = xerr4, yerr = yerr4, ls = 'none', ecolor = 'orange', elinewidth = 1, capsize = 2, barsabove = False, alpha = 0.8)
+plot = sns.scatterplot(data=FG, x=x, y=y, hue="Population", palette="OrRd_r", style='Population', edgecolor="black",
+                       s=150, legend=False, alpha=0.8, markers=('^', 'X', 's'), hue_order=['ORA-5B-412', 'ORA-5B-410', 'ORA-5B-414'])
+plt.errorbar(x = FG[x], y = FG[y], xerr = xerr4, yerr = yerr4, ls = 'none', ecolor = 'orange', elinewidth = 1, capsize = 2, barsabove = False, alpha = 0.8)
 
 plt.xlabel(x + ' [ppm]')
 plt.ylabel(y + " [ppm]")
