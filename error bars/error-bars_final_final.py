@@ -133,8 +133,8 @@ sns.set_style("darkgrid")
 
 # Plotting
 # Select elements to plot
-x = 'La'
-y = 'Th'
+x = 'U/Ce'
+y = 'Th/Nb'
 
 # x = 'Ba'
 # y = 'Sr'
