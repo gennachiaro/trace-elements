@@ -133,8 +133,8 @@ sns.set_style("darkgrid")
 
 # Plotting
 # Select elements to plot
-x = 'U/Ce'
-y = 'Th/Nb'
+x = 'Ba'
+y = 'Sr'
 
 # x = 'Ba'
 # y = 'Sr'
@@ -189,8 +189,8 @@ plt.ylabel(y + " [ppm]")
 #plot = sns.scatterplot(data = FGCP, x= 'Y', y='Nb',hue = FGCP_index, palette="Blues",legend="brief", marker = 's', edgecolor="black", s=150)
 
 ## Set y axis to log scale
-# plot.set(yscale='log')
-# plot.set(xscale='log')
+#plot.set(yscale='log')
+#plot.set(xscale='log')
 
 # Set location of legend
 #plt.legend(loc='upper left')
@@ -215,7 +215,7 @@ plt.legend(h[1:4]+h[5:8], l[1:4]+l[5:8], loc='best', ncol=1)
 plt.suptitle("High-Silica Rhyolite (MG + VCCR) Fiamme Glass", fontsize=15,
              fontweight=0, color='black', y=0.95)
 
-#plt.savefig('/Users/gennachiaro/Documents/vanderbilt/research/ora caldera/trace-elements/graphs/HSR-Th-La.png', dpi=400)
+#plt.savefig('/Users/gennachiaro/Documents/vanderbilt/research/ora caldera/trace-elements/graphs/HSR-Sr-Ba_log.png', dpi=400)
 
 # Set size of plot
 sns.set_context("paper") 
