@@ -8,23 +8,40 @@ import numpy as np
 import matplotlib.pyplot as plt
 import seaborn as sns
 from matplotlib.collections import PathCollection
+import matplotlib.ticker as ticker
 
+#Data Cleaning
 #simulated comps
 # Create a custom list of values I want to cast to NaN, and explicitly
 #   define the data types of columns:
 na_values = ['-']
 
-df = pd.read_excel(
-    '/Users/gennachiaro/Documents/vanderbilt/research/ora caldera/zircon saturation/Ora_ZircSat.xlsx', index_col=1, na_values=na_values)
+# Zircon Sat Temps
+temps = pd.read_excel(
+    '/Users/gennachiaro/Documents/vanderbilt/research/ora caldera/zircon saturation/Ora_ZircSat.xlsx', index_col=0, na_values=na_values)
 
-# Slice df so that I just have the HSR values
-df = df[7:32]
-
-# Drop columns with any NaN values
-df = df.dropna(how = 'all',axis = 1)
+temps = temps [['Sample_Name', 'Population', 'T °C (WH 83)', 'SiO2', 'Al2O3', 'FeO', 'MgO', 'MnO', 'Na2O', 'K2O','TiO2', 'CaO', 'Total']]
 
 # Drop rows with any NaN values
-df = df.dropna(axis = 0)
+temps = temps.dropna(axis = 0)
+
+# MELTS Pressures
+pressures = pd.read_excel(
+    '/Users/gennachiaro/Dropbox/Rhyolite-MELTs/Final_Ora_Alteration_Simulations+Comps.xlsx', index_col=3, na_values=na_values)
+
+# Drop columns with any NaN values
+pressures = pressures.dropna(how = 'all',axis = 1)
+
+# Drop rows with any NaN values
+pressures = pressures.dropna(axis = 0)
+
+pressures = pressures [['Name','Alteration_Amount', 'Pressures (MPa)']]
+
+df = temps.join(pressures, how ='left')
+
+#----------
+
+#Plotting
 
 #set style for boxplot
 sns.set_style("darkgrid")
@@ -57,13 +74,35 @@ df = df.sort_values(by=['Population'])
 
 
 #plot matrix
-#fig = plt.figure(figsize=(10,7))
+fig = plt.figure(figsize=(12,5))
+
+
+#df = df.set_index('Population')
+p = p.reset_index()
+
+# Sort values by population first, and then by amount of alteration
+p = p.sort_values(by=['Population'])
+
+#plot colored in violins 
+g = sns.violinplot(x='Population', y="Pressures (MPa)", palette = colors, data=p, color='.2', scale = 'width', inner = 'boxplot', alpha = 1, saturation=0.3)
+
+for artist in g.lines:
+    artist.set_zorder(10)
+for artist in g.findobj(PathCollection):
+    artist.set_zorder(11)
+
+g = sns.violinplot(x='Population', y="Pressures (MPa)", palette = colors, data=p, color='.2', scale = 'width', inner = 'boxplot', alpha = 1, saturation=0.3)
+
+
+#g = sns.swarmplot(x='Population', y="Pressures (MPa)", data=df, edgecolor = 'gray', linewidth =  0.5, ax = g, alpha = 0.7, hue = "Population", hue_order = ['MG 1', 'MG 2', 'MG 3','VCCR 1', 'VCCR 2','VCCR 3'], palette = color_dict, size = 7)
 
 #plot 1
 
-plt.subplot(1,1,1)
+#plt.subplot(1,1,1)
 #plot colored in violins 
-g = sns.violinplot(x='T °C (B 13)', y="Population", palette = colors, data=df, color='.2', scale = 'width', inner = 'boxplot', alpha = 1, saturation=0.4, orient = 'h')
+#g = sns.violinplot(x='T °C (WH 83)', y="Population", palette = colors, data=df, color='.2', scale = 'width', inner = 'boxplot', alpha = 1, saturation=0.4, orient = 'h')
+
+#g = sns.violinplot(x='T °C (B 13)', y="Population", palette = colors, data=df, color='.2', scale = 'width', inner = 'boxplot', alpha = 1, saturation=0.4, orient = 'h')
 
 for artist in g.lines:
     artist.set_zorder(10)
@@ -78,10 +117,17 @@ for artist in g.findobj(PathCollection):
 
 #xerr = df['1 sigma']
 
+for artist in g.lines:
+    artist.set_zorder(10)
+for artist in g.findobj(PathCollection):
+    artist.set_zorder(11)
+
 
 #swarmplot
 #g = sns.swarmplot(x='Population', y="Pressures (MPa)", data=df, edgecolor = 'gray', linewidth =  0.5, ax = g, alpha = 0.7, hue = "Population", hue_order = ['VCCR 1', 'VCCR 2', 'VCCR 3','MG 1', 'MG 2','MG 3'], palette = color_dict, size = 7)
-g = sns.swarmplot(x='T °C (B 13)', y="Population", data=df, edgecolor = 'gray', linewidth =  0.5, ax = g, alpha = 0.7, hue = "Population", hue_order = ['MG 1', 'MG 2', 'MG 3','VCCR 1', 'VCCR 2','VCCR 3'], palette = color_dict, size = 7)
+g = sns.swarmplot(x='Population', y="T °C (WH 83)", data=df, edgecolor = 'gray', linewidth =  0.5, ax = b, alpha = 0.7, hue = "Population", hue_order = ['MG 1', 'MG 2', 'MG 3','VCCR 1', 'VCCR 2','VCCR 3'], palette = color_dict, size = 7)
+
+#g = sns.swarmplot(x='T °C (B 13)', y="Population", data=df, edgecolor = 'gray', linewidth =  0.5, ax = g, alpha = 0.7, hue = "Population", hue_order = ['MG 1', 'MG 2', 'MG 3','VCCR 1', 'VCCR 2','VCCR 3'], palette = color_dict, size = 7)
 
 # # Select group to calculate the number of observations in each group
 # group = 'Sample'
@@ -109,9 +155,11 @@ g = sns.swarmplot(x='T °C (B 13)', y="Population", data=df, edgecolor = 'gray',
 #set legend
 #plt.legend(loc="center left", ncol = 1)
 
+# Configure legend
+h, l = g.get_legend_handles_labels()
 
 # Legend outside of plot
-plt.legend(loc='center left', bbox_to_anchor=(1, 0.5), ncol=1)
+plt.legend(h[0:6],l[0:6],loc='center left', bbox_to_anchor=(1, 0.5), ncol=1)
 
 
 # # SECOND PLOT
@@ -133,17 +181,17 @@ plt.legend(loc='center left', bbox_to_anchor=(1, 0.5), ncol=1)
 
 
 #flip y-axis and set y-axis limits
-#plt.ylim(reversed(plt.ylim(0,300)))
+plt.ylim(reversed(plt.ylim(0,300)))
 
 #format x axis labels
 #g.set_xticklabels(g.get_xticklabels(), rotation=45, horizontalalignment="right")
 
-#create second y axis (depth)
-#ax = g.twinx()
-#ax.grid(False)
+# create second y axis (depth)
+ax = g.twinx()
+ax.grid(False)
 
-#plot points for second y axis (depth)
-#f = sns.stripplot(x=All.index, y="Depth (km)", data=All, jitter=True, ax = ax2, alpha = 0, hue = "Population", hue_order = ['VCCR 1', 'VCCR 2', 'VCCR 3', 'FG 1', 'FG 2', 'FG 3','MG 1', 'MG 2', 'FGCP 1', 'FGCP 2'], palette = color_dict)
+# plot points for second y axis (depth)
+#g = sns.stripplot(x='Population', y="Pressures (MPa)", data=All, jitter=True, ax = ax2, alpha = 0, hue = "Population", hue_order = ['VCCR 1', 'VCCR 2', 'VCCR 3', 'FG 1', 'FG 2', 'FG 3','MG 1', 'MG 2', 'FGCP 1', 'FGCP 2'], palette = color_dict)
 
 #flip y-axis and set y-axis limits
 #plt.ylim(reversed(plt.ylim(0,16.65)))
@@ -151,15 +199,20 @@ plt.legend(loc='center left', bbox_to_anchor=(1, 0.5), ncol=1)
 
 #g.text(702, 5.31, str('error bars $\pm$ 1$\sigma$'), fontsize = 11, fontweight = 'normal')
 
-#format x axis labels
-#plt.ylabel('Depth (km)')
+#g.text(702, 5.31, str('error bars $\pm$ 1$\sigma$'), fontsize = 11, fontweight = 'normal')
 
-#set x-axis labels
-#f.set_xticklabels(g.get_xticklabels(), rotation=45, horizontalalignment="right")
+#format x axis labels
+#plt.xlabel('T °C')
+
+#set x-axis tick spacing
+tick_spacing = 10
+g.xaxis.set_major_locator(ticker.MultipleLocator(tick_spacing))
+
+#g.set_xticklabels(g.get_xticklabels(), rotation=45, horizontalalignment="right")
 
 # general title
-plt.suptitle("Ora Zircon Saturation Temperatures (B 13)", fontsize=15, fontweight=0, y =0.95)
+plt.suptitle("Ora Zircon Saturation Temperatures", fontsize=15, fontweight=0, y =0.94)
 
 # Save Figure
 
-#plt.savefig('/Users/gennachiaro/Documents/vanderbilt/research/ora caldera/zircon saturation/zr_satplot_B13.png', dpi=300, bbox_inches = 'tight')
+#plt.savefig('/Users/gennachiaro/Documents/vanderbilt/research/ora caldera/zircon saturation/zr_satplot_all.png', dpi=300, bbox_inches = 'tight')
