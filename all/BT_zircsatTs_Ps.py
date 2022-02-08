@@ -16,33 +16,15 @@ import matplotlib.ticker as ticker
 #   define the data types of columns:
 na_values = ['-']
 
-# Zircon Sat Temps
-temps = pd.read_excel(
-    '/Users/gennachiaro/Documents/vanderbilt/research/ora caldera/zircon saturation/Ora_ZircSat.xlsx', index_col=0, na_values=na_values)
-
-temps = temps [['Sample_Name', 'Population', 'T °C (WH 83)', 'SiO2', 'Al2O3', 'FeO', 'MgO', 'MnO', 'Na2O', 'K2O','TiO2', 'CaO']]
-
-# Drop rows with any NaN values
-temps = temps.dropna(axis = 0)
-
-#temps = temps [['Population', 'T °C (WH 83)']]
-
-# MELTS Pressures
-pressures = pd.read_excel(
-    '/Users/gennachiaro/Dropbox/Rhyolite-MELTs/Final_Ora_Alteration_Simulations+Comps.xlsx', index_col=3, na_values=na_values)
+# import data
+df = pd.read_excel(
+    '/Users/gennachiaro/Desktop/Bishop_VU-GlassPT_All-Publish-2.xlsx', index_col=0, na_values=na_values)
 
 # Drop columns with any NaN values
-pressures = pressures.dropna(how = 'all',axis = 1)
+df = df.dropna(how = 'all',axis = 1)
 
 # Drop rows with any NaN values
-pressures = pressures.dropna(axis = 0)
-
-pressures = pressures [['Name','Alteration_Amount', 'Pressures (MPa)']]
-
-#pressures = pressures [['Pressures (MPa)']]
-
-df = temps.join(pressures, how ='left')
-
+df = df.dropna(axis = 0)
 
 #----------
 
@@ -55,11 +37,11 @@ sns.set_style("darkgrid")
 # fig = plt.figure(figsize=(8,4.5))
 
 #create color dictionary
-color_dict = dict({'VCCR 1': '#CC3366', 
+color_dict = dict({'EBT': '#CC3366', 
                     'VCCR 2': '#DA68A8', 
                     'VCCR 3': '#D4BBDA', 
-                    'MG 1': '#3870AF', 
-                    'MG 2': '#79ADD2',
+                    'LBT-East': '#3870AF', 
+                    'LBT-North': '#79ADD2',
                     'MG 3': '#ABCFE5'})
 
 #colors = ['#DA68A8','#D4BBDA','#D4BBDA','##D4BBDA','#D4BBDA','#D4BBDA','#D4BBDA','#D4BBDA','#D4BBDA', '#ABCFE5','#ABCFE5','#ABCFE5','#ABCFE5']
@@ -71,52 +53,32 @@ sns.set_palette(sns.color_palette(colors))
 #create violin boxplot
 #g = sns.violinplot(x=All.index, y="Pressures (MPa)", data=All, color='0.8', scale = 'width', inner = 'boxplot', alpha = 0.3, saturation=0.5)
 
-#df = df.set_index('Population')
-df = df.reset_index()
 
-# Sort values by population first, and then by amount of alteration
-df = df.sort_values(by=['Population'])
-
-# Dropping VCCR 1 test
-
-df1 = df 
-
-df = df.set_index("Population")
-
-df = df.drop('MG 3')
-
-#df = df.set_index('Population')
-df = df.reset_index()
-
-# # Sort values by population first, and then by amount of alteration
-# df = df.sort_values(by=['Population'])
- 
 #calculate weights
-x_weights = np.ones_like(df['Pressures (MPa)']) / len(df['Pressures (MPa)'])
 
-VCCR1 = df[df['Population'].isin(['VCCR 1'])]
-VCCR2 = df[df['Population'].isin(['VCCR 2'])]
-VCCR3 = df[df['Population'].isin(['VCCR 3'])]
-MG1 = df[df['Population'].isin(['MG 1'])]
-MG2 = df[df['Population'].isin(['MG 2'])]
-MG3 = df[df['Population'].isin(['MG 3'])]
+EBT = df[df['Sector'].isin(['EBT'])]
+LBT_East = df[df['Sector'].isin(['LBT_East'])]
+LBT_North = df[df['Sector'].isin(['LBT_North'])]
 
 
-# f = sns.kdeplot(data = VCCR1, x = 'T °C (WH 83)', y = 'Pressures (MPa)', shade = True, cmap = "Greens", alpha = 0.4)
-# f = sns.kdeplot(data = VCCR2, x = 'T °C (WH 83)', y = 'Pressures (MPa)', shade = True, cmap = "Reds", alpha = 0.4)
-# f = sns.kdeplot(data = VCCR3, x = 'T °C (WH 83)', y = 'Pressures (MPa)', shade = True)
+f = sns.kdeplot(data = EBT, x = 'T (W&H)', y = 'P_Q2F', shade = True, cmap = "Greens", alpha = 0.4)
+#f = sns.kdeplot(data = LBT_East, x = 'T (W&H)', y = 'P_Q2F', shade = True, cmap = "Reds", alpha = 0.4)
+#f = sns.kdeplot(data = LBT_North, x = 'T (W&H)', y = 'P_Q2F', shade = True)
 
-# f = sns.kdeplot(data = MG1, x = 'T °C (WH 83)', y = 'Pressures (MPa)', shade = True, cmap = 'Greens', alpha = 0.4)
-# f = sns.kdeplot(data = MG2, x = 'T °C (WH 83)', y = 'Pressures (MPa)', shade = True, cmap = "Greys", alpha = 0.4)
-# #f = sns.kdeplot(data = MG3, x = 'T °C (WH 83)', y = 'Pressures (MPa)', shade = True, cmap = "Greys")
+#f = sns.kdeplot(data = MG1, x = 'T °C (WH 83)', y = 'Pressures (MPa)', shade = True, cmap = 'Greens', alpha = 0.4)
+#f = sns.kdeplot(data = MG2, x = 'T °C (WH 83)', y = 'Pressures (MPa)', shade = True, cmap = "Greys", alpha = 0.4)
+#f = sns.kdeplot(data = MG3, x = 'T °C (WH 83)', y = 'Pressures (MPa)', shade = True, cmap = "Greys")
 
 
 
 
+#g = sns.jointplot(data = df, x = 'T (W&H)', y = 'P_Q2F', palette = color_dict, hue = 'Sector', kind = 'kde', shade = True, joint_kws={"s": 100, "edgecolor": 'black', 'alpha':0.6}, marginal_kws = {'fill': True})
 
 #g = sns.jointplot(data = df, x = 'T °C (WH 83)', y = 'Pressures (MPa)', palette = color_dict, hue = 'Population', kind = 'kde', shade = True, joint_kws={"s": 100, "edgecolor": 'black', 'alpha':0.6}, marginal_kws = {'fill': True})
 
-g = (sns.jointplot(data = df, x = 'T °C (WH 83)', y = 'Pressures (MPa)', palette = color_dict, hue = 'Population', kind = 'kde', shade = True, joint_kws={"s": 100, "edgecolor": 'black', 'alpha':0.6}, marginal_kws = {'fill': True})).plot_joint(sns.scatterplot())
+#g = (sns.jointplot(data = df, x = 'T (W&H)', y = 'P_Q2F', palette = color_dict, hue = 'Sector', kind = 'kde', shade = True, joint_kws={"s": 100, "edgecolor": 'black', 'alpha':0.6}, marginal_kws = {'fill': True})).plot_joint(sns.scatterplot())
+
+g = (sns.jointplot(data = df, x = 'T (W&H)', y = 'P_Q2F', palette = color_dict, hue = 'Sector', kind = 'kde', shade = True, joint_kws={"s": 100, "edgecolor": 'black', 'alpha':0.6}#)).plot_joint(sns.scatterplot())
 
 #g = (sns.jointplot(data = df, x = 'T °C (WH 83)', y = 'Pressures (MPa)', palette = color_dict, hue = 'Population', kind = 'scatter', joint_kws={"s": 100, "edgecolor": 'black', 'alpha':0.6}, marginal_kws = {'weights': x_weights})).plot_joint(sns.kdeplot, zorder = 0, n_levels = 6)
 
@@ -211,11 +173,10 @@ plt.legend(loc='lower left', ncol=1)
 #g.set_xticklabels(g.get_xticklabels(), rotation=45, horizontalalignment="right")
 
 # general title
-plt.suptitle("Ora Zircon Saturation Temperatures and Rhyolite-MELTS Pressures", fontsize=13, fontweight=0, y =1.01)
+#plt.suptitle("Ora Zircon Saturation Temperatures and Rhyolite-MELTS Pressures", fontsize=13, fontweight=0, y =1.01)
 
 # Save Figure
 
-
-#plt.show()
+plt.show()
 
 #plt.savefig('/Users/gennachiaro/Documents/vanderbilt/research/ora caldera/zircon saturation/zr_satplot_temps_kde_fill+points.png', dpi=300, bbox_inches = 'tight')
