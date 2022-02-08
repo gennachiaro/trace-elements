@@ -24,7 +24,12 @@ df = pd.read_excel(
 df = df.dropna(how = 'all',axis = 1)
 
 # Drop rows with any NaN values
-df = df.dropna(axis = 0)
+#df = df.dropna(axis = 0)
+
+df = df[df['P_Q2F'] < 250]
+
+# Sort values
+#df = df.sort_values(by=['P_Q2F'])
 
 #----------
 
@@ -38,11 +43,8 @@ sns.set_style("darkgrid")
 
 #create color dictionary
 color_dict = dict({'EBT': '#CC3366', 
-                    'VCCR 2': '#DA68A8', 
-                    'VCCR 3': '#D4BBDA', 
                     'LBT-East': '#3870AF', 
-                    'LBT-North': '#79ADD2',
-                    'MG 3': '#ABCFE5'})
+                    'LBT-North': '#AFE1AF'})
 
 #colors = ['#DA68A8','#D4BBDA','#D4BBDA','##D4BBDA','#D4BBDA','#D4BBDA','#D4BBDA','#D4BBDA','#D4BBDA', '#ABCFE5','#ABCFE5','#ABCFE5','#ABCFE5']
 colors = ["#ABCFE5","#ABCFE5","#ABCFE5","#DA68A8","#D4BBDA","#D4BBDA"]
@@ -60,8 +62,9 @@ EBT = df[df['Sector'].isin(['EBT'])]
 LBT_East = df[df['Sector'].isin(['LBT_East'])]
 LBT_North = df[df['Sector'].isin(['LBT_North'])]
 
+#plt.show()
 
-f = sns.kdeplot(data = EBT, x = 'T (W&H)', y = 'P_Q2F', shade = True, cmap = "Greens", alpha = 0.4)
+#f = sns.kdeplot(data = EBT, x = 'T (W&H)', y = 'P_Q2F', shade = True, cmap = "Greens", alpha = 0.4)
 #f = sns.kdeplot(data = LBT_East, x = 'T (W&H)', y = 'P_Q2F', shade = True, cmap = "Reds", alpha = 0.4)
 #f = sns.kdeplot(data = LBT_North, x = 'T (W&H)', y = 'P_Q2F', shade = True)
 
@@ -71,20 +74,38 @@ f = sns.kdeplot(data = EBT, x = 'T (W&H)', y = 'P_Q2F', shade = True, cmap = "Gr
 
 
 
-
 #g = sns.jointplot(data = df, x = 'T (W&H)', y = 'P_Q2F', palette = color_dict, hue = 'Sector', kind = 'kde', shade = True, joint_kws={"s": 100, "edgecolor": 'black', 'alpha':0.6}, marginal_kws = {'fill': True})
 
 #g = sns.jointplot(data = df, x = 'T °C (WH 83)', y = 'Pressures (MPa)', palette = color_dict, hue = 'Population', kind = 'kde', shade = True, joint_kws={"s": 100, "edgecolor": 'black', 'alpha':0.6}, marginal_kws = {'fill': True})
 
 #g = (sns.jointplot(data = df, x = 'T (W&H)', y = 'P_Q2F', palette = color_dict, hue = 'Sector', kind = 'kde', shade = True, joint_kws={"s": 100, "edgecolor": 'black', 'alpha':0.6}, marginal_kws = {'fill': True})).plot_joint(sns.scatterplot())
 
-g = (sns.jointplot(data = df, x = 'T (W&H)', y = 'P_Q2F', palette = color_dict, hue = 'Sector', kind = 'kde', shade = True, joint_kws={"s": 100, "edgecolor": 'black', 'alpha':0.6}#)).plot_joint(sns.scatterplot())
+
+
+g = sns.jointplot(data = df, x = 'T (W&H)', y = 'P_Q2F', palette = color_dict, hue = 'Sector', kind = 'kde', shade = True, joint_kws={"s": 100, "edgecolor": 'black', 'alpha':0.6, 'xlabel': 'T °C (WH 83)', 'ylabel':'Pressures (MPa)'}, marginal_kws = {'fill': True, 'common_norm' : False}).plot_joint(sns.kdeplot, zorder = 0, alpha = 0.3, warn_singular = False, linewidths = 1).plot_joint(sns.scatterplot, s = 25, alpha = 1 , style = df['Sector']).set_axis_labels('T °C (WH 83)','Pressures (MPa)')
+
+# Set definitions for making a depth axis!
+def MPa2km(x):
+    return x / 100 * 3.7
+
+def km2MPa(x):
+    return x / 3.7 * 100
+
+secax = g.ax_marg_y.secondary_yaxis('right', functions = (MPa2km, km2MPa))
+
+secax.set_ylabel('Depth (km)')
+
+
+#g.plot_joint(sns.scatterplot)
+#g = (sns.jointplot(data = df, x = 'T (W&H)', y = 'P_Q2F', palette = color_dict, hue = 'Sector', kind = 'kde', shade = True, joint_kws={"s": 100, "edgecolor": 'black', 'alpha':0.6})).plot_joint(sns.scatterplot())
 
 #g = (sns.jointplot(data = df, x = 'T °C (WH 83)', y = 'Pressures (MPa)', palette = color_dict, hue = 'Population', kind = 'scatter', joint_kws={"s": 100, "edgecolor": 'black', 'alpha':0.6}, marginal_kws = {'weights': x_weights})).plot_joint(sns.kdeplot, zorder = 0, n_levels = 6)
 
+#plt.show()
+plt.ylim(reversed(plt.ylim(0,300)))
 
-plt.ylim(reversed(plt.ylim(90,180)))
-
+plt.xlabel('T °C (WH 83')
+plt.ylabel('Pressures (MPa)')
 
 #g.plot_joint(sns.kdeplot, hue = "Population", palette = color_dict, zorder = 0, levels = 6)
 
@@ -164,7 +185,9 @@ plt.legend(loc='lower left', ncol=1)
 #g.text(702, 5.31, str('error bars $\pm$ 1$\sigma$'), fontsize = 11, fontweight = 'normal')
 
 #format x axis labels
-#plt.xlabel('T °C')
+#plt.xlabel('T °C (WH 83')
+#plt.ylabel('Pressures (MPa)')
+
 
 #set x-axis tick spacing
 # tick_spacing = 10
@@ -173,10 +196,10 @@ plt.legend(loc='lower left', ncol=1)
 #g.set_xticklabels(g.get_xticklabels(), rotation=45, horizontalalignment="right")
 
 # general title
-#plt.suptitle("Ora Zircon Saturation Temperatures and Rhyolite-MELTS Pressures", fontsize=13, fontweight=0, y =1.01)
+plt.suptitle("Bishop Tuff Zircon Saturation Temperatures and Rhyolite-MELTS Q2F Pressures", fontsize=13, fontweight=0, y =1.01)
 
 # Save Figure
 
-plt.show()
+#plt.show()
 
-#plt.savefig('/Users/gennachiaro/Documents/vanderbilt/research/ora caldera/zircon saturation/zr_satplot_temps_kde_fill+points.png', dpi=300, bbox_inches = 'tight')
+plt.savefig('/Users/gennachiaro/Documents/vanderbilt/research/ora caldera/zircon saturation/BT_zr_satplot_temps_kde_fill+points.png', dpi=300, bbox_inches = 'tight')
