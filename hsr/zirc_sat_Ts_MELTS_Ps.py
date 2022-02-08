@@ -143,7 +143,7 @@ secax.set_ylabel('Depth (km)')
 #      'fill': True, 'common_norm' : False})).plot_joint(sns.kdeplot, zorder=0, alpha=0.3, warn_singular=False, linewidths=1).plot_joint(sns.scatterplot, style=df['Population'], s=40).set_axis_labels('T °C (WH 83)','Pressures (MPa)')
 
 
-plt.ylim(reversed(plt.ylim(0, 200)))
+plt.ylim(reversed(plt.ylim(0, 300)))
 
 #g = (sns.jointplot(data = df, x = 'T °C (WH 83)', y = 'Pressures (MPa)', palette = color_dict, hue = 'Population', kind = 'kde', joint_kws={"s": 100, "edgecolor": 'black', 'alpha':0.6}, marginal_kws = {'fill': True})).plot_joint(sns.kdeplot, zorder = 0, n_levels = 6)
 
@@ -252,4 +252,4 @@ plt.suptitle("Ora Zircon Saturation Temperatures and Rhyolite-MELTS Q2F Pressure
 
 #plt.show()
 
-plt.savefig('/Users/gennachiaro/Documents/vanderbilt/research/ora caldera/zircon saturation/zr_satplot_temps_kde_fill+points_crust.png', dpi=300, bbox_inches = 'tight')
+plt.savefig('/Users/gennachiaro/Documents/vanderbilt/research/ora caldera/zircon saturation/zr_satplot_temps_kde_fill+points_crust_300MPa.png', dpi=300, bbox_inches = 'tight')
