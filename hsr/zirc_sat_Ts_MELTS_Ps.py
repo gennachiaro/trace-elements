@@ -250,6 +250,6 @@ plt.suptitle("Ora Zircon Saturation Temperatures and Rhyolite-MELTS Q2F Pressure
 
 # Save Figure
 
-#plt.show()
+plt.show()
 
-plt.savefig('/Users/gennachiaro/Documents/vanderbilt/research/ora caldera/zircon saturation/zr_satplot_temps_kde_fill+points_crust_300MPa.png', dpi=300, bbox_inches = 'tight')
+#plt.savefig('/Users/gennachiaro/Documents/vanderbilt/research/ora caldera/zircon saturation/zr_satplot_temps_kde_fill+points_crust_300MPa.png', dpi=300, bbox_inches = 'tight')
