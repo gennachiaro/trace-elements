@@ -133,8 +133,8 @@ sns.set_style("darkgrid")
 
 # Plotting
 # Select elements to plot
-x = 'Ba'
-y = 'Sr'
+x = 'Zr'
+y = 'Zr/Hf'
 
 # x = 'Ba'
 # y = 'Sr'
@@ -215,7 +215,7 @@ plt.legend(h[1:4]+h[5:8], l[1:4]+l[5:8], loc='best', ncol=1)
 plt.suptitle("High-Silica Rhyolite (MG + VCCR) Fiamme Glass", fontsize=15,
              fontweight=0, color='black', y=0.95)
 
-#plt.savefig('/Users/gennachiaro/Documents/vanderbilt/research/ora caldera/trace-elements/graphs/HSR-Sr-Ba_log.png', dpi=400)
+plt.savefig('/Users/gennachiaro/Documents/vanderbilt/research/ora caldera/trace-elements/graphs/HSR-Zr_Hf_Final.png', dpi=400)
 
 # Set size of plot
 sns.set_context("paper") 
