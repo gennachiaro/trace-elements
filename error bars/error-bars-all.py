@@ -61,6 +61,11 @@ melt = (df1.melt(id_vars=['Sample', 'Spot', 'Population'], value_vars=['Li', 'Mg
 sample_mean = df1.groupby('Sample').mean()
 # print(sample_mean.head())
 
+#Drop because measured two of the same fiamme!
+sample_mean = sample_mean.drop(['ORA-5B-405', 'ORA-5B-416'], axis= 0)
+
+
+
 # Another way to calculate means, but need an indexed df to use "level"
 #   we need to use a non-indexed dataframe to make our "populations" dataframe
 #       so might as well just use one dataframe and the groupby fx to make it simpler
@@ -93,6 +98,8 @@ sample_std = pd.merge(populations, sample_std, how='right',
 # Set index
 sample_std = sample_std.set_index('Sample')
 #print (sample_std.head())
+#Drop because measured two of the same fiamme!
+sample_std = sample_std.drop(['ORA-5B-405', 'ORA-5B-416'], axis= 0)
 
 # Plotting
 #       Slicing dataframe
@@ -147,8 +154,8 @@ FGCP_std = sample_std[sample_std['Population'].isin(
 
 # Plotting
 # Select elements to plot
-x = 'La'
-y = 'Th'
+x = 'Ba'
+y = 'Sr'
 
 xerr1 = MG_std[x]
 yerr1 = MG_std[y]

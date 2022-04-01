@@ -62,6 +62,10 @@ df = df.drop(['ORA-2A-036-B','ORA-2A-036','ORA-2A-032','ORA-2A-035'], axis= 0)
 #Dropping VCCR samples because we remeasured these
 df = df.drop(['ORA-5B-405-B', 'ORA-5B-406-B','ORA-5B-409-B', 'ORA-5B-416-B', 'ORA-5B-404A-B'], axis= 0)
 
+#ADDED THIS RECENTLY
+#Drop VCCR samples because they are the same fiamma:
+df = df.drop(['ORA-5B-405', 'ORA-5B-416'])
+
 # Dropping VCCR samples because we don't have matching SEM values
 df = df.drop(['ORA-5B-408-SITE8', 'ORA-5B-408-SITE7', 'ORA-5B-412B-CG'], axis= 0)
 df = df.reset_index()
@@ -133,8 +137,8 @@ sns.set_style("darkgrid")
 
 # Plotting
 # Select elements to plot
-x = 'Zr'
-y = 'Zr/Hf'
+x = 'Ba'
+y = 'Sr'
 
 # x = 'Ba'
 # y = 'Sr'
@@ -156,12 +160,14 @@ yerr4 = FG_std[y]
 
 # Create plot
 #   All one symbol
-plot = sns.scatterplot(data=MG, x=x, y=y, hue="Population", palette="Blues_d", marker='s',
+
+#Added style to the plot!
+plot = sns.scatterplot(data=MG, x=x, y=y, hue="Population", palette="Blues_d", marker='s', style = "Population",
                        edgecolor="black", s=150, alpha=0.8, legend= 'brief', hue_order=['MG 1', 'MG 2', 'MG 3'])
 plt.errorbar(x=MG[x], y=MG[y], xerr=xerr1, yerr=yerr1, ls='none',
              ecolor='cornflowerblue', elinewidth=1, capsize=2, alpha=0.8)
 
-plot = sns.scatterplot(data=VCCR, x=x, y=y, hue="Population", palette="PuRd_r", marker='^',
+plot = sns.scatterplot(data=VCCR, x=x, y=y, hue="Population", palette="PuRd_r", markers=('h','^','P'), style = "Population",
                        edgecolor="black", s=150, legend= 'brief', alpha=0.8, hue_order=['VCCR 1', 'VCCR 2', 'VCCR 3'])
 plt.errorbar(x=VCCR[x], y=VCCR[y], xerr=xerr2, yerr=yerr2, ls='none',
              ecolor='palevioletred', elinewidth=1, capsize=2, barsabove=False, alpha=0.8)
@@ -199,11 +205,17 @@ plt.ylabel(y + " [ppm]")
 # Configure legend
 h, l = plot.get_legend_handles_labels()
 
+l[0] = "Outflow"
+l[4] = "Intracaldera"
+
 # Legend outside of plot
 #plt.legend(h[1:4]+h[5:8],l[1:4]+l[5:8],loc='center left', bbox_to_anchor=(1, 0.5), ncol=1)
 
 # Legend inside of plot
-plt.legend(h[1:4]+h[5:8], l[1:4]+l[5:8], loc='best', ncol=1)
+#plt.legend(h[1:4]+h[5:8], l[1:4]+l[5:8], loc='best', ncol=1)
+
+plt.legend(h, l, loc='best', ncol = 2, handlelength = 1, columnspacing = 0.5)
+
 
 # Populations
 #plt.legend(h[1:4]+h[13:16],l[1:4]+l[13:16],loc='center left', bbox_to_anchor=(1, 0.5), ncol=1)
@@ -215,7 +227,7 @@ plt.legend(h[1:4]+h[5:8], l[1:4]+l[5:8], loc='best', ncol=1)
 plt.suptitle("High-Silica Rhyolite (MG + VCCR) Fiamme Glass", fontsize=15,
              fontweight=0, color='black', y=0.95)
 
-plt.savefig('/Users/gennachiaro/Documents/vanderbilt/research/ora caldera/trace-elements/graphs/HSR-Zr_Hf_Final.png', dpi=400)
+#plt.savefig('/Users/gennachiaro/Documents/vanderbilt/research/ora caldera/trace-elements/graphs/HSR-Zr_Hf_Final.png', dpi=400)
 
 # Set size of plot
 sns.set_context("paper") 

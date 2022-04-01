@@ -97,6 +97,10 @@ sample_mean = sample_mean.drop(['ORA-5B-405-B', 'ORA-5B-406-B','ORA-5B-409-B', '
 # Drop to match with SEM-Data!
 sample_mean = sample_mean.drop(['ORA-5B-408-SITE8', 'ORA-5B-408-SITE7','ORA-5B-412B-CG'], axis= 0)
 
+#Drop because measured two of the same fiamme!
+sample_mean = sample_mean.drop(['ORA-5B-405', 'ORA-5B-416'], axis= 0)
+
+
 
 sample_mean = sample_mean.reset_index()
 
@@ -142,6 +146,10 @@ sample_std = sample_std.drop(['ORA-5B-405-B', 'ORA-5B-406-B','ORA-5B-409-B', 'OR
 # Drop to match with SEM-Data!
 sample_std = sample_std.drop(['ORA-5B-408-SITE8', 'ORA-5B-408-SITE7','ORA-5B-412B-CG'], axis= 0)
 
+#Drop because measured two of the same fiamme!
+sample_std = sample_std.drop(['ORA-5B-405', 'ORA-5B-416'], axis= 0)
+
+
 # Select sample stdev by population
 MG_std = sample_std[sample_std['Population'].isin(['MG 1', 'MG 2', 'MG 3'])]
 VCCR_std = sample_std[sample_std['Population'].isin(
@@ -151,7 +159,7 @@ FG_std = sample_std[sample_std['Population'].isin(
 FGCP_std = sample_std[sample_std['Population'].isin(
     ['ORA-2A-002','ORA-2A-016', 'ORA-2A-003', 'ORA-2A-023', 'ORA-2A-024'])]
 
-#import csv file
+#import xlsx file
 REE = pd.read_excel("/Users/gennachiaro/Documents/vanderbilt/research/ora caldera/trace-elements/new-spreadsheets/Trace_Avgs_NormalizedREE.xlsx")
 
 # DataFrameMelt to get all values for each spot in tidy data
@@ -162,6 +170,8 @@ melt = melt.set_index('Sample')
 
 #melt = melt.set_index('Sample')
 #melt = melt.drop(['ORA-5B-408-SITE8', 'ORA-5B-408-SITE7','ORA-5B-412B-CG'], axis= 0)
+melt = melt.drop(['ORA-5B-405', 'ORA-5B-416'], axis= 0)
+#melt = melt.reset_index()
 
 # Dataframe Slicing using "isin"
 VCCRREE = melt[melt['Population'].isin(['VCCR 1', 'VCCR 2', 'VCCR 3'])]
@@ -218,12 +228,12 @@ xerr2 = VCCR_std[x]
 yerr2 = VCCR_std[y]
 
 
-plot2 = sns.scatterplot(data=MG, x=x, y=y, hue="Population", palette="Blues_d", marker='s',
+plot2 = sns.scatterplot(data=MG, x=x, y=y, hue="Population", palette="Blues_d", marker='s', style = "Population",
                        edgecolor="black", s=150, alpha=0.8, legend= "brief", hue_order=['MG 1', 'MG 2', 'MG 3'])
 plt.errorbar(x=MG[x], y=MG[y], xerr=xerr1, yerr=yerr1, ls='none',
              ecolor='cornflowerblue', elinewidth=1, capsize=2, alpha=0.8)
 
-plot2 = sns.scatterplot(data=VCCR, x=x, y=y, hue="Population", palette="PuRd_r", marker='^',
+plot2 = sns.scatterplot(data=VCCR, x=x, y=y, hue="Population", palette="PuRd_r", markers=('h','^','P'), style = "Population",
                        edgecolor="black", s=150, legend= "brief", alpha=0.8, hue_order=['VCCR 1', 'VCCR 2', 'VCCR 3'])
 plt.errorbar(x=VCCR[x], y=VCCR[y], xerr=xerr2, yerr=yerr2, ls='none',
              ecolor='palevioletred', elinewidth=1, capsize=2, barsabove=False, alpha=0.8)
@@ -231,7 +241,7 @@ plt.errorbar(x=VCCR[x], y=VCCR[y], xerr=xerr2, yerr=yerr2, ls='none',
 plt.xlabel(x + ' [ppm]')
 plt.ylabel(y + " [ppm]")
 
-plot2.text(-2.25,20.1, str('error bars $\pm$ 1$\sigma$'), fontsize = 11, fontweight = 'normal')
+plot2.text(54,-0.3, str('error bars $\pm$ 1$\sigma$'), fontsize = 11, fontweight = 'normal')
 
 # Configure legend
 h, l = plot2.get_legend_handles_labels()
@@ -240,7 +250,13 @@ h, l = plot2.get_legend_handles_labels()
 #plt.legend(h[1:4]+h[5:8],l[1:4]+l[5:8],loc='center left', bbox_to_anchor=(1, 0.5), ncol=1)
 
 # Legend inside of plot
-plt.legend(h[1:4]+h[5:8], l[1:4]+l[5:8], loc='best', ncol=2)
+#plt.legend(h[1:4]+h[5:8], l[1:4]+l[5:8], loc='best', ncol=2)
+
+l[0] = "Outflow"
+l[4] = "Intracaldera"
+
+plt.legend(h, l, loc='best', ncol = 2, handlelength = 1, columnspacing = 0.5)
+
 
 #set location of legend
 #plt.legend(loc='center left', bbox_to_anchor=(1, 0.5), ncol=1)
@@ -258,12 +274,12 @@ yerr1 = MG_std[y]
 xerr2 = VCCR_std[x]
 yerr2 = VCCR_std[y]
 
-plot3 = sns.scatterplot(data=MG, x=x, y=y, hue="Population", palette="Blues_d", marker='s',
+plot3 = sns.scatterplot(data=MG, x=x, y=y, hue="Population", palette="Blues_d", marker='s', style = "Population",
                        edgecolor="black", s=150, alpha=0.8, legend= "brief", hue_order=['MG 1', 'MG 2', 'MG 3'])
 plt.errorbar(x=MG[x], y=MG[y], xerr=xerr1, yerr=yerr1, ls='none',
              ecolor='cornflowerblue', elinewidth=1, capsize=2, alpha=0.8)
 
-plot3 = sns.scatterplot(data=VCCR, x=x, y=y, hue="Population", palette="PuRd_r", marker='^',
+plot3 = sns.scatterplot(data=VCCR, x=x, y=y, hue="Population", palette="PuRd_r", markers=('h','^','P'), style = "Population",
                        edgecolor="black", s=150, legend= 'brief', alpha=0.8, hue_order=['VCCR 1', 'VCCR 2', 'VCCR 3'])
 plt.errorbar(x=VCCR[x], y=VCCR[y], xerr=xerr2, yerr=yerr2, ls='none',
              ecolor='palevioletred', elinewidth=1, capsize=2, barsabove=False, alpha=0.8)
@@ -280,7 +296,13 @@ h, l = plot2.get_legend_handles_labels()
 #plt.legend(h[1:4]+h[5:8],l[1:4]+l[5:8],loc='center left', bbox_to_anchor=(1, 0.5), ncol=1)
 
 # Legend inside of plot
-plt.legend(h[1:4]+h[5:8], l[1:4]+l[5:8], loc='best', ncol=2)
+#plt.legend(h[1:4]+h[5:8], l[1:4]+l[5:8], loc='best', ncol=2)
+
+l[0] = "Outflow"
+l[4] = "Intracaldera"
+
+plt.legend(h, l, loc='best', ncol = 2, handlelength = 1, columnspacing = 0.5)
+
 
 #plot 4
 plt.subplot(2,2,4)
@@ -294,12 +316,12 @@ yerr1 = MG_std[y]
 xerr2 = VCCR_std[x]
 yerr2 = VCCR_std[y]
 
-plot4 = sns.scatterplot(data=MG, x=x, y=y, hue="Population", palette="Blues_d", marker='s',
+plot4 = sns.scatterplot(data=MG, x=x, y=y, hue="Population", palette="Blues_d", marker='s', style = "Population",
                        edgecolor="black", s=150, alpha=0.8, legend= 'brief', hue_order=['MG 1', 'MG 2', 'MG 3'])
 plt.errorbar(x=MG[x], y=MG[y], xerr=xerr1, yerr=yerr1, ls='none',
              ecolor='cornflowerblue', elinewidth=1, capsize=2, alpha=0.8)
 
-plot4 = sns.scatterplot(data=VCCR, x=x, y=y, hue="Population", palette="PuRd_r", marker='^',
+plot4 = sns.scatterplot(data=VCCR, x=x, y=y, hue="Population", palette="PuRd_r", markers=('h','^','P'), style = "Population",
                        edgecolor="black", s=150, legend= 'brief', alpha=0.8, hue_order=['VCCR 1', 'VCCR 2', 'VCCR 3'])
 plt.errorbar(x=VCCR[x], y=VCCR[y], xerr=xerr2, yerr=yerr2, ls='none',
              ecolor='palevioletred', elinewidth=1, capsize=2, barsabove=False, alpha=0.8)
@@ -317,7 +339,14 @@ h, l = plot2.get_legend_handles_labels()
 #plt.legend(h[1:4]+h[5:8],l[1:4]+l[5:8],loc='center left', bbox_to_anchor=(1, 0.5), ncol=1)
 
 # Legend inside of plot
-plt.legend(h[1:4]+h[5:8], l[1:4]+l[5:8], loc='best', ncol=2)
+#plt.legend(h[1:4]+h[5:8], l[1:4]+l[5:8], loc='best', ncol=2)
+
+
+l[0] = "Outflow"
+l[4] = "Intracaldera"
+
+plt.legend(h, l, loc='best', ncol = 2, handlelength = 1, columnspacing = 0.5)
+
 
 # set size of plot
 plt.tight_layout()
@@ -326,4 +355,4 @@ plt.tight_layout()
 # set size of plot
 #sns.set_context("poster")
 
-#plt.savefig('/Users/gennachiaro/Documents/vanderbilt/research/ora caldera/trace-elements/graphs/HSR_4Plot_ErrorBars.svg', dpi=400)
+#plt.savefig('/Users/gennachiaro/Documents/vanderbilt/research/ora caldera/trace-elements/graphs/HSR_4Plot_ErrorBars_V2.png', dpi=500)
