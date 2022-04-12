@@ -203,7 +203,7 @@ plt.ylabel(y + " [ppm]")
 
 #plt.text(x=MG[MG[x]], y=MG[MG[y]], s='Sample')
 
-plot.text(8.5,16.5, str('error bars $\pm$ 1$\sigma$'), fontsize = 11, fontweight = 'normal')
+plot.text(7.78,16.5, str('error bars $\pm$ 1$\sigma$'), fontsize = 11, fontweight = 'normal')
 
 
 #   Different symbol for each population
@@ -236,7 +236,8 @@ plt.tight_layout()
 # plt.suptitle("High-Silica Rhyolite (MG + VCCR) Fiamme Glass", fontsize=15,
 #              fontweight=0, color='black', y=0.95)
 
-plt.savefig('/Users/gennachiaro/Documents/vanderbilt/research/ora caldera/trace-elements/graphs/FG_Y-U_final.png', dpi=400)
+#plt.show()
+plt.savefig('/Users/gennachiaro/Documents/vanderbilt/research/ora caldera/trace-elements/graphs/FG_Y-U_final2.png', dpi=500)
 
 # Set size of plot
 #sns.set_context("paper") 

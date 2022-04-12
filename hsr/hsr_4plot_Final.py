@@ -117,7 +117,7 @@ MG = sample_mean[sample_mean['Population'].isin(['MG 1', 'MG 2', 'MG 3'])]
 FG = sample_mean[sample_mean['Population'].isin(
     ['ORA-5B-410', 'ORA-5B-412', 'ORA-5B-414'])]
 FGCP = sample_mean[sample_mean['Population'].isin(
-    ['ORA-2A-002', 'ORA-2A-016', 'ORA-2A-003', 'ORA-2A-023', 'ORA-2A-024'])]
+    ['ORA-2A-002', 'ORA-2A-003', 'ORA-2A-023', 'ORA-2A-024'])]
 
 
 # #FGCP = FGCP.drop(['ORA-2A-002'], axis = 0)
@@ -157,7 +157,7 @@ VCCR_std = sample_std[sample_std['Population'].isin(
 FG_std = sample_std[sample_std['Population'].isin(
     ['ORA-5B-410', 'ORA-5B-412', 'ORA-5B-414'])]
 FGCP_std = sample_std[sample_std['Population'].isin(
-    ['ORA-2A-002','ORA-2A-016', 'ORA-2A-003', 'ORA-2A-023', 'ORA-2A-024'])]
+    ['ORA-2A-002', 'ORA-2A-003', 'ORA-2A-023', 'ORA-2A-024'])]
 
 #import xlsx file
 REE = pd.read_excel("/Users/gennachiaro/Documents/vanderbilt/research/ora caldera/trace-elements/new-spreadsheets/Trace_Avgs_NormalizedREE.xlsx")
@@ -170,7 +170,7 @@ melt = melt.set_index('Sample')
 
 #melt = melt.set_index('Sample')
 #melt = melt.drop(['ORA-5B-408-SITE8', 'ORA-5B-408-SITE7','ORA-5B-412B-CG'], axis= 0)
-melt = melt.drop(['ORA-5B-405', 'ORA-5B-416'], axis= 0)
+#melt = melt.drop(['ORA-5B-405', 'ORA-5B-416'], axis= 0)
 #melt = melt.reset_index()
 
 # Dataframe Slicing using "isin"
@@ -275,12 +275,12 @@ xerr2 = VCCR_std[x]
 yerr2 = VCCR_std[y]
 
 plot3 = sns.scatterplot(data=MG, x=x, y=y, hue="Population", palette="Blues_d", marker='s', style = "Population",
-                       edgecolor="black", s=150, alpha=0.8, legend= "brief", hue_order=['MG 1', 'MG 2', 'MG 3'])
+                       edgecolor="black", s=150, alpha=0.8, legend= False, hue_order=['MG 1', 'MG 2', 'MG 3'])
 plt.errorbar(x=MG[x], y=MG[y], xerr=xerr1, yerr=yerr1, ls='none',
              ecolor='cornflowerblue', elinewidth=1, capsize=2, alpha=0.8)
 
 plot3 = sns.scatterplot(data=VCCR, x=x, y=y, hue="Population", palette="PuRd_r", markers=('h','^','P'), style = "Population",
-                       edgecolor="black", s=150, legend= 'brief', alpha=0.8, hue_order=['VCCR 1', 'VCCR 2', 'VCCR 3'])
+                       edgecolor="black", s=150, legend= False, alpha=0.8, hue_order=['VCCR 1', 'VCCR 2', 'VCCR 3'])
 plt.errorbar(x=VCCR[x], y=VCCR[y], xerr=xerr2, yerr=yerr2, ls='none',
              ecolor='palevioletred', elinewidth=1, capsize=2, barsabove=False, alpha=0.8)
 
@@ -301,7 +301,7 @@ h, l = plot2.get_legend_handles_labels()
 l[0] = "Outflow"
 l[4] = "Intracaldera"
 
-plt.legend(h, l, loc='best', ncol = 2, handlelength = 1, columnspacing = 0.5)
+#plt.legend(h, l, loc='best', ncol = 2, handlelength = 1, columnspacing = 0.5)
 
 
 #plot 4
@@ -317,12 +317,12 @@ xerr2 = VCCR_std[x]
 yerr2 = VCCR_std[y]
 
 plot4 = sns.scatterplot(data=MG, x=x, y=y, hue="Population", palette="Blues_d", marker='s', style = "Population",
-                       edgecolor="black", s=150, alpha=0.8, legend= 'brief', hue_order=['MG 1', 'MG 2', 'MG 3'])
+                       edgecolor="black", s=150, alpha=0.8, legend= False, hue_order=['MG 1', 'MG 2', 'MG 3'])
 plt.errorbar(x=MG[x], y=MG[y], xerr=xerr1, yerr=yerr1, ls='none',
              ecolor='cornflowerblue', elinewidth=1, capsize=2, alpha=0.8)
 
 plot4 = sns.scatterplot(data=VCCR, x=x, y=y, hue="Population", palette="PuRd_r", markers=('h','^','P'), style = "Population",
-                       edgecolor="black", s=150, legend= 'brief', alpha=0.8, hue_order=['VCCR 1', 'VCCR 2', 'VCCR 3'])
+                       edgecolor="black", s=150, legend= False, alpha=0.8, hue_order=['VCCR 1', 'VCCR 2', 'VCCR 3'])
 plt.errorbar(x=VCCR[x], y=VCCR[y], xerr=xerr2, yerr=yerr2, ls='none',
              ecolor='palevioletred', elinewidth=1, capsize=2, barsabove=False, alpha=0.8)
 
@@ -345,7 +345,7 @@ h, l = plot2.get_legend_handles_labels()
 l[0] = "Outflow"
 l[4] = "Intracaldera"
 
-plt.legend(h, l, loc='best', ncol = 2, handlelength = 1, columnspacing = 0.5)
+#plt.legend(h, l, loc='best', ncol = 2, handlelength = 1, columnspacing = 0.5)
 
 
 # set size of plot
@@ -355,4 +355,4 @@ plt.tight_layout()
 # set size of plot
 #sns.set_context("poster")
 
-#plt.savefig('/Users/gennachiaro/Documents/vanderbilt/research/ora caldera/trace-elements/graphs/HSR_4Plot_ErrorBars_V2.png', dpi=500)
+#plt.savefig('/Users/gennachiaro/Documents/vanderbilt/research/ora caldera/trace-elements/graphs/HSR_4Plot_ErrorBars_V4.png', dpi=500)

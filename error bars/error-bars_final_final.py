@@ -68,6 +68,9 @@ df = df.drop(['ORA-5B-405', 'ORA-5B-416'])
 
 # Dropping VCCR samples because we don't have matching SEM values
 df = df.drop(['ORA-5B-408-SITE8', 'ORA-5B-408-SITE7', 'ORA-5B-412B-CG'], axis= 0)
+
+# Dropping FG samples because remeasured:
+df = df.drop(['ORA-5B-410','ORA-5B-412B-FG'], axis= 0)
 df = df.reset_index()
 
 #---------
@@ -101,7 +104,7 @@ MG = sample_mean[sample_mean['Population'].isin(['MG 1', 'MG 2', 'MG 3'])]
 FG = sample_mean[sample_mean['Population'].isin(
     ['ORA-5B-410', 'ORA-5B-412', 'ORA-5B-414'])]
 FGCP = sample_mean[sample_mean['Population'].isin(
-    ['ORA-2A-002', 'ORA-2A-016', 'ORA-2A-003', 'ORA-2A-023', 'ORA-2A-024'])]
+    ['ORA-2A-002', 'ORA-2A-003', 'ORA-2A-023', 'ORA-2A-024'])]
 
 # #FGCP = FGCP.drop(['ORA-2A-002'], axis = 0)
 
@@ -120,7 +123,7 @@ VCCR_std = sample_std[sample_std['Population'].isin(
 FG_std = sample_std[sample_std['Population'].isin(
     ['ORA-5B-410', 'ORA-5B-412', 'ORA-5B-414'])]
 FGCP_std = sample_std[sample_std['Population'].isin(
-    ['ORA-2A-002','ORA-2A-016', 'ORA-2A-003', 'ORA-2A-023', 'ORA-2A-024'])]
+    ['ORA-2A-002','ORA-2A-003', 'ORA-2A-023', 'ORA-2A-024'])]
 
 # Plotting
 #       Slicing dataframe

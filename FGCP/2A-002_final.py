@@ -261,7 +261,7 @@ plt.tight_layout()
 
 #plt.figure(figsize=(4.5, 3), dpi=400)
 
-#plt.show()
+plt.show()
 
 #plt.show()
 
