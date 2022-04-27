@@ -417,6 +417,7 @@ plt.errorbar(x=FG[x], y=FG[y], xerr=xerr4, yerr=yerr4, ls='none',
 # plt.ylim(0.2, 4.9)
 
 
+
 # # create major element plot
 # plt.subplot(2, 2, 1)
 # plot = sns.scatterplot(data=FGCPm, x='SiO2', y='K2O', hue="Population", style="Population", palette="Greens_r", legend="brief", markers=(

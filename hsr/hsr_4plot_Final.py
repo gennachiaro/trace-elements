@@ -162,6 +162,12 @@ FGCP_std = sample_std[sample_std['Population'].isin(
 #import xlsx file
 REE = pd.read_excel("/Users/gennachiaro/Documents/vanderbilt/research/ora caldera/trace-elements/new-spreadsheets/Trace_Avgs_NormalizedREE.xlsx")
 
+#  change all negatives to NaN
+num = REE._get_numeric_data()
+num[num <= 0] = np.nan
+
+REE = REE.dropna(axis=1, how = 'all')
+
 # DataFrameMelt to get all values for each spot in tidy data
 #   every element for each spot corresponds to a separate row
 #       this is for if we want to plot every single data point
@@ -191,8 +197,8 @@ title = fig.suptitle("High-Silica Rhyolite (VCCR + MG) Fiamme Glass Populations"
 
 #create ree plot
 plt.subplot(2,2,1)
-plot = sns.lineplot(data = MGREE, x= 'variable', y='value', hue = 'Population', sort = False, palette="Blues_d",legend="brief")
-plot1 = sns.lineplot(data = VCCRREE, x= 'variable', y='value', hue = 'Population', sort = False, palette="PuRd_r", hue_order = ['VCCR 1', 'VCCR 2', 'VCCR 3'])
+plot = sns.lineplot(data = MGREE, x= 'variable', y='value', hue = 'Population', sort = False, palette="Blues_d",legend="brief", ci = 'sd')
+plot1 = sns.lineplot(data = VCCRREE, x= 'variable', y='value', hue = 'Population', sort = False, palette="PuRd_r", hue_order = ['VCCR 1', 'VCCR 2', 'VCCR 3'], ci = 'sd')
 
 #set location of legend
 plt.legend(loc='lower right')
@@ -204,12 +210,15 @@ plt.legend(h[1:4]+h[5:9],l[1:4]+l[5:9],loc='lower right')
 plt.xlabel('')
 plt.ylabel('Sample/Chondrite')
 
-plot1.text(-0.5,0.45, str('error envelopes $\pm$ 1$\sigma$'), fontsize = 11, fontweight = 'normal')
+#plot1.text(-0.5,0.45, str('error envelopes $\pm$ 1$\sigma$'), fontsize = 11, fontweight = 'normal')
+plot1.text(-0.5,0.12, str('error envelopes $\pm$ 1 std'), fontsize = 11, fontweight = 'normal')
+
 
 #plt.ylim(0.05, 200)
 
 #set y axis to log scale
 plot.set(yscale='log')
+plt.ylim( (10**-1,10**2.2) )
 
 
 #plot 2
@@ -287,7 +296,7 @@ plt.errorbar(x=VCCR[x], y=VCCR[y], xerr=xerr2, yerr=yerr2, ls='none',
 plt.xlabel(x + ' [ppm]')
 plt.ylabel(y + " [ppm]")
 
-plot3.text(5.1,109, str('error bars $\pm$ 1$\sigma$'), fontsize = 11, fontweight = 'normal')
+#plot3.text(5.1,109, str('error bars $\pm$ 1$\sigma$'), fontsize = 11, fontweight = 'normal')
 
 # Configure legend
 h, l = plot2.get_legend_handles_labels()
@@ -329,7 +338,7 @@ plt.errorbar(x=VCCR[x], y=VCCR[y], xerr=xerr2, yerr=yerr2, ls='none',
 plt.xlabel(x + ' [ppm]')
 plt.ylabel(y + " [ppm]")
 
-plot4.text(33,29.53, str('error bars $\pm$ 1$\sigma$'), fontsize = 11, fontweight = 'normal')
+#plot4.text(33,29.53, str('error bars $\pm$ 1$\sigma$'), fontsize = 11, fontweight = 'normal')
 
 
 # Configure legend
@@ -355,4 +364,4 @@ plt.tight_layout()
 # set size of plot
 #sns.set_context("poster")
 
-#plt.savefig('/Users/gennachiaro/Documents/vanderbilt/research/ora caldera/trace-elements/graphs/HSR_4Plot_ErrorBars_V4.png', dpi=500)
+plt.savefig('/Users/gennachiaro/Documents/vanderbilt/research/ora caldera/trace-elements/graphs/HSR_4Plot_ErrorBars_V6.png', dpi=500)

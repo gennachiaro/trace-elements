@@ -147,11 +147,11 @@ sns.set_style("darkgrid")
 
 # Plotting
 # Select elements to plot
-# x = 'Zr'
-# y = 'Y'
+x = 'Zr'
+y = 'Y'
 
-x = 'Ba'
-y = 'Sr'
+# x = 'Ba'
+# y = 'Sr'
 
 xerr1 = MG_std[x]
 yerr1 = MG_std[y]
@@ -171,6 +171,8 @@ yerr4 = FG_std[y]
 
 plt.figure(figsize=(4.5, 4), dpi=400)
 
+FGCP1 = FGCP1.replace(regex={'ORA-2A-002-Type1': 'ORA-2A-002-Type 1', 'ORA-2A-002-Type2': 'ORA-2A-002-Type 2', 'ORA-2A-002-Type3': 'ORA-2A-002-Type 3'})
+
 
 # Create plot
 # Show all symbols
@@ -188,7 +190,7 @@ plot = sns.scatterplot(data = all_2A_002, x= x, y=y, hue = "Sample", style = "Sa
 # plt.errorbar(x=VCCR[x], y=VCCR[y], xerr=xerr2, yerr=yerr2, ls='none',
 #              ecolor='palevioletred', elinewidth=1, capsize=2, barsabove=False, alpha=0.8)
 
-FGCP1 = FGCP1.replace(regex={'ORA-2A-002-Type1': 'Type 1', 'ORA-2A-002-Type2': 'Type 2', 'ORA-2A-002-Type3': 'Type 3'})
+#FGCP1 = FGCP1.replace(regex={'ORA-2A-002-Type1': 'Type 1', 'ORA-2A-002-Type2': 'Type 2', 'ORA-2A-002-Type3': 'Type 3'})
 
 plot = sns.scatterplot(data=FGCP1, x=x, y=y, hue="Sample", palette="Greens_r", style="Sample", edgecolor="black",
                        s=200, legend='brief', alpha=0.85,  markers = ['o','s','X'])
@@ -210,7 +212,7 @@ plt.ylabel(y + " [ppm]")
 
 #plot.text(5,342, str('error bars $\pm$ 1$\sigma$'), fontsize = 11, fontweight = 'normal')
 
-plot.text(100,5, str('error bars $\pm$ 1$\sigma$'), fontsize = 11, fontweight = 'normal')
+#plot.text(100,5, str('error bars $\pm$ 1$\sigma$'), fontsize = 11, fontweight = 'normal')
 
 #plot.text(62,53.5, str('error bars $\pm$ 1$\sigma$'), fontsize = 11, fontweight = 'normal')
 
@@ -240,7 +242,7 @@ h, l = plot.get_legend_handles_labels()
 #plt.legend(h[1:4]+h[5:8],l[1:4]+l[5:8],loc='center left', bbox_to_anchor=(1, 0.5), ncol=1)
 
 # Legend inside of plot
-plt.legend(h[2:5]+h[5:8], l[2:5]+l[5:8], loc='lower right', ncol=1)
+plt.legend(h[2:5]+h[5:8], l[2:5]+l[5:8], loc='best', ncol=1, handlelength = 1, columnspacing = 0.5)
 plt.tight_layout()
 
 # Populations
@@ -253,7 +255,7 @@ plt.tight_layout()
 # plt.suptitle("High-Silica Rhyolite (MG + VCCR) Fiamme Glass", fontsize=15,
 #              fontweight=0, color='black', y=0.95)
 
-#plt.savefig('/Users/gennachiaro/Documents/vanderbilt/research/ora caldera/trace-elements/graphs/2A 002/2A-002_Sr-Ba_final.png', dpi=400)
+plt.savefig('/Users/gennachiaro/Documents/vanderbilt/research/ora caldera/trace-elements/graphs/2A 002/2A-002_Y-Zr_final.png', dpi=500)
 
 
 # Set size of plot
@@ -261,7 +263,7 @@ plt.tight_layout()
 
 #plt.figure(figsize=(4.5, 3), dpi=400)
 
-plt.show()
+#plt.show()
 
 #plt.show()
 

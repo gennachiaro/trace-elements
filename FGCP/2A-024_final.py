@@ -176,7 +176,7 @@ plot = sns.scatterplot(data = all_2A_024, x= x, y=y, hue = "Sample", style = "Sa
 # plt.errorbar(x=VCCR[x], y=VCCR[y], xerr=xerr2, yerr=yerr2, ls='none',
 #              ecolor='palevioletred', elinewidth=1, capsize=2, barsabove=False, alpha=0.8)
 
-FGCP1 = FGCP1.replace(regex={'ORA-2A-024-TYPE1': 'Type 1','ORA-2A-024-TYPE2': 'Type 2' ,'ORA-2A-024-TYPE3': 'Type 3','ORA-2A-024-TYPE4': 'Type 4'})
+FGCP1 = FGCP1.replace(regex={'ORA-2A-024-TYPE1': 'ORA-2A-024-Type 1','ORA-2A-024-TYPE2': 'ORA-2A-024-Type 2' ,'ORA-2A-024-TYPE3': 'ORA-2A-024-Type 3','ORA-2A-024-TYPE4': 'ORA-2A-024-Type 4'})
 
 plot = sns.scatterplot(data=FGCP1, x=x, y=y, hue="Sample", palette="Greens_r", style="Sample", edgecolor="black",
                        s=200, legend='brief', alpha=0.85)
@@ -194,7 +194,7 @@ plt.ylabel(y + " [ppm]")
 
 #plt.text(x=MG[MG[x]], y=MG[MG[y]], s='Sample')
 
-plot.text(55.5,117.2, str('error bars $\pm$ 1$\sigma$'), fontsize = 11, fontweight = 'normal')
+#plot.text(55.5,117.2, str('error bars $\pm$ 1$\sigma$'), fontsize = 11, fontweight = 'normal')
 
 
 #   Different symbol for each population
@@ -214,7 +214,7 @@ h, l = plot.get_legend_handles_labels()
 #plt.legend(h[1:4]+h[5:8],l[1:4]+l[5:8],loc='center left', bbox_to_anchor=(1, 0.5), ncol=1)
 
 # Legend inside of plot
-plt.legend(h[1:6], l[1:6], loc='best', ncol=1)
+plt.legend(h[1:6], l[1:6], loc='center right', ncol=1, handlelength = 1, columnspacing = 0.5)
 plt.tight_layout()
 
 # Populations
