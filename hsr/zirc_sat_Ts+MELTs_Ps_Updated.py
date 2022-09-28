@@ -36,6 +36,8 @@ temps = temps.dropna(axis=0)
 pressures = pd.read_excel(
     '/Users/gennachiaro/Dropbox/Rhyolite-MELTs/Final_Ora_Alteration_Simulations+Comps.xlsx', index_col=3, na_values=na_values)
 
+pressures = pressures.drop(['ORA-5B-405-HSR-2019.10.22', 'ORA-5B-416-HSR-2019.10.23'])
+
 # Drop columns with any NaN values
 pressures = pressures.dropna(how='all', axis=1)
 
@@ -48,6 +50,7 @@ pressures = pressures[['Name', 'Alteration_Amount', 'Pressures (MPa)', 'Depth (k
 
 df = temps.join(pressures, how='left')
 
+df = df.dropna(axis = 0)
 
 # ----------
 
@@ -67,7 +70,8 @@ color_dict = dict({'VCCR 1': '#CC3366',
                    'CG 2': '#79ADD2',
                    'CG 3': '#ABCFE5',
                    'VCCR' : '#DA68A8',
-                   'MG' : '#79ADD2'})
+                   'MG' : '#79ADD2', 
+                   'MG 3': '#ABCFE5'})
 
 # colors = ['#DA68A8','#D4BBDA','#D4BBDA','##D4BBDA','#D4BBDA','#D4BBDA','#D4BBDA','#D4BBDA','#D4BBDA', '#ABCFE5','#ABCFE5','#ABCFE5','#ABCFE5']
 colors = ["#ABCFE5", "#ABCFE5", "#ABCFE5", "#DA68A8", "#D4BBDA", "#D4BBDA"]
@@ -87,6 +91,9 @@ df = df.sort_values(by=['Population'])
 # Dropping VCCR 1 test
 
 df1 = df
+
+MG3 = df1[df1['Population'].isin(['MG 3'])]
+
 
 df = df.set_index("Population")
 
@@ -112,7 +119,9 @@ VCCR2 = df[df['Population'].isin(['VCCR 2'])]
 VCCR3 = df[df['Population'].isin(['VCCR 3'])]
 MG1 = df[df['Population'].isin(['MG 1'])]
 MG2 = df[df['Population'].isin(['MG 2'])]
-MG3 = df[df['Population'].isin(['MG 3'])]
+#MG3 = df[df['Population'].isin(['MG 3'])]
+CG3 = df1.loc[df1.Population == 'CG 3']
+
 
 df['Type'] = df['Population'].str[:-2]
 #VCCR = df[df['Population'].isin(['VCCR 1', 'VCCR 2', 'VCCR 3'])]
@@ -147,8 +156,47 @@ df1['Population'] = df1['Population'].replace(replacement_mapping_dict, regex = 
 #      'fill': True, 'common_norm' : False})).plot_joint(sns.kdeplot, zorder=0, alpha=0.3, warn_singular=False, linewidths=1).plot_joint(sns.scatterplot, style=df['Population'], s=40).set_axis_labels('T °C (WH 83)','Pressures (MPa)')
 
 # Group by Population:
+#XLIM ADDED
+# g = (sns.jointplot(data=df, x='T °C (WH 83)', y='Pressures (MPa)', palette=color_dict, hue='Population', kind='kde', shade=True, xlim = [660, 800], joint_kws={"s": 100, "edgecolor": 'black', 'alpha': 0.7}, marginal_kws={
+#      'fill': True, 'common_norm' : False})).plot_joint(sns.kdeplot, zorder=0, alpha=0.3, warn_singular=False, linewidths=1).plot_joint(sns.scatterplot, style=df['Population'], s=40, markers = ('o', 's', '^', 'P', 'h')).set_axis_labels('T °C (WH 83)','Pressure (MPa)')
+
+
 g = (sns.jointplot(data=df, x='T °C (WH 83)', y='Pressures (MPa)', palette=color_dict, hue='Population', kind='kde', shade=True, joint_kws={"s": 100, "edgecolor": 'black', 'alpha': 0.7}, marginal_kws={
-     'fill': True, 'common_norm' : False})).plot_joint(sns.kdeplot, zorder=0, alpha=0.3, warn_singular=False, linewidths=1).plot_joint(sns.scatterplot, style=df['Population'], s=40).set_axis_labels('T °C (WH 83)','Pressure (MPa)')
+     'fill': True, 'common_norm' : False})).plot_joint(sns.kdeplot, zorder=0, alpha=0.3, warn_singular=False, linewidths=1).plot_joint(sns.scatterplot, style=df['Population'], s=40, markers = ('o', 's', '^', 'P', 'h')).set_axis_labels('T °C (WH 83)','Pressure (MPa)')
+
+#plt.xlim([680, 780])
+
+g.ax_joint.scatter(data = MG3, x = 'T °C (WH 83)', y = 'Pressures (MPa)', color = '#ABCFE5', marker = 'X', s=40, edgecolor = 'white', linewidth = 0.5)
+
+# KDE plots for population MG 3
+sns.kdeplot(data = MG3, x = 'T °C (WH 83)', color = '#ABCFE5', fill = True, common_norm = False, ax = g.ax_marg_x)
+sns.kdeplot(data = MG3, y = 'Pressures (MPa)', color = '#ABCFE5', fill = True, common_norm = False, ax = g.ax_marg_y)
+
+#plt.show()
+
+
+#sns.kdeplot(data = df1, x = 'Pressures (MPa)', palette=color_dict, hue='Population', fill = True, common_norm = False, ax = g.ax_marg_y, vertical = True)
+
+# sns.histplot(VCCR1['T °C (WH 83)'], color = '#CC3366', fill = True, ax = g.ax_marg_x)
+# sns.histplot(VCCR1['Pressures (MPa)'], color = '#CC3366', fill = True, ax = g.ax_marg_y, common_norm = 'False')
+
+
+#plt.show()
+
+# g = sns.JointGrid(data=df, x='T °C (WH 83)', y='Pressures (MPa)', palette=color_dict, hue='Population')
+# sns.kdeplot(x, y, palette=color_dict, hue='Population', shade = 'True', shade_lowest = False, ax = g.ax_joint)
+
+
+
+# sns.kdeplot(CG3['T °C (WH 83)'], color = '#ABCFE5', fill = True, common_norm = 'False', ax = g.ax_marg_x)
+# plt.show()
+
+# sns.histplot(VCCR1['T °C (WH 83)'], color = '#CC3366', fill = True)
+# plt.show()
+#sns.distplot(MG3, color = '#ABCFE5', ax = g.ax_marg_y, vertical=True)
+
+
+
 
 
 # Group by Type
@@ -175,7 +223,9 @@ secax.set_ylabel('Depth (km)')
 #      'fill': True, 'common_norm' : False})).plot_joint(sns.kdeplot, zorder=0, alpha=0.3, warn_singular=False, linewidths=1).plot_joint(sns.scatterplot, style=df['Population'], s=40).set_axis_labels('T °C (WH 83)','Pressures (MPa)')
 
 
-plt.ylim(reversed(plt.ylim(0, 200)))
+plt.ylim(reversed(plt.ylim(0, 300)))
+#plt.xlim([680, 800])
+
 
 #g = (sns.jointplot(data = df, x = 'T °C (WH 83)', y = 'Pressures (MPa)', palette = color_dict, hue = 'Population', kind = 'kde', joint_kws={"s": 100, "edgecolor": 'black', 'alpha':0.6}, marginal_kws = {'fill': True})).plot_joint(sns.kdeplot, zorder = 0, n_levels = 6)
 
@@ -286,8 +336,8 @@ plt.suptitle("Ora Zircon Saturation Temperatures and Rhyolite-MELTS Q2F Pressure
 
 # Save Figure
 
-plt.show()
+#plt.show()
 
-#plt.savefig('/Users/gennachiaro/Documents/vanderbilt/research/ora caldera/zircon saturation/zr_satplot_temps_kde_fill+points_crust_200MPa_final.png', dpi=300, bbox_inches = 'tight')
+#plt.savefig('/Users/gennachiaro/Documents/vanderbilt/research/ora caldera/zircon saturation/zr_satplot_temps_kde_fill+points_crust_300MPa_xlim.png', dpi=300, bbox_inches = 'tight')
 
-#plt.savefig('/Users/gennachiaro/Documents/vanderbilt/research/ora caldera/zircon saturation/zr_satplot_temps_kde_fill+points-TYPE.png', dpi=300, bbox_inches = 'tight')
+#plt.savefig('/Users/gennachiaro/Documents/vanderbilt/research/ora caldera/zircon saturation/zr_satplot_temps_CG3_300MP_final.svg', dpi=400, bbox_inches = 'tight')

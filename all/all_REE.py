@@ -9,6 +9,9 @@ import pandas as pd
 import numpy as np
 import seaborn as sns; sns.set()
 import matplotlib.pyplot as plt
+from matplotlib.ticker import FuncFormatter
+import matplotlib as mpl
+
 
 ##FROM BA-SR-ALL.PY
 # Specify pathname
@@ -75,7 +78,10 @@ ORA_024_REE = FGCPmelt[FGCPmelt['Population'].isin(['ORA-2A-024'])]
 Unmingled = FGCPmelt[FGCPmelt['Population'].isin(['ORA-2A-023', 'ORA-2A-003'])]
 
 # HSR subgroups
-MG = HSRmelt[HSRmelt['Population'].isin(['MG 1', 'MG 2', 'MG 3'])]
+#MG = HSRmelt[HSRmelt['Population'].isin(['MG 1', 'MG 2', 'MG 3'])]
+
+CG = HSRmelt[HSRmelt['Population'].isin(['CG 1', 'CG 2', 'CG 3'])]
+
 VCCR = HSRmelt[HSRmelt['Population'].isin(['VCCR 1', 'VCCR 2', 'VCCR 3'])]
 
 FG = FGmelt[FGmelt['Population'].isin(['ORA-5B-410', 'ORA-5B-412', 'ORA-5B-414'])]
@@ -97,7 +103,7 @@ fig = plt.figure(figsize=(10,8))
 #plt.subplot(3,2,1)
 plt.subplot(2,2,1)
 
-plt.title('Outflow (Unmingled FGCP + MG)', fontsize = 13)
+plt.title('Outflow (Unmingled FGCP + CG)', fontsize = 13)
 
 ORA_002_REE = ORA_002_REE.replace(regex={'ORA-2A-002-Type1': 'ORA-2A-002-Type 1', 'ORA-2A-002-Type2': 'ORA-2A-002-Type 2', 'ORA-2A-002-Type3': 'ORA-2A-002-Type 3'})
 ORA_024_REE = ORA_024_REE.replace(regex={'ORA-2A-024-TYPE1': 'ORA-2A-024-Type 1','ORA-2A-024-TYPE2': 'ORA-2A-024-Type 2' ,'ORA-2A-024-TYPE3': 'ORA-2A-024-Type 3','ORA-2A-024-TYPE4': 'ORA-2A-024-Type 4'})
@@ -106,6 +112,10 @@ plot = sns.lineplot(data = Unmingled, x= 'variable', y='value', hue = 'Sample', 
 
 #plot = sns.lineplot(data = ORA_002_REE, x= 'variable', y='value', hue = 'Sample', sort = False, palette="Greys_d",legend="brief", hue_order = ('ORA-2A-002-Type 1', 'ORA-2A-002-Type 2', 'ORA-2A-002-Type 3'))
 #plot = sns.lineplot(data = ORA_024_REE, x= 'variable', y='value', hue = 'Sample', sort = False, palette="Greens",legend="brief")
+
+plot.get_yaxis().set_minor_locator(mpl.ticker.AutoMinorLocator())
+plot.grid(b=True, which='major', color='w', linewidth=1.0)
+plot.grid(b=True, which='minor', color='w', linewidth=0.5)
 
 #set location of legend
 plt.legend(loc='lower right')
@@ -142,6 +152,10 @@ plt.ylabel('Sample/Chondrite')
 plot.set(yscale='log')
 plt.ylim( (10**-1,10**2.2) )
 
+for axis in [plot.yaxis]:
+    formatter = FuncFormatter(lambda y, _: '{:.16g}'.format(y))
+    axis.set_major_formatter(formatter)
+
 #plt.yscale('log')
 
 # ---------
@@ -153,8 +167,12 @@ plt.title('Intracaldera (FG + VCCR)', fontsize = 13)
 
 FG = FG.replace(regex={'ORA-5B-410-B': 'ORA-5B-410', 'ORA-5B-412A-FG': 'ORA-5B-412', 'ORA-5B-414-FG': 'ORA-5B-414'})
 
+
 plot = sns.lineplot(data = FG, x= 'variable', y='value', hue = 'Sample', sort = False, palette="OrRd_r",legend="brief", hue_order = ('ORA-5B-412', 'ORA-5B-410', 'ORA-5B-414'), ci = 'sd')
 
+plot.get_yaxis().set_minor_locator(mpl.ticker.AutoMinorLocator())
+plot.grid(b=True, which='major', color='w', linewidth=1.0)
+plot.grid(b=True, which='minor', color='w', linewidth=0.5)
 
 h,l = plot.get_legend_handles_labels()
 plt.legend(h[1:4]+h[5:8], l[1:4]+l[5:8], loc='lower right', ncol=1)
@@ -173,6 +191,10 @@ plt.text(-0.5,100, str('b'), fontsize = 13, fontweight = 'normal', bbox = props)
 plot.set(yscale='log')
 plt.ylim( (10**-1,10**2.2) )
 
+for axis in [plot.yaxis]:
+    formatter = FuncFormatter(lambda y, _: '{:.16g}'.format(y))
+    axis.set_major_formatter(formatter)
+
 #plt.yscale('log')
 
 # ---------
@@ -180,11 +202,14 @@ plt.ylim( (10**-1,10**2.2) )
 #plt.subplot(3,2,3)
 plt.subplot(2,2,3)
 
-
-plot = sns.lineplot(data = MG, x= 'variable', y='value', hue = 'Population', sort = False, palette="Blues_d",legend="brief", ci = 'sd')
+plot = sns.lineplot(data = CG, x= 'variable', y='value', hue = 'Population', sort = False, palette="Blues_d",legend="brief", ci = 'sd')
 
 #set location of legend
 plt.legend(loc='lower right')
+
+plot.get_yaxis().set_minor_locator(mpl.ticker.AutoMinorLocator())
+plot.grid(b=True, which='major', color='w', linewidth=1.0)
+plot.grid(b=True, which='minor', color='w', linewidth=0.5)
 
 h,l = plot.get_legend_handles_labels()
 plt.legend(h[1:4]+h[5:8], l[1:4]+l[5:8], loc='lower right', ncol=1)
@@ -201,13 +226,16 @@ plt.ylabel('Sample/Chondrite')
 plot.set(yscale='log')
 plt.ylim( (10**-1,10**2.2) )
 
+for axis in [plot.yaxis]:
+    formatter = FuncFormatter(lambda y, _: '{:.16g}'.format(y))
+    axis.set_major_formatter(formatter)
+
 #plt.yscale('log')
 
 # -----------
 #plot 4
 #plt.subplot(3,2,4)
 plt.subplot(2,2,4)
-
 
 plot = sns.lineplot(data = VCCR, x= 'variable', y='value', hue = 'Population', sort = False, palette="PuRd_r",legend="brief", ci = 'sd')
 
@@ -217,6 +245,10 @@ plt.legend(loc='lower right')
 h,l = plot.get_legend_handles_labels()
 # Legend inside of plot
 plt.legend(h[1:5]+h[5:8], l[1:5]+l[5:8], loc='lower right', ncol=1)
+
+plot.get_yaxis().set_minor_locator(mpl.ticker.AutoMinorLocator())
+plot.grid(b=True, which='major', color='w', linewidth=1.0)
+plot.grid(b=True, which='minor', color='w', linewidth=0.5)
 
 props = dict(boxstyle = 'square, pad = 0.2', facecolor = 'white', alpha = 0.5, ec = 'none')
 plt.text(-0.5,100, str('d'), fontsize = 13, fontweight = 'normal', bbox = props)
@@ -235,6 +267,10 @@ plt.ylabel('Sample/Chondrite')
 plt.yscale('log')
 plt.ylim( (10**-1,10**2.2) )
 #plt.ylim (-10, 120)
+
+for axis in [plot.yaxis]:
+    formatter = FuncFormatter(lambda y, _: '{:.16g}'.format(y))
+    axis.set_major_formatter(formatter)
 
 # # -----------
 # #plot 5
@@ -298,4 +334,4 @@ plt.ylim( (10**-1,10**2.2) )
 # #sns.set_context("paper") 
 #plt.tight_layout()
 
-plt.savefig('/Users/gennachiaro/Documents/vanderbilt/research/ora caldera/trace-elements/graphs/All_REE.png', dpi=500)
+#plt.savefig('/Users/gennachiaro/Documents/vanderbilt/research/ora caldera/trace-elements/graphs/All_REE.png', dpi=500)

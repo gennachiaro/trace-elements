@@ -177,7 +177,7 @@ sns.set_style("darkgrid")
 #plot matrix
 fig = plt.figure(figsize=(10,8))
 
-fig.suptitle("ORA-2A-024", fontsize=18, fontweight=0, color='black', y = 0.92)
+fig.suptitle("ORA-2A-002", fontsize=18, fontweight=0, color='black', y = 0.92)
 
 
 # group plot title
@@ -188,16 +188,19 @@ fig.suptitle("ORA-2A-024", fontsize=18, fontweight=0, color='black', y = 0.92)
 
 # Plotting
 # Select elements to plot
-x = 'La'
-y = 'Lu'
+x = 'Ba'
+y = 'Sr'
 
 # x = 'Ba'
 # y = 'Sr'
 
 # 2A 024 Error Bar Values
-xerr1 = ORA2A024_std[x]
-yerr1 = ORA2A024_std[y]
+xerr1 = ORA2A002_std[x]
+yerr1 = ORA2A002_std[y]
 
+# 2A 002 Error Bar Values
+xerr2 = ORA2A024_std[x]
+yerr2 = ORA2A024_std[y]
 
 #fig.suptitle("ORA-2A-002", fontsize=13.5, fontweight=0, color='black', y = 0.99)
 
@@ -207,14 +210,14 @@ plt.subplot(2,2,1)
 #plt.title("ORA-2A-002", fontsize=13.5, fontweight=0, color='black', y = 0.99)
 
 # Show all symbols
-ORA2A024 = ORA2A024.replace(regex={'ORA-2A-024-TYPE1': 'ORA-2A-024-Type 1','ORA-2A-024-TYPE2': 'ORA-2A-024-Type 2' ,'ORA-2A-024-TYPE3': 'ORA-2A-024-Type 3','ORA-2A-024-TYPE4': 'ORA-2A-024-Type 4'})
+ORA2A002 = ORA2A002.replace(regex={'ORA-2A-002-Type1': 'ORA-2A-002-Type 1', 'ORA-2A-002-Type2': 'ORA-2A-002-Type 2', 'ORA-2A-002-Type3': 'ORA-2A-002-Type 3'})
 
-plot = sns.scatterplot(data = all_2A_024, x= x, y=y, hue = "Sample", style = "Sample", palette="gray", edgecolor="black", s=150, alpha = 0.2, legend=False)
+plot = sns.scatterplot(data = all_2A_002, x= x, y=y, hue = "Sample", style = "Sample", palette="gray", edgecolor="black", s=150, alpha = 0.2, legend=False, markers = ['o','X','s'], hue_order=['ORA-2A-002-Type1','ORA-2A-002-Type2','ORA-2A-002-Type3'])
 
 
-plot = sns.scatterplot(data=ORA2A024, x=x, y=y, hue="Sample", palette="Greens_r", style="Sample", edgecolor="black",
-                       s=200, legend='brief', alpha=0.85)
-plt.errorbar(x=ORA2A024[x], y=ORA2A024[y], xerr=xerr1, yerr=yerr1, ls='none', ecolor='green', elinewidth=1, capsize=2, barsabove=False, alpha=0.8)
+plot = sns.scatterplot(data=ORA2A002, x=x, y=y, hue="Sample", palette="Greens_r", style="Sample", edgecolor="black",
+                       s=200, legend='brief', alpha=0.85,  markers = ['o','s','X'])
+plt.errorbar(x=ORA2A002[x], y=ORA2A002[y], xerr=xerr1, yerr=yerr1, ls='none', ecolor='green', elinewidth=1, capsize=2, barsabove=False, alpha=0.8)
 
 #Y vs. U
 # plot.text(14.3,53, str('error bars $\pm$ 1$\sigma$'), fontsize = 11, fontweight = 'normal')
@@ -224,10 +227,14 @@ plt.errorbar(x=ORA2A024[x], y=ORA2A024[y], xerr=xerr1, yerr=yerr1, ls='none', ec
 
 
 h, l = plot.get_legend_handles_labels()
-plt.legend(h[1:5]+h[5:8], l[1:5]+l[5:8], loc='best', ncol=1, handlelength = 1, columnspacing = 0.5)
+plt.legend(h[1:4]+h[5:8], l[1:4]+l[5:8], loc='best', ncol=1, handlelength = 1, columnspacing = 0.5)
 
 plt.xlabel(x + ' [ppm]')
 plt.ylabel(y + " [ppm]")
+
+#plt.yscale('log')
+#plt.xscale('log')
+
 
 # plt.ylim((51, 120.2) )
 # plt.xlim (6.4, 19)
@@ -237,19 +244,19 @@ plt.subplot(2,2,2)
 #create trace element plot
 #plt.title("ORA-2A-024", fontsize=13.5, fontweight=0, color='black', y = 0.99)
 
-x = 'Eu'
-y = 'Gd'
+x = 'Zr'
+y = 'Yb'
 
-xerr1 = ORA2A024_std[x]
-yerr1 = ORA2A024_std[y]
+xerr1 = ORA2A002_std[x]
+yerr1 = ORA2A002_std[y]
 
 # Show all symbols
-plot2 = sns.scatterplot(data = all_2A_024, x= x, y=y, hue = "Sample", style = "Sample", palette="gray", edgecolor="black", s=150, alpha = 0.2, legend=False)
+plot2 = sns.scatterplot(data = all_2A_002, x= x, y=y, hue = "Sample", style = "Sample", palette="gray", edgecolor="black", s=150, alpha = 0.2, legend=False, markers = ['o','X','s'], hue_order=['ORA-2A-002-Type1','ORA-2A-002-Type2','ORA-2A-002-Type3'])
 
 
-plot2 = sns.scatterplot(data=ORA2A024, x=x, y=y, hue="Sample", palette="Greens_r", style="Sample", edgecolor="black",
-                       s=200, legend=False, alpha=0.85)
-plt.errorbar(x=ORA2A024[x], y=ORA2A024[y], xerr=xerr1, yerr=yerr1, ls='none', ecolor='green', elinewidth=1, capsize=2, barsabove=False, alpha=0.8)
+plot2 = sns.scatterplot(data=ORA2A002, x=x, y=y, hue="Sample", palette="Greens_r", style="Sample", edgecolor="black",
+                       s=200, legend=False, alpha=0.85,  markers = ['o','s','X'])
+plt.errorbar(x=ORA2A002[x], y=ORA2A002[y], xerr=xerr1, yerr=yerr1, ls='none', ecolor='green', elinewidth=1, capsize=2, barsabove=False, alpha=0.8)
 
 plt.xlabel(x + ' [ppm]')
 plt.ylabel(y + " [ppm]")
@@ -267,25 +274,25 @@ plt.ylabel(y + " [ppm]")
 #plot 3
 plt.subplot(2,2,3)
 
-x = 'Eu'
-y = 'La'
+x = 'La'
+y = 'Th'
 
-xerr1 = ORA2A024_std[x]
-yerr1 = ORA2A024_std[y]
+xerr1 = ORA2A002_std[x]
+yerr1 = ORA2A002_std[y]
 
 # Show all symbols
-plot3 = sns.scatterplot(data = all_2A_024, x= x, y=y, hue = "Sample", style = "Sample", palette="gray", edgecolor="black", s=150, alpha = 0.2, legend=False)
+plot3 = sns.scatterplot(data = all_2A_002, x= x, y=y, hue = "Sample", style = "Sample", palette="gray", edgecolor="black", s=150, alpha = 0.2, legend=False, markers = ['o','X','s'], hue_order=['ORA-2A-002-Type1','ORA-2A-002-Type2','ORA-2A-002-Type3'])
 
 
-plot3 = sns.scatterplot(data=ORA2A024, x=x, y=y, hue="Sample", palette="Greens_r", style="Sample", edgecolor="black",
-                       s=200, legend=False, alpha=0.85)
-plt.errorbar(x=ORA2A024[x], y=ORA2A024[y], xerr=xerr1, yerr=yerr1, ls='none', ecolor='green', elinewidth=1, capsize=2, barsabove=False, alpha=0.8)
+plot3 = sns.scatterplot(data=ORA2A002, x=x, y=y, hue="Sample", palette="Greens_r", style="Sample", edgecolor="black",
+                       s=200, legend=False, alpha=0.85,  markers = ['o','s','X'])
+plt.errorbar(x=ORA2A002[x], y=ORA2A002[y], xerr=xerr1, yerr=yerr1, ls='none', ecolor='green', elinewidth=1, capsize=2, barsabove=False, alpha=0.8)
 
 plt.xlabel(x + ' [ppm]')
 plt.ylabel(y + " [ppm]")
 #plt.yscale('log')
 
-#plot2.text(32.6,6.5, str('error bars $\pm$ 1$\sigma$'), fontsize = 11, fontweight = 'normal')
+#plot3.text(24,10.3, str('error bars $\pm$ 1$\sigma$'), fontsize = 11, fontweight = 'normal')
 
 
 # -----------
@@ -295,16 +302,16 @@ plt.subplot(2,2,4)
 x = 'La/Lu'
 y = 'Eu/Eu*'
 
-xerr1 = ORA2A024_std[x]
-yerr1 = ORA2A024_std[y]
+xerr1 = ORA2A002_std[x]
+yerr1 = ORA2A002_std[y]
 
 # Show all symbols
-plot4 = sns.scatterplot(data = all_2A_024, x= x, y=y, hue = "Sample", style = "Sample", palette="gray", edgecolor="black", s=150, alpha = 0.2, legend=False)
+plot4 = sns.scatterplot(data = all_2A_002, x= x, y=y, hue = "Sample", style = "Sample", palette="gray", edgecolor="black", s=150, alpha = 0.2, legend=False, markers = ['o','X','s'], hue_order=['ORA-2A-002-Type1','ORA-2A-002-Type2','ORA-2A-002-Type3'])
 
 
-plot4 = sns.scatterplot(data=ORA2A024, x=x, y=y, hue="Sample", palette="Greens_r", style="Sample", edgecolor="black",
-                       s=200, legend=False, alpha=0.85)
-plt.errorbar(x=ORA2A024[x], y=ORA2A024[y], xerr=xerr1, yerr=yerr1, ls='none', ecolor='green', elinewidth=1, capsize=2, barsabove=False, alpha=0.8)
+plot4 = sns.scatterplot(data=ORA2A002, x=x, y=y, hue="Sample", palette="Greens_r", style="Sample", edgecolor="black",
+                       s=200, legend=False, alpha=0.85,  markers = ['o','s','X'])
+plt.errorbar(x=ORA2A002[x], y=ORA2A002[y], xerr=xerr1, yerr=yerr1, ls='none', ecolor='green', elinewidth=1, capsize=2, barsabove=False, alpha=0.8)
 
 #plt.xlabel(x + ' [ppm]')
 #plt.ylabel(y + " [ppm]")
@@ -321,4 +328,4 @@ plt.errorbar(x=ORA2A024[x], y=ORA2A024[y], xerr=xerr1, yerr=yerr1, ls='none', ec
 #sns.set_context("paper") 
 #plt.tight_layout()
 
-plt.savefig('/Users/gennachiaro/Documents/vanderbilt/research/ora caldera/trace-elements/graphs/2A-024_4plot_La_Eu.png', dpi=500)
+#plt.savefig('/Users/gennachiaro/Documents/vanderbilt/research/ora caldera/trace-elements/graphs/2A-002_4plot_Eu_La.png', dpi=500)

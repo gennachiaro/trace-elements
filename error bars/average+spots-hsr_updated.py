@@ -1,16 +1,15 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
+"""
+Created on Mon Nov 29 10:47:20 2021
 
-import matplotlib.pyplot as plt
+@author: gennachiaro
+"""
 import pandas as pd
 import numpy as np
-import seaborn as sns
-sns.set()
-
-# Import csv file
-# All values
-#df = pd.read_csv('/Users/gennachiaro/Documents/vanderbilt/research/ora caldera/trace-elements/new-spreadsheets/Ora-Glass-All.csv', index_col=1)
-#df1 = pd.read_csv('/Users/gennachiaro/Documents/vanderbilt/research/ora caldera/trace-elements/new-spreadsheets/Ora-Glass-All.csv',dtype={'Li': np.float64, 'Mg': np.float64, 'V': np.float64, 'Cr': np.float64, 'Ni': np.float64}, na_values= na_values)
+import seaborn as sns; sns.set()
+import matplotlib.pyplot as plt
+import matplotlib as mpl
 
 # Create a custom list of values I want to cast to NaN, and explicitly
 #   define the data types of columns:
@@ -20,12 +19,32 @@ na_values = ['<-1.00', '****', '<****', '*****']
 #df1 = pd.read_csv('/Users/gennachiaro/Documents/vanderbilt/research/ora caldera/trace-elements/new-spreadsheets/Ora-Glass-All.csv',dtype={'Li': np.float64, 'Mg': np.float64, 'V': np.float64, 'Cr': np.float64, 'Ni': np.float64, 'Nb': np.float64,'SiO2': np.float64}, na_values= na_values)
 # read in excel file!
 
-# All with clear mineral analyses removed
-df1 = pd.read_excel('/Users/gennachiaro/Documents/vanderbilt/research/ora caldera/trace-elements/new-spreadsheets/Ora-Glass-All.xlsx', dtype={
-                    'Li': np.float64, 'Mg': np.float64, 'V': np.float64, 'Cr': np.float64, 'Ni': np.float64, 'Nb': np.float64, 'SiO2': np.float64}, na_values=na_values, sheet_name='Data')
+# # All data with clear mineral analyses removed (manually in excel file)
+# df1 = pd.read_excel('/Users/gennachiaro/Documents/vanderbilt/research/ora caldera/trace-elements/new-spreadsheets/Ora-Glass-All.xlsx', dtype=({
+#                     'Li': np.float64, 'Mg': np.float64, 'V': np.float64, 'Cr': np.float64, 'Ni': np.float64, 'Nb': np.float64, 'SiO2': np.float64}), na_values=na_values, sheet_name='Data')
 
-# Drop "Included" column
-df1 = df1.drop(['Included'], axis=1)
+
+# Columns converted to np.float
+data = ({'Li': np.float64, 'Mg': np.float64, 'Al': np.float64,'Si': np.float64,'Ca': np.float64,'Sc': np.float64,'Ti': np.float64,'Ti.1': np.float64,'V': np.float64, 'Cr': np.float64, 'Mn': np.float64,'Fe': np.float64,'Co': np.float64,'Ni': np.float64, 'Zn': np.float64,'Rb': np.float64,'Sr': np.float64,'Y': np.float64,'Zr': np.float64,'Nb': np.float64,'Ba': np.float64,'La': np.float64,'Ce': np.float64,'Pr': np.float64,'Nd': np.float64,'Sm':np.float64,'Eu': np.float64,'Gd': np.float64,'Tb': np.float64,'Gd.1': np.float64,'Dy': np.float64,'Ho': np.float64,'Er': np.float64,'Tm': np.float64,'Yb': np.float64,'Lu':np.float64,'Hf': np.float64,'Ta': np.float64,'Pb': np.float64,'Th': np.float64,'U': np.float64})
+
+# Specify pathname
+path = '/Users/gennachiaro/Documents/vanderbilt/research/ora caldera/trace-elements/new-spreadsheets/Ora-Glass-MASTER.xlsx'
+
+#path = os.path.normcase(path) # This changes path to be compatible with windows
+
+# Master spreadsheet with clear mineral analyses removed (excel file!)
+df1 = pd.read_excel(path, sheet_name = 'Data', skiprows = [1], dtype = data, na_values = na_values)
+
+#If Value in included row is equal to zero, drop this row
+df1 = df1.loc[~((df1['Included'] == 0))]
+
+df1['Gd/Lu'] = (df1['Gd']/df1['Lu'])
+
+df1['La/Yb'] = (df1['La']/df1['Yb'])
+
+df1['Yb/Dy'] = (df1['Yb']/df1['Dy'])
+
+
 
 # drop blank columns
 #df = df.dropna(axis = 1, how = 'all')
@@ -72,12 +91,48 @@ sample_mean = df1.groupby('Sample').mean()
 populations = df1[['Sample', 'Population']].drop_duplicates('Sample')
 
 # Merge two dataframes
-merge = pd.merge(populations, sample_mean, how='right',
+sample_mean = pd.merge(populations, sample_mean, how='right',
                  left_on="Sample", right_on=sample_mean.index)
 
 # Set index
-merge = merge.set_index('Sample')
-#print (merge.head())
+sample_mean = sample_mean.set_index('Sample')
+
+
+# Drop bad analyses column
+# Drop MG samples
+sample_mean = sample_mean.drop(['ORA-2A-036', 'ORA-2A-032', 'ORA-2A-035'], axis= 0)
+# Drop VCCR samples
+sample_mean = sample_mean.drop(['ORA-5B-405-B', 'ORA-5B-406-B','ORA-5B-409-B', 'ORA-5B-416-B', 'ORA-5B-404A-B'], axis= 0)
+# Drop to match with SEM-Data!
+sample_mean = sample_mean.drop(['ORA-5B-408-SITE8', 'ORA-5B-408-SITE7','ORA-5B-412B-CG'], axis= 0)
+
+#Drop because measured two of the same fiamme!
+sample_mean = sample_mean.drop(['ORA-5B-405', 'ORA-5B-416'], axis= 0)
+
+#Dropping FG samples because we remeasured these
+sample_mean = sample_mean.drop([ 'ORA-5B-410','ORA-5B-412B-FG'], axis= 0)
+
+
+
+sample_mean = sample_mean.reset_index()
+
+# Add in a column that tells how many samples were calculated for the mean using value_counts
+count = df1['Sample'].value_counts() #can use .size() but that includes NaN values
+
+sample_mean = sample_mean.set_index('Sample')
+sample_mean['Count'] = count
+
+
+# Dataframe Slicing of average values using "isin"
+VCCR = sample_mean[sample_mean['Population'].isin(['VCCR 1', 'VCCR 2', 'VCCR 3'])]
+MG = sample_mean[sample_mean['Population'].isin(['MG 1', 'MG 2', 'MG 3'])]
+FG = sample_mean[sample_mean['Population'].isin(
+    ['ORA-5B-410', 'ORA-5B-412', 'ORA-5B-414'])]
+FGCP = sample_mean[sample_mean['Population'].isin(
+    ['ORA-2A-002', 'ORA-2A-003', 'ORA-2A-023', 'ORA-2A-024'])]
+
+
+# #FGCP = FGCP.drop(['ORA-2A-002'], axis = 0)
 
 # Calculate stdev for each sample (messy)
 sample_std = df1.groupby('Sample').std()
@@ -95,22 +150,56 @@ sample_std = pd.merge(populations, sample_std, how='right',
 sample_std = sample_std.set_index('Sample')
 #print (sample_std.head())
 
+# Drop bad samples
+# Drop MG samples
+sample_std = sample_std.drop(['ORA-2A-032', 'ORA-2A-035'], axis= 0)
+# Drop VCCR samples
+#sample_std = sample_std.drop(['ORA-5B-405-B', 'ORA-5B-406-B','ORA-5B-409-B', 'ORA-5B-416-B','ORA-5B-404A-B'], axis= 0)
+# Drop to match with SEM-Data!
+sample_std = sample_std.drop(['ORA-5B-408-SITE8', 'ORA-5B-408-SITE7','ORA-5B-412B-CG', 'ORA-5B-410','ORA-5B-412B-FG'], axis= 0)
+
+#Drop because measured two of the same fiamme!
+sample_std = sample_std.drop(['ORA-5B-405', 'ORA-5B-416'], axis= 0)
+
+
+# Select sample stdev by population
+MG_std = sample_std[sample_std['Population'].isin(['MG 1', 'MG 2', 'MG 3'])]
+VCCR_std = sample_std[sample_std['Population'].isin(
+    ['VCCR 1', 'VCCR 2', 'VCCR 3'])]
+FG_std = sample_std[sample_std['Population'].isin(
+    ['ORA-5B-410', 'ORA-5B-412', 'ORA-5B-414'])]
+FGCP_std = sample_std[sample_std['Population'].isin(
+    ['ORA-2A-002', 'ORA-2A-003', 'ORA-2A-023', 'ORA-2A-024'])]
+
+
+# Plot All Spots
+#   Set Dataframe Index
+df1 = df1.set_index('Sample')
+
+# Dataframe Slicing using "isin"
+VCCR_all = df1[df1['Population'].isin(['VCCR 1', 'VCCR 2', 'VCCR 3'])]
+MG_all = df1[df1['Population'].isin(['MG 1', 'MG 2', 'MG 3'])]
+
+# Drop bad analyses column
+MG_all = MG_all.drop(['ORA-2A-032', 'ORA-2A-035', 'ORA-2A-036'], axis=0)
+
+VCCR_all = VCCR_all.drop(['ORA-5B-405-B', 'ORA-5B-406-B','ORA-5B-409-B', 'ORA-5B-416-B', 'ORA-5B-404A-B'], axis= 0)
+
+#Drop because measured two of the same fiamme!
+VCCR_all = VCCR_all.drop(['ORA-5B-405', 'ORA-5B-416'], axis= 0)
+
+
+
 # Plotting
-#       Slicing dataframe
-MG = merge.loc[['ORA-2A-001', 'ORA-2A-005', 'ORA-2A-018',
-                'ORA-2A-031', 'ORA-2A-032', 'ORA-2A-035', 'ORA-2A-040']]
-MG_index = MG.index
+# Select elements to plot
+x = 'Ba'
+y = 'Sr'
 
-VCCR1 = merge.loc[['ORA-5B-404A', 'ORA-5B-404B', 'ORA-5B-405', 'ORA-5B-406',
-                   'ORA-5B-408-SITE7', 'ORA-5B-408-SITE8', 'ORA-5B-411', 'ORA-5B-416']]
-VCCR1_index = VCCR1.index
-
-#VCCR1 = df.loc [['ORA-5B-402','ORA-5B-404A','ORA-5B-406','ORA-5B-409','ORA-5B-411','ORA-5B-415','ORA-5B-416','ORA-5B-417']]
-#VCCR1_index = VCCR1.index
-
-VCCR = merge.loc[['ORA-5B-402', 'ORA-5B-404A', 'ORA-5B-404B', 'ORA-5B-405', 'ORA-5B-406', 'ORA-5B-407', 'ORA-5B-408-SITE2', 'ORA-5B-408-SITE7',
-                  'ORA-5B-408-SITE8', 'ORA-5B-409', 'ORA-5B-411', 'ORA-5B-412A-CG', 'ORA-5B-412B-CG', 'ORA-5B-413', 'ORA-5B-414-CG', 'ORA-5B-415', 'ORA-5B-416', 'ORA-5B-417']]
-VCCR_index = VCCR.index
+# create trace element plot
+plot = sns.scatterplot(data=VCCR_all, x=x, y=y, hue="Population", palette="gray", edgecolor="black",
+                       marker='^', s=150, alpha=0.2, legend=False, hue_order=['VCCR 1', 'VCCR 2', 'VCCR 3'])
+plot = sns.scatterplot(data=MG_all, x=x, y=y, hue="Population", palette="gray", marker='s', edgecolor="black",
+                       s=150, alpha=0.2, legend=False, hue_order=['MG 1', 'MG 2', 'MG 3'])
 
 # Set background color
 sns.set_style("darkgrid")
@@ -135,10 +224,6 @@ VCCR_std = sample_std[sample_std['Population'].isin(
 # Drop bad samples
 VCCR_std = VCCR_std.drop(
     ['ORA-5B-405-B', 'ORA-5B-406-B', 'ORA-5B-409-B', 'ORA-5B-416-B'], axis=0)
-
-# Select elements to plot
-x = 'Ba'
-y = 'Sr'
 
 # MG Error Bar Values
 #xerr1 = MG_std['Sr']
@@ -197,7 +282,7 @@ h, l = plot.get_legend_handles_labels()
 #plt.legend(h[1:4]+h[5:8],l[1:4]+l[5:8],loc='center left', bbox_to_anchor=(1, 0.5), ncol=1)
 
 # Legend inside of plot
-plt.legend(h[1:4]+h[5:8], l[1:4]+l[5:8], loc='best', ncol=1)
+plt.legend(h[1:4]+h[5:8], l[1:4]+l[5:8], loc='best', ncol=2)
 
 # Populations
 #plt.legend(h[1:4]+h[13:16],l[1:4]+l[13:16],loc='center left', bbox_to_anchor=(1, 0.5), ncol=1)

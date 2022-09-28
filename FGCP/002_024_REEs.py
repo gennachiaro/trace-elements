@@ -23,7 +23,10 @@ num = REE._get_numeric_data()
 num[num <= 0] = np.nan
 
 # drop na rows
-REE = REE.dropna(axis = 0, how = 'any')
+#REE = REE.dropna(axis = 0, how = 'any')
+REE = REE.dropna(axis=1, how = 'all')
+
+REE = REE.dropna(axis=0, how = 'any')
 # df = df.dropna(axis=1, how='all'
 
 
@@ -73,20 +76,25 @@ ORA_002_REE = ORA_002_REE.replace(regex={'ORA-2A-002-Type1': 'ORA-2A-002-Type 1'
 
 #plot = sns.lineplot(data = ORA_002_REE, x= 'variable', y='value', hue = 'Sample', sort = False, palette="Greens_d",legend='brief', hue_order = ('ORA-2A-002-Type 1', 'ORA-2A-002-Type 2','ORA-2A-002-Type 3'))
 
-plot = sns.lineplot(data = ORA_002_REE_1, x= 'variable', y='value', hue = 'Spot', sort = False, palette = "Greens", alpha = 0.5, legend=False)
-plot = sns.lineplot(data = ORA_002_REE_2, x= 'variable', y='value', hue = 'Spot', sort = False, palette = "Greys", alpha = 0.5, legend=False)
-plot = sns.lineplot(data = ORA_002_REE_3, x= 'variable', y='value', hue = 'Spot', sort = False, palette = "PuRd", alpha = 0.5, legend=False)
+#plot = sns.lineplot(data = ORA_002_REE, x= 'variable', y='value', hue = 'Sample', sort = False, palette="Greens_d",legend='brief', hue_order = ('ORA-2A-002-Type 1', 'ORA-2A-002-Type 2','ORA-2A-002-Type 3'))
+
+
+plot = sns.lineplot(data = ORA_002_REE, x= 'variable', y='value', hue = 'Spot', palette = 'Greens_d', sort = False,legend=False, style_order = ('ORA-2A-002-Type 1', 'ORA-2A-002-Type 2','ORA-2A-002-Type 3'))
+
+# plot = sns.lineplot(data = ORA_002_REE_1, x= 'variable', y='value', dashes = '-', sort = False, color = "lightgreen", alpha = 0.5, legend=False)
+# plot = sns.lineplot(data = ORA_002_REE_2, x= 'variable', y='value', sort = False, color = "grey", alpha = 0.5, legend=False)
+# plot = sns.lineplot(data = ORA_002_REE_3, x= 'variable', y='value', sort = False, color = "pink", alpha = 0.5, legend=False)
 
 #set location of legend
-plt.legend(loc='lower right')
+#plt.legend(loc='lower right')
 
 h,l = plot.get_legend_handles_labels()
-plt.legend(h[1:4]+h[5:8], l[1:4]+l[5:8], loc='best', ncol=1, handlelength = 1, columnspacing = 0.5)
+#plt.legend(h[1:4]+h[5:8], l[1:4]+l[5:8], loc='best', ncol=1, handlelength = 1, columnspacing = 0.5)
 
 plt.xlabel('')
 plt.ylabel('Sample/Chondrite')
 
-plt.text(8.1,0.12, str('error envelopes $\pm$ 1$\sigma$'), fontsize = 11, fontweight = 'normal')
+#plt.text(8.1,0.12, str('error envelopes $\pm$ 1$\sigma$'), fontsize = 11, fontweight = 'normal')
 
 props = dict(boxstyle = 'square, pad = 0.2', facecolor = 'white', alpha = 0.5, ec = 'none')
 plt.text(-0.5,100, str('a'), fontsize = 13, fontweight = 'normal', bbox = props)
@@ -94,7 +102,7 @@ plt.text(-0.5,100, str('a'), fontsize = 13, fontweight = 'normal', bbox = props)
 
 #set y axis to log scale
 plot.set(yscale='log')
-plt.ylim( (10**-1,10**2.2) )
+plt.ylim( (10**-1.1,10**2.2) )
 
 #plt.yscale('log')
 
@@ -108,16 +116,19 @@ plt.title("ORA-2A-024", fontsize=13.5, fontweight=0, color='black', y = 0.99)
 
 ORA_024_REE = ORA_024_REE.replace(regex={'ORA-2A-024-TYPE1': 'ORA-2A-024-Type 1','ORA-2A-024-TYPE2': 'ORA-2A-024-Type 2' ,'ORA-2A-024-TYPE3': 'ORA-2A-024-Type 3','ORA-2A-024-TYPE4': 'ORA-2A-024-Type 4'})
 
-plot = sns.lineplot(data = ORA_024_REE, x= 'variable', hue =  'Sample',  y='value', sort = False, palette="Greens_d",legend='brief')
-plot = sns.lineplot(data = ORA_024_REE, x= 'variable', hue =  'Sample',  y='value', sort = False, palette="Greens_d",legend='brief')
+# plot = sns.lineplot(data = ORA_024_REE, x= 'variable', hue =  'Sample',  y='value', sort = False, palette="Greens_d",legend='brief')
+# plot = sns.lineplot(data = ORA_024_REE, x= 'variable', hue =  'Sample',  y='value', sort = False, palette="Greens_d",legend='brief')
+
+#ORA_024_REE = ORA_024_REE.sort_values(by = ['Spot', 'variable', 'value'], ascending = [False, False, False])
+plot = sns.lineplot(data = ORA_024_REE, x= 'variable', y='value', hue = 'Spot', sort = False, palette="Greens_d",legend=False)
 
 
 #set location of legend
-plt.legend(loc='lower right')
+#plt.legend(loc='lower right')
 
 h,l = plot.get_legend_handles_labels()
 # Legend inside of plot
-plt.legend(h[1:5]+h[5:8], l[1:5]+l[5:8], loc='best', ncol=1, handlelength = 1, columnspacing = 0.5)
+#plt.legend(h[1:5]+h[5:8], l[1:5]+l[5:8], loc='best', ncol=1, handlelength = 1, columnspacing = 0.5)
 
 props = dict(boxstyle = 'square, pad = 0.2', facecolor = 'white', alpha = 0.5, ec = 'none')
 plt.text(-0.5,100, str('b'), fontsize = 13, fontweight = 'normal', bbox = props)
@@ -134,10 +145,10 @@ plt.ylabel('Sample/Chondrite')
 #plt.set_ylim (-10, 120)
 
 plt.yscale('log')
-plt.ylim( (10**-1,10**2.2) )
+plt.ylim( (10**-1.1,10**2.2) )
 #plt.ylim (-10, 120)
 
 #sns.set_context("paper") 
 #plt.tight_layout()
 
-#plt.savefig('/Users/gennachiaro/Documents/vanderbilt/research/ora caldera/trace-elements/graphs/Mingled_REE.png', dpi=500)
+plt.savefig('/Users/gennachiaro/Documents/vanderbilt/research/ora caldera/trace-elements/graphs/Mingled_REEs.png', dpi=500)

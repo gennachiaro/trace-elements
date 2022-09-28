@@ -140,8 +140,8 @@ sns.set_style("darkgrid")
 
 # Plotting
 # Select elements to plot
-x = 'Ba'
-y = 'Sr'
+x = 'Li'
+y = 'Nb'
 
 # x = 'Ba'
 # y = 'Sr'
@@ -208,8 +208,8 @@ plt.ylabel(y + " [ppm]")
 # Configure legend
 h, l = plot.get_legend_handles_labels()
 
-l[0] = "Outflow"
-l[4] = "Intracaldera"
+# l[0] = "Outflow"
+# l[4] = "Intracaldera"
 
 # Legend outside of plot
 #plt.legend(h[1:4]+h[5:8],l[1:4]+l[5:8],loc='center left', bbox_to_anchor=(1, 0.5), ncol=1)
@@ -230,14 +230,14 @@ plt.legend(h, l, loc='best', ncol = 2, handlelength = 1, columnspacing = 0.5)
 plt.suptitle("High-Silica Rhyolite (MG + VCCR) Fiamme Glass", fontsize=15,
              fontweight=0, color='black', y=0.95)
 
-#plt.savefig('/Users/gennachiaro/Documents/vanderbilt/research/ora caldera/trace-elements/graphs/HSR-Zr_Hf_Final.png', dpi=400)
+#plt.savefig('/Users/gennachiaro/Documents/vanderbilt/research/ora caldera/trace-elements/graphs/HSR-Nb_Li_Final.png', dpi=400)
 
 # Set size of plot
 sns.set_context("paper") 
 
-plt.figure(figsize=(18, 12), dpi=400)
+#plt.figure(figsize=(18, 12), dpi=400)
 
-#plt.show()
+plt.show()
 
 #plt.show()
 

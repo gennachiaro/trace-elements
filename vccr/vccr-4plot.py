@@ -194,7 +194,7 @@ fig = plt.figure(figsize=(10,7))
 
 
 #group plot title
-title = fig.suptitle("Crystal-Rich (VCCR + CG) Fiamme Glass Populations", fontsize=18, y = 0.96)
+title = fig.suptitle("High-Silica Rhyolite (VCCR + CG) Fiamme Glass Populations", fontsize=18, y = 0.96)
 
 #plot 1 
 
@@ -236,8 +236,8 @@ plt.subplot(2,2,1)
 #create trace element plot
 
 # Select elements to plot
-x = 'Ba'
-y = 'Sr'
+x = 'Zr'
+y = 'Th'
 
 xerr1 = MG_std[x]
 yerr1 = MG_std[y]
@@ -247,10 +247,10 @@ xerr2 = VCCR_std[x]
 yerr2 = VCCR_std[y]
 
 
-plot2 = sns.scatterplot(data=MG, x=x, y=y, hue="Population", palette="Blues_d", marker='s', style = "Population",
-                       edgecolor="black", s=150, alpha=0.8, legend= "brief", hue_order=['MG 1', 'MG 2', 'MG 3'])
-plt.errorbar(x=MG[x], y=MG[y], xerr=xerr1, yerr=yerr1, ls='none',
-             ecolor='cornflowerblue', elinewidth=1, capsize=2, alpha=0.8)
+# plot2 = sns.scatterplot(data=MG, x=x, y=y, hue="Population", palette="Blues_d", marker='s', style = "Population",
+#                        edgecolor="black", s=150, alpha=0.8, legend= "brief", hue_order=['MG 1', 'MG 2', 'MG 3'])
+# plt.errorbar(x=MG[x], y=MG[y], xerr=xerr1, yerr=yerr1, ls='none',
+#              ecolor='cornflowerblue', elinewidth=1, capsize=2, alpha=0.8)
 
 plot2 = sns.scatterplot(data=VCCR, x=x, y=y, hue="Population", palette="PuRd_r", markers=('h','^','P'), style = "Population",
                        edgecolor="black", s=150, legend= "brief", alpha=0.8, hue_order=['VCCR 1', 'VCCR 2', 'VCCR 3'])
@@ -271,9 +271,9 @@ h, l = plot2.get_legend_handles_labels()
 # Legend inside of plot
 #plt.legend(h[1:4]+h[5:8], l[1:4]+l[5:8], loc='best', ncol=2)
 
-l[0] = "Outflow"
-l[4] = "Intracaldera"
-l[1:4] = ('CG 1', 'CG 2', 'CG 3')
+# l[0] = "Outflow"
+# l[4] = "Intracaldera"
+# l[1:4] = ('CG 1', 'CG 2', 'CG 3')
 
 
 plt.legend(h, l, loc='best', ncol = 2, handlelength = 1, columnspacing = 0.5)
@@ -285,8 +285,8 @@ plt.legend(h, l, loc='best', ncol = 2, handlelength = 1, columnspacing = 0.5)
 #plot 3
 plt.subplot(2,2,2)
 
-x = 'U'
-y = 'Ti'
+x = 'Lu'
+y = 'La'
 
 xerr1 = MG_std[x]
 yerr1 = MG_std[y]
@@ -295,10 +295,10 @@ yerr1 = MG_std[y]
 xerr2 = VCCR_std[x]
 yerr2 = VCCR_std[y]
 
-plot3 = sns.scatterplot(data=MG, x=x, y=y, hue="Population", palette="Blues_d", marker='s', style = "Population",
-                       edgecolor="black", s=150, alpha=0.8, legend= False, hue_order=['MG 1', 'MG 2', 'MG 3'])
-plt.errorbar(x=MG[x], y=MG[y], xerr=xerr1, yerr=yerr1, ls='none',
-             ecolor='cornflowerblue', elinewidth=1, capsize=2, alpha=0.8)
+# plot3 = sns.scatterplot(data=MG, x=x, y=y, hue="Population", palette="Blues_d", marker='s', style = "Population",
+#                        edgecolor="black", s=150, alpha=0.8, legend= False, hue_order=['MG 1', 'MG 2', 'MG 3'])
+# plt.errorbar(x=MG[x], y=MG[y], xerr=xerr1, yerr=yerr1, ls='none',
+#              ecolor='cornflowerblue', elinewidth=1, capsize=2, alpha=0.8)
 
 plot3 = sns.scatterplot(data=VCCR, x=x, y=y, hue="Population", palette="PuRd_r", markers=('h','^','P'), style = "Population",
                        edgecolor="black", s=150, legend= False, alpha=0.8, hue_order=['VCCR 1', 'VCCR 2', 'VCCR 3'])
@@ -320,9 +320,9 @@ h, l = plot2.get_legend_handles_labels()
 #plt.legend(h[1:4]+h[5:8], l[1:4]+l[5:8], loc='best', ncol=2)
 
 l[0] = "Outflow"
-l[4] = "Intracaldera"
+# l[4] = "Intracaldera"
 
-l[5:7] = ('CG 1', 'CG 2', 'CG 3')
+# l[5:7] = ('CG 1', 'CG 2', 'CG 3')
 
 #plt.legend(h, l, loc='best', ncol = 2, handlelength = 1, columnspacing = 0.5)
 
@@ -339,10 +339,10 @@ yerr1 = MG_std[y]
 xerr2 = VCCR_std[x]
 yerr2 = VCCR_std[y]
 
-plot4 = sns.scatterplot(data=MG, x=x, y=y, hue="Population", palette="Blues_d", marker='s', style = "Population",
-                       edgecolor="black", s=150, alpha=0.8, legend= False, hue_order=['MG 1', 'MG 2', 'MG 3'])
-plt.errorbar(x=MG[x], y=MG[y], xerr=xerr1, yerr=yerr1, ls='none',
-             ecolor='cornflowerblue', elinewidth=1, capsize=2, alpha=0.8)
+# plot4 = sns.scatterplot(data=MG, x=x, y=y, hue="Population", palette="Blues_d", marker='s', style = "Population",
+#                        edgecolor="black", s=150, alpha=0.8, legend= False, hue_order=['MG 1', 'MG 2', 'MG 3'])
+# plt.errorbar(x=MG[x], y=MG[y], xerr=xerr1, yerr=yerr1, ls='none',
+#              ecolor='cornflowerblue', elinewidth=1, capsize=2, alpha=0.8)
 
 plot4 = sns.scatterplot(data=VCCR, x=x, y=y, hue="Population", palette="PuRd_r", markers=('h','^','P'), style = "Population",
                        edgecolor="black", s=150, legend= False, alpha=0.8, hue_order=['VCCR 1', 'VCCR 2', 'VCCR 3'])
@@ -366,16 +366,16 @@ h, l = plot2.get_legend_handles_labels()
 
 
 l[0] = "Outflow"
-l[4] = "Intracaldera"
+#l[4] = "Intracaldera"
 
 #plt.legend(h, l, loc='best', ncol = 2, handlelength = 1, columnspacing = 0.5)
 
 
 # set size of plot
 plt.tight_layout()
-#plt.show()
+plt.show()
 
 # set size of plot
 #sns.set_context("poster")
 
-#eplt.savefig('/Users/gennachiaro/Documents/vanderbilt/research/ora caldera/trace-elements/graphs/HSR_4Plot_ErrorBars_V14.svg', dpi=800)
+#plt.savefig('/Users/gennachiaro/Documents/vanderbilt/research/ora caldera/trace-elements/graphs/HSR_4Plot_ErrorBars_V10.png', dpi=500)

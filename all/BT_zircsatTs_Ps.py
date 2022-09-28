@@ -82,7 +82,7 @@ LBT_North = df[df['Sector'].isin(['LBT_North'])]
 
 
 
-g = sns.jointplot(data = df, x = 'T (W&H)', y = 'P_Q2F', palette = color_dict, hue = 'Sector', kind = 'kde', shade = True, joint_kws={"s": 100, "edgecolor": 'black', 'alpha':0.6, 'xlabel': 'T °C (WH 83)', 'ylabel':'Pressures (MPa)'}, marginal_kws = {'fill': True, 'common_norm' : False}).plot_joint(sns.kdeplot, zorder = 0, alpha = 0.3, warn_singular = False, linewidths = 1).plot_joint(sns.scatterplot, s = 25, alpha = 1 , style = df['Sector']).set_axis_labels('T °C (WH 83)','Pressures (MPa)')
+g = sns.jointplot(data = df, x = 'T (W&H)', y = 'P_Q2F', palette = color_dict, hue = 'Sector', kind = 'kde', shade = True, joint_kws={"s": 100, "edgecolor": 'black', 'alpha':0.6, 'xlabel': 'T °C (WH 83)', 'ylabel':'Pressure (MPa)'}, marginal_kws = {'fill': True, 'common_norm' : False}).plot_joint(sns.kdeplot, zorder = 0, alpha = 0.3, warn_singular = False, linewidths = 1).plot_joint(sns.scatterplot, s = 25, alpha = 1 , style = df['Sector']).set_axis_labels('T °C (WH 83)','Pressure (MPa)')
 
 # Set definitions for making a depth axis!
 def MPa2km(x):
@@ -105,7 +105,7 @@ secax.set_ylabel('Depth (km)')
 plt.ylim(reversed(plt.ylim(0,300)))
 
 plt.xlabel('T °C (WH 83')
-plt.ylabel('Pressures (MPa)')
+plt.ylabel('Pressure (MPa)')
 
 #g.plot_joint(sns.kdeplot, hue = "Population", palette = color_dict, zorder = 0, levels = 6)
 
@@ -202,4 +202,4 @@ plt.suptitle("Bishop Tuff Zircon Saturation Temperatures and Rhyolite-MELTS Q2F 
 
 #plt.show()
 
-plt.savefig('/Users/gennachiaro/Documents/vanderbilt/research/ora caldera/zircon saturation/BT_zr_satplot_temps_kde_fill+points.png', dpi=300, bbox_inches = 'tight')
+#plt.savefig('/Users/gennachiaro/Documents/vanderbilt/research/ora caldera/zircon saturation/BT_zr_satplot_temps_kde_fill+points.png', dpi=300, bbox_inches = 'tight')

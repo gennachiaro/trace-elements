@@ -9,6 +9,8 @@ import pandas as pd
 import numpy as np
 import seaborn as sns; sns.set()
 import matplotlib.pyplot as plt
+from matplotlib.ticker import FuncFormatter
+
 
 ##FROM BA-SR-ALL.PY
 # Specify pathname
@@ -190,8 +192,8 @@ fig = plt.figure(figsize=(10,8))
 
 # Plotting
 # Select elements to plot
-x = 'U'
-y = 'Y'
+x = 'La/Lu'
+y = 'Eu/Eu*'
 
 # x = 'Ba'
 # y = 'Sr'
@@ -224,17 +226,20 @@ plt.errorbar(x=ORA2A002[x], y=ORA2A002[y], xerr=xerr1, yerr=yerr1, ls='none', ec
 # plot.text(14.3,53, str('error bars $\pm$ 1$\sigma$'), fontsize = 11, fontweight = 'normal')
 
 #Y vs. Gd
-plot.text(14.9,53, str('error bars $\pm$ 1$\sigma$'), fontsize = 11, fontweight = 'normal')
+#plot.text(14.9,53, str('error bars $\pm$ 1$\sigma$'), fontsize = 11, fontweight = 'normal')
 
 
 h, l = plot.get_legend_handles_labels()
 plt.legend(h[1:4]+h[5:8], l[1:4]+l[5:8], loc='best', ncol=1, handlelength = 1, columnspacing = 0.5)
 
-plt.xlabel(x + ' [ppm]')
-plt.ylabel(y + " [ppm]")
+# plt.xlabel(x + ' [ppm]')
+# plt.ylabel(y + " [ppm]")
 
-plt.ylim((51, 120.2) )
-plt.xlim (6.4, 19)
+# plt.ylim((51, 120.2) )
+# plt.xlim (6.4, 19)
+
+plt.ylim((-0.0025,0.067) )
+plt.xlim (8, 44)
 
 #plot 2
 plt.subplot(2,2,2)
@@ -262,19 +267,23 @@ plt.errorbar(x=ORA2A024[x], y=ORA2A024[y], xerr=xerr2, yerr=yerr2, ls='none', ec
 # plt.errorbar(x=FG[x], y=FG[y], xerr=xerr4, yerr=yerr4, ls='none',
 #              ecolor='orange', elinewidth=1, capsize=2, barsabove=False, alpha=0.8)
 
-plt.xlabel(x + ' [ppm]')
-plt.ylabel(y + " [ppm]")
+# plt.xlabel(x + ' [ppm]')
+# plt.ylabel(y + " [ppm]")
 
-plt.ylim((51, 120.2) )
-plt.xlim (6.4, 19)
+# plt.ylim((51, 120.2) )
+# plt.xlim (6.4, 19)
+
+plot2.text(32.5,-0.0007, str('error bars $\pm$ 1$\sigma$'), fontsize = 11, fontweight = 'normal')
 
 
+plt.ylim((-0.0025,0.067) )
+plt.xlim (8, 44)
 
 #plot2.text(15.7,67.4, str('error bars $\pm$ 1$\sigma$'), fontsize = 11, fontweight = 'normal')
 
 h, l = plot2.get_legend_handles_labels()
 # Legend inside of plot
-plt.legend(h[1:5]+h[5:8], l[1:5]+l[5:8], loc='best', ncol=1, handlelength = 1, columnspacing = 0.5)
+plt.legend(h[1:5]+h[5:8], l[1:5]+l[5:8], loc='upper left', ncol=1, handlelength = 1, columnspacing = 0.5)
 
 # ---------
 #plot 3
@@ -282,7 +291,11 @@ plt.subplot(2,2,3)
 
 ORA_002_REE = ORA_002_REE.replace(regex={'ORA-2A-002-Type1': 'ORA-2A-002-Type 1', 'ORA-2A-002-Type2': 'ORA-2A-002-Type 2', 'ORA-2A-002-Type3': 'ORA-2A-002-Type 3'})
 
-plot = sns.lineplot(data = ORA_002_REE, x= 'variable', y='value', hue = 'Sample', sort = False, palette="Greens_d",legend="brief", hue_order = ('ORA-2A-002-Type 1', 'ORA-2A-002-Type 2','ORA-2A-002-Type 3'), ci = 'sd')
+error_config = {'alpha' : 0.3}
+plot = sns.lineplot(data = ORA_002_REE, x= 'variable', y='value', hue = 'Sample', sort = False, palette="Greens_d",legend="brief", hue_order = ('ORA-2A-002-Type 1', 'ORA-2A-002-Type 2','ORA-2A-002-Type 3'), ci = 'sd', err_kws = error_config)
+
+#palette1 = []
+#plot = sns.lineplot(data = ORA_002_REE, x= 'variable', y='value', sort = False, palette="Greens_d",legend="brief")
 
 #set location of legend
 plt.legend(loc='lower right')
@@ -296,10 +309,17 @@ plt.ylabel('Sample/Chondrite')
 #plt.text(8.1,0.12, str('error envelopes $\pm$ 1$\sigma$'), fontsize = 11, fontweight = 'normal')
 plt.text(7.55,0.12, str('error envelopes $\pm$ 1 std'), fontsize = 11, fontweight = 'normal')
 
+plot.get_yaxis().set_minor_locator(mpl.ticker.AutoMinorLocator())
+plot.grid(b=True, which='major', color='w', linewidth=1.0)
+plot.grid(b=True, which='minor', color='w', linewidth=0.5)
 
 #set y axis to log scale
 plot.set(yscale='log')
 plt.ylim( (10**-1,10**2.2) )
+
+for axis in [plot.yaxis]:
+    formatter = FuncFormatter(lambda y, _: '{:.16g}'.format(y))
+    axis.set_major_formatter(formatter)
 
 #plt.yscale('log')
 
@@ -310,7 +330,9 @@ plt.subplot(2,2,4)
 
 ORA_024_REE = ORA_024_REE.replace(regex={'ORA-2A-024-TYPE1': 'ORA-2A-024-Type 1','ORA-2A-024-TYPE2': 'ORA-2A-024-Type 2' ,'ORA-2A-024-TYPE3': 'ORA-2A-024-Type 3','ORA-2A-024-TYPE4': 'ORA-2A-024-Type 4'})
 
-plot = sns.lineplot(data = ORA_024_REE, x= 'variable', y='value', hue = 'Sample', sort = False, palette="Greens_d",legend="brief", ci = 'sd')
+plot = sns.lineplot(data = ORA_024_REE, x= 'variable', y='value', hue = 'Sample', sort = False, palette="Greens_d",legend="brief", ci = 'sd', err_kws = error_config)
+
+#plot = sns.lineplot(data = ORA_024_REE, x= 'variable', y='value', sort = False, palette="Greens_d",legend="brief")
 
 #set location of legend
 plt.legend(loc='lower right')
@@ -323,6 +345,10 @@ plt.legend(h[1:5]+h[5:8], l[1:5]+l[5:8], loc='best', ncol=1, handlelength = 1, c
 plt.xlabel('')
 plt.ylabel('Sample/Chondrite')
 
+plot.get_yaxis().set_minor_locator(mpl.ticker.AutoMinorLocator())
+plot.grid(b=True, which='major', color='w', linewidth=1.0)
+plot.grid(b=True, which='minor', color='w', linewidth=0.5)
+
 #plot1.text(-0.5,0.45, str('error envelopes $\pm$ 1$\sigma$'), fontsize = 11, fontweight = 'normal')
 
 #plt.set_ylim(-10, 1200)
@@ -334,7 +360,12 @@ plt.yscale('log')
 plt.ylim( (10**-1,10**2.2) )
 #plt.ylim (-10, 120)
 
+for axis in [plot.yaxis]:
+    formatter = FuncFormatter(lambda y, _: '{:.16g}'.format(y))
+    axis.set_major_formatter(formatter)
+
 #sns.set_context("paper") 
 #plt.tight_layout()
 
-#plt.savefig('/Users/gennachiaro/Documents/vanderbilt/research/ora caldera/trace-elements/graphs/FGCP_4plot_REE_sd.svg', dpi=500)
+plt.savefig('/Users/gennachiaro/Documents/vanderbilt/research/ora caldera/trace-elements/graphs/FGCP_4plot_REE_sd_eu-eu*log_numbers_Final.svg', dpi=800)
+
