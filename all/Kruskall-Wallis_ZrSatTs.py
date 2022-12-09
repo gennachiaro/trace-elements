@@ -168,7 +168,7 @@ plt.suptitle("Ora Zircon Saturation Temperatures (W&H 83)", fontsize=15, fontwei
 
 # Save Figure
 
-#plt.savefig('/Users/gennachiaro/Documents/vanderbilt/research/ora caldera/zircon saturation/zr_satplot.png', dpi=500, bbox_inches = 'tight')
+#plt.savefig('/Users/gennachiaro/Documents/vanderbilt/research/ora caldera/zircon saturation/zr_satplot_KW.svg', dpi=500, bbox_inches = 'tight')
 
 
 df = df[['Population', 'T °C (WH 83)']]
@@ -213,4 +213,35 @@ print(result)
 result = stats.kruskal(VCCR_1, VCCR_2, VCCR_3)
 print(result)
 
+#Normality Tests
+stats.shapiro(VCCR_2)
 
+stats.shapiro(VCCR_3)
+
+stats.shapiro(CG_1)
+
+stats.shapiro(CG_2)
+
+
+stats.bartlett(VCCR_2, VCCR_3)
+stats.levene(VCCR_2, VCCR_3)
+
+stats.bartlett(CG_1, CG_2)
+
+
+stats.ttest_ind(VCCR_2, VCCR_3)
+stats.ttest_ind(CG_1, CG_2)
+
+stats.mannwhitneyu(VCCR_2, VCCR_3)
+
+import statistics
+
+statistics.variance(VCCR_2)
+statistics.variance(VCCR_3)
+
+statistics.variance(CG_1)
+statistics.variance(CG_2)
+statistics.variance(CG_3)
+
+stats.f_oneway(CG_1, CG_2, CG_3)
+stats.f_oneway(VCCR_1, VCCR_2, VCCR_3)

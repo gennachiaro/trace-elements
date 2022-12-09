@@ -145,7 +145,7 @@ plt.ylabel('Depth (km)')
 plt.suptitle("Ora Rhyolite-MELTS Q2F Storage Pressures", fontsize=15, fontweight=0, y =0.95)
 
 # Save Figure
-#plt.savefig('/Users/gennachiaro/Dropbox/Rhyolite-MELTs/violin_plot.png', dpi=500, bbox_inches = 'tight')
+#plt.savefig('/Users/gennachiaro/Dropbox/Rhyolite-MELTs/violin_plot_KW.svg', dpi=500, bbox_inches = 'tight')
 
 
 #Kruskal-Wallis Test
@@ -192,4 +192,33 @@ print(result)
 result = stats.kruskal(VCCR_1, VCCR_2, VCCR_3)
 print(result)
 
+# Normality Test
+stats.shapiro(VCCR_2)
 
+stats.shapiro(VCCR_3)
+
+stats.shapiro(CG_1)
+
+stats.shapiro(CG_2)
+
+
+stats.bartlett(VCCR_2, VCCR_3)
+stats.bartlett(CG_1, CG_2, CG_3)
+
+stats.ttest_ind(VCCR_2, VCCR_3)
+stats.ttest_ind(CG_1, CG_2)
+
+
+
+
+import statistics
+
+statistics.variance(VCCR_2)
+statistics.variance(VCCR_3)
+
+statistics.variance(CG_1)
+statistics.variance(CG_2)
+statistics.variance(CG_3)
+
+stats.f_oneway(CG_1, CG_2, CG_3)
+stats.f_oneway(VCCR_1, VCCR_2, VCCR_3)
