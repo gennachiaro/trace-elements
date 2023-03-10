@@ -166,7 +166,9 @@ FGCP_std = sample_std[sample_std['Population'].isin(
 sns.set_style("darkgrid")
 
 #plot matrix
-fig = plt.figure(figsize=(9.5,4.5))
+#fig = plt.figure(figsize=(9.5,4.5))
+fig = plt.figure(figsize=(8,4))
+
 
 
 #group plot title
@@ -178,8 +180,8 @@ plt.subplot(1,2,1)
 #create trace element plot
 
 # Select elements to plot
-x = 'Ba'
-y = 'Sr'
+x = 'Nb'
+y = 'Y'
 
 xerr1 = MG_std[x]
 yerr1 = MG_std[y]
@@ -199,13 +201,15 @@ plot2 = sns.scatterplot(data=VCCR, x=x, y=y, hue="Population", palette="PuRd_r",
 plt.errorbar(x=VCCR[x], y=VCCR[y], xerr=xerr2, yerr=yerr2, ls='none',
              ecolor='palevioletred', elinewidth=1, capsize=2, barsabove=False, alpha=0.8)
 
+
 plt.xlabel(x + ' [ppm]')
 plt.ylabel(y + " [ppm]")
 
 #plot2.text(14.5,-2, str('error bars $\pm$ 1$\sigma$'), fontsize = 11, fontweight = 'normal')
 h, l = plot2.get_legend_handles_labels()
 
-plot2.text(52,-0.5, str('error bars $\pm$ 1$\sigma$'), fontsize = 11, fontweight = 'normal')
+#plot2.text(52,-0.5, str('error bars $\pm$ 1$\sigma$'), fontsize = 11, fontweight = 'normal')
+plot2.text(30,28.5, str('error bars $\pm$ 1$\sigma$'), fontsize = 11, fontweight = 'normal')
 
 
 l[1:4] = ('CG 1', 'CG 2', 'CG 3')
@@ -217,11 +221,11 @@ plt.legend(h[1:4]+h[5:8],l[1:4]+l[5:8],loc='upper left', ncol=2, columnspacing =
 #set location of legend
 #plt.legend(loc='center left', bbox_to_anchor=(1, 0.5), ncol=1)
 
-#plot 3
+#plot 2
 plt.subplot(1,2,2)
 
-x = 'Ba'
-y = 'Rb'
+x = 'Zr'
+y = 'Th'
 
 xerr1 = MG_std[x]
 yerr1 = MG_std[y]
@@ -243,10 +247,12 @@ plt.errorbar(x=VCCR[x], y=VCCR[y], xerr=xerr2, yerr=yerr2, ls='none',
 plt.xlabel(x + ' [ppm]')
 plt.ylabel(y + " [ppm]")
 
+plt.ylim(15, 40)
+
 #plot3.text(5.1,109, str('error bars $\pm$ 1$\sigma$'), fontsize = 11, fontweight = 'normal')
 
 # Configure legend
-h, l = plot3.get_legend_handles_labels()
+# h, l = plot3.get_legend_handles_labels()
 
 # Legend outside of plot
 
@@ -283,4 +289,4 @@ plt.tight_layout()
 # set size of plot
 #sns.set_context("poster")
 
-plt.savefig('/Users/gennachiaro/Documents/vanderbilt/research/ora caldera/trace-elements/graphs/HSR_2plot_Mobile.svg', dpi=800)
+#plt.savefig('/Users/gennachiaro/Documents/vanderbilt/research/ora caldera/trace-elements/graphs/HSR_FRACTIONATION.svg', dpi=800)

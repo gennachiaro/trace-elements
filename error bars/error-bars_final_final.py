@@ -140,8 +140,8 @@ sns.set_style("darkgrid")
 
 # Plotting
 # Select elements to plot
-x = 'Li'
-y = 'Nb'
+x = 'Nb'
+y = 'Pb'
 
 # x = 'Ba'
 # y = 'Sr'
@@ -153,16 +153,10 @@ yerr1 = MG_std[y]
 xerr2 = VCCR_std[x]
 yerr2 = VCCR_std[y]
 
-# FGCP Error Bar Values
-xerr3 = FGCP_std[x]
-yerr3 = FGCP_std[y]
-
-# FG Error Bar Values
-xerr4 = FG_std[x]
-yerr4 = FG_std[y]
 
 # Create plot
 #   All one symbol
+plt.figure(figsize = (5, 4))
 
 #Added style to the plot!
 plot = sns.scatterplot(data=MG, x=x, y=y, hue="Population", palette="Blues_d", marker='s', style = "Population",
@@ -185,10 +179,42 @@ plt.errorbar(x=VCCR[x], y=VCCR[y], xerr=xerr2, yerr=yerr2, ls='none',
 # plt.errorbar(x=FG[x], y=FG[y], xerr=xerr4, yerr=yerr4, ls='none',
 #              ecolor='orange', elinewidth=1, capsize=2, barsabove=False, alpha=0.8)
 
-plt.xlabel(x + ' [ppm]')
-plt.ylabel(y + " [ppm]")
+plt.xlabel(x + ' [ppm]', fontsize = 14)
+plt.ylabel(y + " [ppm]", fontsize = 14)
 
 #plt.text(x=MG[MG[x]], y=MG[MG[y]], s='Sample')
+
+
+plot.text(sample_mean[x].max()- 13, sample_mean[y].min()+2, str('error bars $\pm$ 1$\sigma$'), fontsize = 11, fontweight = 'normal')
+
+#53,-0.5, str('error bars $\pm$ 1$\sigma$'), fontsize = 11, fontweight = 'normal')
+
+
+h, l = plot.get_legend_handles_labels()
+# plt.legend(h[1:7]+h[7:10]+h[11:14]+h[23:26], l[1:7]+l[7:10]+l[11:14] +
+#            l[23:26], loc='lower right', bbox_to_anchor=(2, -3), ncol=5, fontsize=11)
+
+# l[0] = "Outflow"
+# l[4] = "Outflow (FGCP)"
+# l[9] = "Intracaldera"
+# l[13] = "Intracaldera (FG)"
+
+# plt.legend(h[0:5]+h[5:14],l[0:4]+l[5:14], loc='best')
+
+
+#l[0] = "Outflow"
+l[1:4] = ('CG 1', 'CG 2', 'CG 3')
+
+plt.legend(h[1:4]+ h[5:],l[1:4]+l[5:], loc='upper left', ncol = 2, handlelength = 1, columnspacing = 1.5)
+
+
+#plt.legend(h[0:5]+h[5:14]+h[14:],l[0:4]+l[5:14]+l[14:], loc='lower right', bbox_to_anchor=(2, -2.366), ncol=4, fontsize=11)
+
+#plt.legend(h[0:5]+h[5:14],l[0:4]+l[5:14], loc='lower right', bbox_to_anchor=(2, -2.366), ncol=4, fontsize=11)
+
+
+
+
 
 
 #   Different symbol for each population
@@ -217,7 +243,7 @@ h, l = plot.get_legend_handles_labels()
 # Legend inside of plot
 #plt.legend(h[1:4]+h[5:8], l[1:4]+l[5:8], loc='best', ncol=1)
 
-plt.legend(h, l, loc='best', ncol = 2, handlelength = 1, columnspacing = 0.5)
+# plt.legend(h, l, loc='best', ncol = 2, handlelength = 1, columnspacing = 0.5)
 
 
 # Populations
@@ -227,10 +253,10 @@ plt.legend(h, l, loc='best', ncol = 2, handlelength = 1, columnspacing = 0.5)
 #plt.legend(h[0:4]+ h[5:12]+h[13:16]+h[17:27],l[0:4]+l[5:12]+ l[13:16]+l[17:27],loc='center left', bbox_to_anchor=(1, 0.5), ncol=2)
 
 # General title
-plt.suptitle("High-Silica Rhyolite (MG + VCCR) Fiamme Glass", fontsize=15,
-             fontweight=0, color='black', y=0.95)
+# plt.suptitle("Ora High-Silica Rhyolite Fiamme Glass Populations", fontsize=15,
+#              fontweight=0, color='black', y=0.95)
 
-#plt.savefig('/Users/gennachiaro/Documents/vanderbilt/research/ora caldera/trace-elements/graphs/HSR-Nb_Li_Final.png', dpi=400)
+#plt.savefig('/Users/gennachiaro/Documents/vanderbilt/research/ora caldera/trace-elements/graphs/HSR-FiammePopulations_Final.png', dpi=600, bbox_inches = 'tight')
 
 # Set size of plot
 sns.set_context("paper") 

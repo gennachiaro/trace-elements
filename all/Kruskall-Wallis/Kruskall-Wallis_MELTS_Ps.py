@@ -192,6 +192,9 @@ print(result)
 result = stats.kruskal(VCCR_1, VCCR_2, VCCR_3)
 print(result)
 
+result = stats.kruskal(VCCR_1, VCCR_2, VCCR_3, CG_1, CG_2, CG_3)
+print(result)
+
 # Normality Test
 stats.shapiro(VCCR_2)
 
@@ -208,6 +211,8 @@ stats.bartlett(CG_1, CG_2, CG_3)
 stats.ttest_ind(VCCR_2, VCCR_3)
 stats.ttest_ind(CG_1, CG_2)
 
+stats.mannwhitneyu(CG_1, CG_2)
+stats.mannwhitneyu(VCCR_2, VCCR_3)
 
 
 

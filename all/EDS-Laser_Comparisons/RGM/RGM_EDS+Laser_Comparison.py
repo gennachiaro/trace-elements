@@ -29,6 +29,8 @@ df = pd.read_excel(path, dtype = data, na_values = na_values)
 #Drop included column
 df = df.drop('Included', axis = 1)
 
+df = df[['Spot', 'Sample', 'Population', 'Date','Mg', 'Ti']]
+
 # NaN treatment:
 #   change all negatives and zeroes to NaN
 num = df._get_numeric_data()
@@ -62,22 +64,8 @@ sample_std = sample_std.reset_index()
     # every element for each spot corresponds to a separate row
         # this is for if we want to plot every single data point
 
-#   Measured Standard Values:
-#   NIST-610
-melt = (df.melt(id_vars=['Sample','Population', 'Date'], value_vars=['Li', 'Mg', 'Sc','Ti', 'V', 'Cr', 'Mn', 'Fe', 'Co', 'Ni', 'Zn', 'Rb', 'Sr', 'Y', 'Zr', 'Nb', 'Ba', 'La', 'Ce', 'Pr', 'Nd', 'Sm', 'Eu', 'Gd', 'Tb', 'Dy', 'Ho', 'Er', 'Tm', 'Yb', 'Lu', 'Hf', 'Ta', 'Pb', 'Th', 'U'], ignore_index=False))
-
-#   NIST-612
-#melt = (df.melt(id_vars=['Sample','Population', 'Date'], value_vars=['Li', 'Mg', 'Sc','Ti', 'V', 'Cr', 'Mn', 'Fe', 'Co', 'Ni', 'Zn', 'Rb', 'Sr', 'Y', 'Zr', 'Nb', 'Ba', 'La', 'Ce', 'Pr', 'Nd', 'Sm', 'Eu', 'Gd', 'Tb', 'Dy', 'Ho', 'Er', 'Tm', 'Yb', 'Lu', 'Hf', 'Ta', 'Pb', 'Th', 'U'], ignore_index=False))
-
-#   NIST-614
-#melt = (df.melt(id_vars=['Sample','Population', 'Date'], value_vars=['Li', 'Mg', 'Sc','Ti', 'V', 'Cr', 'Mn', 'Fe', 'Co', 'Ni', 'Zn', 'Rb', 'Sr', 'Y', 'Zr', 'Nb', 'Ba', 'La', 'Ce', 'Pr', 'Nd', 'Sm', 'Eu', 'Gd', 'Tb', 'Dy', 'Ho', 'Er', 'Tm', 'Yb', 'Lu', 'Hf', 'Ta', 'Pb', 'Th', 'U'], ignore_index=False))
-
-#   RGM
-#melt = (df.melt(id_vars=['Sample','Population', 'Date'], value_vars=['Li', 'Mg', 'Sc', 'Ti', 'V', 'Cr', 'Mn', 'Co', 'Zn', 'Rb', 'Sr', 'Y', 'Zr', 'Nb', 'Ba', 'La', 'Ce', 'Pr', 'Nd', 'Sm', 'Eu', 'Gd', 'Dy', 'Yb', 'Lu', 'Ta', 'Pb', 'Th', 'U'], ignore_index=False))
-
-#   ATHO-G
-#melt = (df.melt(id_vars=['Sample','Population', 'Date'], value_vars=['Li','Sc', 'V', 'Cr', 'Co', 'Ni', 'Zn', 'Rb', 'Sr', 'Y', 'Zr', 'Nb', 'Ba', 'La', 'Ce', 'Pr', 'Nd', 'Sm', 'Eu', 'Gd', 'Tb', 'Dy', 'Ho', 'Er', 'Tm', 'Yb', 'Lu', 'Hf', 'Ta', 'Pb', 'Th', 'U'], ignore_index=False))
-
+#melt = (df.melt(id_vars=['Sample','Population', 'Date'], value_vars=['Li', 'Sc', 'Ti', 'V', 'Cr', 'Mn', 'Fe', 'Co', 'Ni', 'Zn', 'Rb', 'Sr', 'Y', 'Zr', 'Nb', 'Ba', 'La', 'Ce', 'Pr', 'Nd', 'Sm', 'Eu', 'Gd', 'Tb', 'Dy', 'Ho', 'Er', 'Tm', 'Yb', 'Lu', 'Hf', 'Ta', 'Pb', 'Th', 'U'], ignore_index=False))
+melt = (df.melt(id_vars=['Sample','Population', 'Date'], value_vars=['Ti','Mg'], ignore_index=False))
 
 #sample_mean = (sample_mean.melt(id_vars=['Sample','Population', 'Date'], value_vars=['Li', 'Mg', 'Al', 'Si', 'Ca', 'Sc', 'Ti', 'V', 'Cr', 'Mn', 'Fe', 'Co', 'Ni', 'Zn', 'Rb', 'Sr', 'Y', 'Zr', 'Nb', 'Ba', 'La', 'Ce', 'Pr', 'Nd', 'Sm', 'Eu', 'Gd', 'Tb', 'Dy', 'Ho', 'Er', 'Tm', 'Yb', 'Lu', 'Hf', 'Ta', 'Pb', 'Th', 'U'], ignore_index=False))
 
@@ -90,21 +78,8 @@ data = ({'Li': np.float64, 'Mg': np.float64, 'Al': np.float64,'Si': np.float64,'
 # Master spreadsheet with clear mineral analyses removed (excel file!)
 accepted = pd.read_excel(path, sheet_name = "Accepted_Values", dtype = data, na_values = na_values)
 
-#   Accepted Melt Values:
-#   NIST-610
-melt_a = (accepted.melt(id_vars=['Sample'], value_vars=['Li', 'Mg', 'Sc', 'Ti', 'V', 'Cr', 'Mn', 'Fe', 'Co', 'Ni', 'Zn', 'Rb', 'Sr', 'Y', 'Zr', 'Nb', 'Ba', 'La', 'Ce', 'Pr', 'Nd', 'Sm', 'Eu', 'Gd', 'Tb', 'Dy', 'Ho', 'Er', 'Tm', 'Yb', 'Lu', 'Hf', 'Ta', 'Pb', 'Th', 'U'], ignore_index=False))
-
-#   NIST-612
-#melt_a = (accepted.melt(id_vars=['Sample'], value_vars=['Li', 'Mg', 'Sc', 'Ti', 'V', 'Cr', 'Mn', 'Fe', 'Co', 'Ni', 'Zn', 'Rb', 'Sr', 'Y', 'Zr', 'Nb', 'Ba', 'La', 'Ce', 'Pr', 'Nd', 'Sm', 'Eu', 'Gd', 'Tb', 'Dy', 'Ho', 'Er', 'Tm', 'Yb', 'Lu', 'Hf', 'Ta', 'Pb', 'Th', 'U'], ignore_index=False))
-
-#   NIST-614
-#melt_a = (accepted.melt(id_vars=['Sample'], value_vars=['Li', 'Mg', 'Sc', 'Ti', 'V', 'Cr', 'Mn', 'Fe', 'Co', 'Ni', 'Zn', 'Rb', 'Sr', 'Y', 'Zr', 'Nb', 'Ba', 'La', 'Ce', 'Pr', 'Nd', 'Sm', 'Eu', 'Gd', 'Tb', 'Dy', 'Ho', 'Er', 'Tm', 'Yb', 'Lu', 'Hf', 'Ta', 'Pb', 'Th', 'U'], ignore_index=False))
-
-#   RGM
-#melt_a = (accepted.melt(id_vars=['Sample'], value_vars=['Li', 'Mg', 'Sc', 'Ti', 'V', 'Cr', 'Mn', 'Co', 'Zn', 'Rb', 'Sr', 'Y', 'Zr', 'Nb', 'Ba', 'La', 'Ce', 'Pr', 'Nd', 'Sm', 'Eu', 'Gd', 'Dy', 'Yb', 'Lu', 'Ta', 'Pb', 'Th', 'U'], ignore_index=False))
-
-#   ATHO-G
-#melt_a = (accepted.melt(id_vars=['Sample'], value_vars=['Li', 'Sc', 'V', 'Cr','Co', 'Ni', 'Zn', 'Rb', 'Sr', 'Y', 'Zr', 'Nb', 'Ba', 'La', 'Ce', 'Pr', 'Nd', 'Sm', 'Eu', 'Gd', 'Tb', 'Dy', 'Ho', 'Er', 'Tm', 'Yb', 'Lu', 'Hf', 'Ta', 'Pb', 'Th', 'U'], ignore_index=False))
+#melt_a = (accepted.melt(id_vars=['Sample'], value_vars=['Li', 'Sc', 'Ti', 'V', 'Cr', 'Mn', 'Fe', 'Co', 'Ni', 'Zn', 'Rb', 'Sr', 'Y', 'Zr', 'Nb', 'Ba', 'La', 'Ce', 'Pr', 'Nd', 'Sm', 'Eu', 'Gd', 'Tb', 'Dy', 'Ho', 'Er', 'Tm', 'Yb', 'Lu', 'Hf', 'Ta', 'Pb', 'Th', 'U'], ignore_index=False))
+melt_a = (accepted.melt(id_vars=['Sample'], value_vars=['Ti','Mg'], ignore_index=False))
 
 #Slice by Sample
 
@@ -179,60 +154,78 @@ fig = plt.figure(figsize=(12,7))
 # Set background color
 sns.set_style("darkgrid")
 
-title = fig.suptitle("NIST-610", fontsize=18, y = 0.95)
+title = fig.suptitle("RGM-1", fontsize=18, y = 0.95)
 
-plot = sns.lineplot(data = NIST_610, x= 'variable', y='value', hue = 'Date', sort = False, palette="Blues_d",legend="brief", ci = 'sd')
-plot1 = sns.lineplot(data = NIST_610_a, x= 'variable', y='value', hue = 'Sample', sort = False, ci = 'sd', legend = "brief", palette="Reds_d")
+plot = sns.lineplot(data = RGM_1, x= 'variable', y='value', hue = 'Date', sort = False, palette="Blues_d",legend="brief", ci = 'sd')
+plot1 = sns.lineplot(data = RGM_1_a, x= 'variable', y='value', hue = 'Sample', sort = False, ci = 'sd', legend = "brief", palette="Reds_d")
+
+
+
+# plot = sns.stripplot(data = RGM_1, x= 'method', y='value', hue = 'Date', palette="Blues_d")
+# plt.errorbar(x=CG[x], y=CG[y], xerr= xerr1, yerr = yerr1, ls='none',
+#              ecolor='cornflowerblue', elinewidth=1, capsize=2, alpha=0.8)
+
+# plot = sns.stripplot(data = RGM_1, x= 'method', y='value', hue = 'Date', palette="Blues_d")
+
+# plot1 = sns.stripplot(data = RGM_1_a, x= 'variable', y='value', hue = 'Sample', palette="Reds_d")
 
 plot.get_yaxis().set_minor_locator(mpl.ticker.AutoMinorLocator())
 plot.grid(b=True, which='major', color='w', linewidth=1.0)
 plot.grid(b=True, which='minor', color='w', linewidth=0.5)
 
+#set location of legend
+plt.legend(loc='lower right')
 
 h,l = plot.get_legend_handles_labels()
 #h1,l1 = plot1.get_legend_handles_labels()
 
+l[10] = 'RGM-1 Values'
+
+#ATHO-G
+# l[7] = 'ATHO-G Values'
+
 #plot just populations
 #plt.legend(h[1:4]+h[5:9],l[1:4]+l[5:9],loc='lower right')
-#plt.legend(h[1:9]+ h[10:], l[1:9] + l[10:], loc='lower center', ncol = 3)
+#
+plt.legend(h[1:9]+ h[10:], l[1:9] + l[10:], loc='lower center', ncol = 3)
+
+#ATHO-G
+#plt.legend(h[1:6]+ h[7:], l[1:6] + l[7:], loc='upper center', ncol = 2)
 
 #plt.legend(h1[1:], l1[1:], loc='lower center', ncol = 3)
 
 plt.xlabel('')
 plt.ylabel('')
 
-#   Specific Plot Parameters:
+#NIST-610
+plot1.text(-1,328, str('error envelopes $\pm$ 1 std'), fontsize = 11, fontweight = 'normal')
 
-#   Miscellaneous Parameters:
-#   set y axis to log scale
+#NIST-612
+#plot1.text(-1,22, str('error envelopes $\pm$ 1 std'), fontsize = 11, fontweight = 'normal')
+
+#NIST-614
+#plot1.text(-1,-2, str('error envelopes $\pm$ 1 std'), fontsize = 11, fontweight = 'normal')
+
+#RGM
+#plot1.text(-1,-80, str('error envelopes $\pm$ 1 std'), fontsize = 11, fontweight = 'normal')
+
+#ATHO-G
+# plot1.text(-1,-50, str('error envelopes $\pm$ 1 std'), fontsize = 11, fontweight = 'normal')
+
+#set y axis to log scale
 #plot.set(yscale='log')
 #plt.ylim( (10**1,10**100) )
 
-#   NIST-610 Parameters:
-plot1.text(-1,328, str('error envelopes $\pm$ 1 std'), fontsize = 11, fontweight = 'normal')
-plt.legend(h[1:9]+ h[10:], l[1:9] + l[10:], loc='lower center', ncol = 3)
-plt.ylim( (325,525) )
+#NIST-610
+#plt.ylim( (325,525) )
 
-#   NIST-612 Parameters:
-# plot1.text(-1,22, str('error envelopes $\pm$ 1 std'), fontsize = 11, fontweight = 'normal')
-# plt.legend(h[1:9]+ h[10:], l[1:9] + l[10:], loc='lower center', ncol = 3)
+#RGM
+plt.ylim( (-100,2000) )
 
-#   NIST-614 Parameters:
-# plot1.text(-1,-2, str('error envelopes $\pm$ 1 std'), fontsize = 11, fontweight = 'normal')
-# plt.legend(h[1:9]+ h[10:], l[1:9] + l[10:], loc='upper right', ncol = 3)
-
-#   RGM Parameters:
-# l[10] = 'RGM-1 Values'
-# plot1.text(-1,-80, str('error envelopes $\pm$ 1 std'), fontsize = 11, fontweight = 'normal')
-# plt.legend(h[1:9]+ h[10:], l[1:9] + l[10:], loc='upper center', ncol = 3)
-# plt.ylim( (-100,1800) )
+# #ATHO-G
+# plt.ylim( (-70,1600) )
 
 
-#   ATHO-G Parameters:
-#l[7] = 'ATHO-G Values'
-#plt.legend(h[1:6]+ h[7:], l[1:6] + l[7:], loc='upper center', ncol = 2)
-#plot1.text(-1,-50, str('error envelopes $\pm$ 1 std'), fontsize = 11, fontweight = 'normal')
-#plt.ylim( (-70,700) )
 
 
 for axis in [plot.yaxis]:

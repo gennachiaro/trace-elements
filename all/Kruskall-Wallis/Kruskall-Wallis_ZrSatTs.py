@@ -173,7 +173,41 @@ plt.suptitle("Ora Zircon Saturation Temperatures (W&H 83)", fontsize=15, fontwei
 
 df = df[['Population', 'T °C (WH 83)']]
 
+
 import itertools
+
+#BOEHNKE CALCULATIONS!!
+#df = df[['Population', 'T °C (B 13)']]
+
+# CG_1 = df[df['Population'].isin(['CG 1'])]
+# CG_1 = CG_1[['T °C (B 13)']]
+# CG_1 = CG_1.values.tolist()
+# CG_1 = list(itertools.chain(*CG_1))
+
+# CG_2 = df[df['Population'].isin(['CG 2'])]
+# CG_2 = CG_2[['T °C (B 13)']]
+# CG_2 = CG_2.values.tolist()
+# CG_2 = list(itertools.chain(*CG_2))
+
+# CG_3 = df[df['Population'].isin(['CG 3'])]
+# CG_3 = CG_3[['T °C (B 13)']]
+# CG_3 = CG_3.values.tolist()
+# CG_3 = list(itertools.chain(*CG_3))
+
+# VCCR_1 = df[df['Population'].isin(['VCCR 1'])]
+# VCCR_1 = VCCR_1[['T °C (B 13)']]
+# VCCR_1 = VCCR_1.values.tolist()
+# VCCR_1 = list(itertools.chain(*VCCR_1))
+
+# VCCR_2 = df[df['Population'].isin(['VCCR 2'])]
+# VCCR_2 = VCCR_2[['T °C (B 13)']]
+# VCCR_2 = VCCR_2.values.tolist()
+# VCCR_2 = list(itertools.chain(*VCCR_2))
+
+# VCCR_3 = df[df['Population'].isin(['VCCR 3'])]
+# VCCR_3 = VCCR_3[['T °C (B 13)']]
+# VCCR_3 = VCCR_3.values.tolist()
+# VCCR_3 = list(itertools.chain(*VCCR_3))
 
 CG_1 = df[df['Population'].isin(['CG 1'])]
 CG_1 = CG_1[['T °C (WH 83)']]
@@ -227,12 +261,16 @@ stats.bartlett(VCCR_2, VCCR_3)
 stats.levene(VCCR_2, VCCR_3)
 
 stats.bartlett(CG_1, CG_2)
+stats.levene(CG_1, CG_2)
+
 
 
 stats.ttest_ind(VCCR_2, VCCR_3)
 stats.ttest_ind(CG_1, CG_2)
 
 stats.mannwhitneyu(VCCR_2, VCCR_3)
+stats.mannwhitneyu(CG_1, CG_2)
+
 
 import statistics
 
