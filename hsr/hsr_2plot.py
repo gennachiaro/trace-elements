@@ -172,7 +172,7 @@ fig = plt.figure(figsize=(8,4))
 
 
 #group plot title
-title = fig.suptitle("Ora Fiamme Glass Trace Element Compositions", fontsize=18, y = 0.95)
+title = fig.suptitle("Ora Fiamme Glass Trace Element Compositions", fontsize=18, y = 0.94)
  
 #plot 1
 # Create plot
@@ -224,7 +224,7 @@ plt.legend(h[1:4]+h[5:8],l[1:4]+l[5:8],loc='upper left', ncol=2, columnspacing =
 #plot 2
 plt.subplot(1,2,2)
 
-x = 'Zr'
+x = 'Lu'
 y = 'Th'
 
 xerr1 = MG_std[x]
@@ -247,7 +247,7 @@ plt.errorbar(x=VCCR[x], y=VCCR[y], xerr=xerr2, yerr=yerr2, ls='none',
 plt.xlabel(x + ' [ppm]')
 plt.ylabel(y + " [ppm]")
 
-plt.ylim(15, 40)
+#aplt.ylim(15, 40)
 
 #plot3.text(5.1,109, str('error bars $\pm$ 1$\sigma$'), fontsize = 11, fontweight = 'normal')
 
@@ -289,4 +289,4 @@ plt.tight_layout()
 # set size of plot
 #sns.set_context("poster")
 
-#plt.savefig('/Users/gennachiaro/Documents/vanderbilt/research/ora caldera/trace-elements/graphs/HSR_FRACTIONATION.svg', dpi=800)
+plt.savefig('/Users/gennachiaro/Documents/vanderbilt/research/ora caldera/trace-elements/graphs/HSR_2plot_La-Lu', dpi=800)
