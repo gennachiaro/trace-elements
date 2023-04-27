@@ -159,7 +159,7 @@ plt.legend(loc='center left', bbox_to_anchor=(1, 0.5), ncol=1)
 
 # general title
 plt.suptitle("Ora Zircon Saturation Temperatures (B 13)", fontsize=15, fontweight=0, y =0.95)
-
+plt.show()
 # Save Figure
 
 #plt.savefig('/Users/gennachiaro/Documents/vanderbilt/research/ora caldera/zircon saturation/zr_satplot_B13.png', dpi=300, bbox_inches = 'tight')

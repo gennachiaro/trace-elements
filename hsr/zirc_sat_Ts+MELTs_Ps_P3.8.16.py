@@ -10,9 +10,7 @@ import seaborn as sns
 from matplotlib.collections import PathCollection
 import matplotlib.ticker as ticker
 
-##ONLY WORKS WITH BASE PYTHON 3.8.5!!!!!
-#AND SEABORN 0.11.2!!!
-#USE PY3.8 ENV!!
+##CHANGING FOR UPDATED PYTHON CONDA ENV
 
 # Data Cleaning
 # simulated comps
@@ -165,12 +163,12 @@ df1['Population'] = df1['Population'].replace(replacement_mapping_dict, regex = 
 #      'fill': True, 'common_norm' : False})).plot_joint(sns.kdeplot, zorder=0, alpha=0.3, warn_singular=False, linewidths=1).plot_joint(sns.scatterplot, style=df['Population'], s=40, markers = ('o', 's', '^', 'P', 'h')).set_axis_labels('T °C (WH 83)','Pressure (MPa)')
 
 
-g = (sns.jointplot(data=df, x='T °C (WH 83)', y='Pressures (MPa)', palette=color_dict, hue='Population', kind='kde', shade=True, joint_kws={"s": 100, "edgecolor": 'black', 'alpha': 0.7}, marginal_kws={
+g = (sns.jointplot(data=df, x='T °C (WH 83)', y='Pressures (MPa)', palette=color_dict, hue='Population', kind='kde', fill=True, joint_kws={'alpha': 0.7}, marginal_kws={
      'fill': True, 'common_norm' : False})).plot_joint(sns.kdeplot, zorder=0, alpha=0.3, warn_singular=False, linewidths=1).plot_joint(sns.scatterplot, style=df['Population'], s=40, markers = ('o', 's', '^', 'P', 'h')).set_axis_labels('T °C (WH 83)','Pressure (MPa)')
 
 #plt.xlim([680, 780])
 
-g.ax_joint.scatter(data = MG3, x = 'T °C (WH 83)', y = 'Pressures (MPa)', color = '#ABCFE5', marker = 'X', s=40, edgecolor = 'white', linewidth = 0.5)
+g.ax_joint.scatter(data = MG3, x = 'T °C (WH 83)', y = 'Pressures (MPa)', color = '#ABCFE5', marker = 'X', s=50, edgecolor = 'white', linewidth = 0.4, label = "CG 3")
 
 # KDE plots for population MG 3
 sns.kdeplot(data = MG3, x = 'T °C (WH 83)', color = '#ABCFE5', fill = True, common_norm = False, ax = g.ax_marg_x)
@@ -237,11 +235,13 @@ plt.ylim(reversed(plt.ylim(0, 200)))
 
 #g.plot_joint(sns.kdeplot, hue = "Population", palette = color_dict, zorder = 0, levels = 6)
 
-# h, l = plt.get_legend_handles_labels()
-
 # l[1:4] = ('CG 1', 'CG 2', 'CG 3')
 
-plt.legend(loc='lower left', ncol=1)
+h, l = plt.gca().get_legend_handles_labels()
+order =[0, 1, 5, 2, 3, 4]
+
+
+plt.legend([h[idx] for idx in order], [l[idx] for idx in order], loc='upper right', ncol=1)
 
 
 # # SECOND Y AXIS
