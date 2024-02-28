@@ -9,7 +9,7 @@ sns.set()
 
 ##FROM BA-SR-ALL.PY
 # Specify pathname
-path = '/Users/gennachiaro/Documents/vanderbilt/research/ora caldera/trace-elements/new-spreadsheets/Ora-Glass-MASTER.xlsx'
+path = '/Users/gennachiaro/Documents/vanderbilt/research/ora caldera/trace-elements/new-spreadsheets/Ora-Glass-MASTER_2023.xlsx'
 #path = os.path.normcase(path) # This changes path to be compatible with windows
 
 # Create a custom list of values I want to cast to NaN, and explicitly
@@ -60,7 +60,7 @@ df = df.set_index('Sample')
 df = df.drop(['ORA-2A-036-B','ORA-2A-036','ORA-2A-032','ORA-2A-035'], axis= 0)
 
 #Dropping VCCR samples because we remeasured these
-df = df.drop(['ORA-5B-405-B', 'ORA-5B-406-B','ORA-5B-409-B', 'ORA-5B-416-B', 'ORA-5B-404A-B'], axis= 0)
+df = df.drop(['ORA-5B-405-B', 'ORA-5B-406-B','ORA-5B-409-B', 'ORA-5B-416-B'], axis= 0)
 
 #ADDED THIS RECENTLY
 #Drop VCCR samples because they are the same fiamma:
@@ -140,11 +140,11 @@ sns.set_style("darkgrid")
 
 # Plotting
 # Select elements to plot
+x = 'Zr'
+y = 'Ti'
+
 x = 'Ba'
 y = 'Sr'
-
-# x = 'Ba'
-# y = 'Sr'
 
 xerr1 = MG_std[x]
 yerr1 = MG_std[y]
@@ -187,8 +187,6 @@ plt.ylabel(y + " [ppm]", fontsize = 14)
 
 #plot.text(sample_mean[x].max()- 13, sample_mean[y].min()+2, str('error bars $\pm$ 1$\sigma$'), fontsize = 11, fontweight = 'normal')
 
-plot.text(50,-0.5, str('error bars $\pm$ 1$\sigma$'), fontsize = 13, fontweight = 'normal')
-
 #53,-0.5, str('error bars $\pm$ 1$\sigma$'), fontsize = 11, fontweight = 'normal')
 
 
@@ -204,19 +202,17 @@ h, l = plot.get_legend_handles_labels()
 # plt.legend(h[0:5]+h[5:14],l[0:4]+l[5:14], loc='best')
 
 
-l[0] = "Outflow"
-l[1:4] = ('CCR 1', 'CCR 2', 'CCR 3')
-l[4] = "Intracaldera"
+#l[0] = "Outflow"
+l[1:4] = ('CG 1', 'CG 2', 'CG 3')
 
 #plt.legend(h[1:4]+ h[5:],l[1:4]+l[5:], loc='upper left', ncol = 2, handlelength = 1, columnspacing = 1.5)
-
-plt.legend(h,l, loc='upper left', ncol = 2, handlelength = 1, columnspacing = 1)
 
 
 #plt.legend(h[0:5]+h[5:14]+h[14:],l[0:4]+l[5:14]+l[14:], loc='lower right', bbox_to_anchor=(2, -2.366), ncol=4, fontsize=11)
 
 #plt.legend(h[0:5]+h[5:14],l[0:4]+l[5:14], loc='lower right', bbox_to_anchor=(2, -2.366), ncol=4, fontsize=11)
 
+plt.legend(h[1:4]+h[5:14],l[1:4]+l[5:14], loc='center left', bbox_to_anchor=(1, 0.5), ncol=1, fontsize=11)
 
 
 
@@ -258,23 +254,23 @@ h, l = plot.get_legend_handles_labels()
 #plt.legend(h[0:4]+ h[5:12]+h[13:16]+h[17:27],l[0:4]+l[5:12]+ l[13:16]+l[17:27],loc='center left', bbox_to_anchor=(1, 0.5), ncol=2)
 
 # General title
-plt.suptitle("Ora Crystal-Rich Fiamme Glass Populations", fontsize=14,
-             fontweight=0, color='black', y=0.95)
+# plt.suptitle("Ora High-Silica Rhyolite Fiamme Glass Populations", fontsize=15,
+#              fontweight=0, color='black', y=0.95)
 
-plt.savefig('/Users/gennachiaro/Documents/vanderbilt/research/ora caldera/trace-elements/graphs/HSR-FiammePopulations_Final.png', dpi=800, bbox_inches = 'tight')
+#plt.savefig('/Users/gennachiaro/Documents/vanderbilt/research/ora caldera/trace-elements/graphs/HSR-FiammePopulations_Final.png', dpi=600, bbox_inches = 'tight')
 
 # Set size of plot
 sns.set_context("paper") 
 
 #plt.figure(figsize=(18, 12), dpi=400)
 
-plt.show()
+#plt.show()
 
 #plt.show()
 
 #Write summary statistics to excel sheet
 
-# with pd.ExcelWriter("/Users/gennachiaro/Documents/vanderbilt/research/ora caldera/trace-elements/new-spreadsheets/stats/All_Trace_Corrected_Stats_Final_Check.xlsx") as writer:
+# with pd.ExcelWriter("/Users/gennachiaro/Documents/vanderbilt/research/ora caldera/trace-elements/new-spreadsheets/stats/All_Trace_Corrected_Stats_Final.xlsx") as writer:
 #     MG.to_excel(writer, sheet_name = "MG")
 #     VCCR.to_excel(writer, sheet_name = "VCCR")
 #     FG.to_excel(writer, sheet_name = "FG")
@@ -283,4 +279,6 @@ plt.show()
 #     VCCR_std.to_excel(writer, sheet_name = "VCCR_std")
 #     FG_std.to_excel(writer, sheet_name = "FG_std")
 #     FGCP_std.to_excel(writer, sheet_name = "FGCP_std")
+
+plt.savefig('/Users/gennachiaro/Desktop/2023_SrBa.png', dpi=600, bbox_inches = 'tight')
 

@@ -6,6 +6,7 @@ import pandas as pd
 import numpy as np
 import seaborn as sns
 import matplotlib as mpl
+from matplotlib.ticker import FuncFormatter
 sns.set()
 
 ##FROM BA-SR-ALL.PY
@@ -28,6 +29,13 @@ df1 = df1.loc[~((df1['Included'] == 0))]
 
 #Drop included column
 df1 = df1.drop('Included', axis = 1)
+
+# Columns converted to np.float
+data = ({'Li': np.float64, 'Mg': np.float64, 'Al': np.float64,'Si': np.float64,'Ca': np.float64,'Sc': np.float64,'Ti': np.float64,'Ti.1': np.float64,'V': np.float64, 'Cr': np.float64, 'Mn': np.float64,'Fe': np.float64,'Co': np.float64,'Ni': np.float64, 'Zn': np.float64,'Rb': np.float64,'Sr': np.float64,'Y': np.float64,'Zr': np.float64,'Nb': np.float64,'Ba': np.float64,'La': np.float64,'Ce': np.float64,'Pr': np.float64,'Nd': np.float64,'Sm':np.float64,'Eu': np.float64,'Gd': np.float64,'Tb': np.float64,'Gd.1': np.float64,'Dy': np.float64,'Ho': np.float64,'Er': np.float64,'Tm': np.float64,'Yb': np.float64,'Lu':np.float64,'Hf': np.float64,'Ta': np.float64,'Pb': np.float64,'Th': np.float64,'U': np.float64})
+
+df1['Gd/Lu'] = (df1['Gd']/df1['Lu'])
+
+df1['La/Yb'] = (df1['La']/df1['Yb'])
 
 # drop blank columns
 #df = df.dropna(axis = 1, how = 'all')
@@ -61,7 +69,7 @@ df1 = df1.set_index('Sample')
 df1 = df1.drop(['ORA-2A-036-B','ORA-2A-036','ORA-2A-032','ORA-2A-035'], axis= 0)
 
 #Dropping VCCR samples because we remeasured these
-df1 = df1.drop(['ORA-5B-405-B', 'ORA-5B-406-B','ORA-5B-409-B', 'ORA-5B-416-B', 'ORA-5B-404A-B'], axis= 0)
+df1 = df1.drop(['ORA-5B-405-B', 'ORA-5B-406-B','ORA-5B-409-B', 'ORA-5B-416-B'], axis= 0)
 
 #ADDED THIS RECENTLY
 #Drop VCCR samples because they are the same fiamma:
@@ -113,8 +121,6 @@ FGCP = sample_mean[sample_mean['Population'].isin(
 #sample_std = sample_std *2
 # print(sample_std.head())
 
-FG = FG[(FG['Population'] != 'VCCR 3')]
-
 # Set index
 sample_std = sample_std.set_index('Sample')
 #print (sample_std.head())
@@ -127,8 +133,6 @@ FG_std = sample_std[sample_std['Population'].isin(
     ['ORA-5B-410', 'ORA-5B-412', 'ORA-5B-414'])]
 FGCP_std = sample_std[sample_std['Population'].isin(
     ['ORA-2A-002','ORA-2A-003', 'ORA-2A-023', 'ORA-2A-024'])]
-
-FG_std = FG_std[(FG_std['Population'] != 'VCCR 3')]
 
 # ------
 # Add in Major Elements:
@@ -280,25 +284,93 @@ VCCRm_std = VCCRm_std.set_index('Name')
 FGCPm_std = FGCPm_std.set_index('Name')
 FGm_std = FGm_std.set_index('Name')
 
+# Add in REE
+#import xlsx file
+FGCPREE = pd.read_excel("/Users/gennachiaro/Documents/vanderbilt/research/writing/Ora Fiamme Paper 2021/Supplementary Info/Supplementary_Data_Table_4_Normalized_REE.xlsx", sheet_name = 'FGCP_Normalized')
+HSRREE = pd.read_excel("/Users/gennachiaro/Documents/vanderbilt/research/writing/Ora Fiamme Paper 2021/Supplementary Info/Supplementary_Data_Table_4_Normalized_REE.xlsx", sheet_name = 'All_Normalized')
+FGREE = pd.read_excel("/Users/gennachiaro/Documents/vanderbilt/research/writing/Ora Fiamme Paper 2021/Supplementary Info/Supplementary_Data_Table_4_Normalized_REE.xlsx", sheet_name = 'FG_Normalized')
+
+#  change all negatives to NaN
+num = FGREE._get_numeric_data()
+num[num <= 0] = np.nan
+
+FGREE = FGREE.dropna(axis=1, how = 'all')
+
+FGREE = FGREE.dropna(axis=0, how = 'any')
+
+#  change all negatives to NaN
+num = HSRREE._get_numeric_data()
+num[num <= 0] = np.nan
+
+HSRREE = HSRREE.dropna(axis=1, how = 'all')
+HSRREE = HSRREE.dropna(axis=0, how = 'any')
+
+
+#  change all negatives to NaN
+FGCPREE.loc[FGCPREE['Eu'] > 10, 'Eu'] = 0
+
+num = FGCPREE._get_numeric_data()
+num[num <= 0] = np.nan
+#num[num > 10] = np.nan
+
+FGCPREE = FGCPREE.dropna(axis=1, how = 'all')
+FGCPREE = FGCPREE.dropna(axis=0, how = 'any')
+
+#na_values = ['nan']
+
+#FGCPREE = FGCPREE.dropna(axis=0, how = 'any')
+#HSRREE = HSRREE.dropna(axis=0, how = 'any')
+#FGREE = FGREE.dropna(axis=0, how = 'all')
+
+#REE = REE.dropna(axis=1, how = 'all')
+
+# DataFrameMelt to get all values for each spot in tidy data
+#   every element for each spot corresponds to a separate row
+#       this is for if we want to plot every single data point
+FGCPmelt = (FGCPREE.melt(id_vars=['Sample','Population'], value_vars=['La','Ce','Pr','Nd','Pm','Sm','Eu','Gd','Tb','Dy','Ho','Er','Tm','Yb','Lu'], ignore_index=False))
+HSRmelt = (HSRREE.melt(id_vars=['Sample','Population'], value_vars=['La','Ce','Pr','Nd','Pm','Sm','Eu','Gd','Tb','Dy','Ho','Er','Tm','Yb','Lu'], ignore_index=False))
+FGmelt = (FGREE.melt(id_vars=['Sample','Population'], value_vars=['La','Ce','Pr','Nd','Pm','Sm','Eu','Gd','Tb','Dy','Ho','Er','Tm','Yb','Lu'], ignore_index=False))
+#melt = melt.set_index('Sample')
+
+#melt = melt.set_index('Sample')
+#melt = melt.drop(['ORA-5B-408-SITE8', 'ORA-5B-408-SITE7','ORA-5B-412B-CG'], axis= 0)
+#melt = melt.drop(['ORA-5B-405', 'ORA-5B-416'], axis= 0)
+#melt = melt.reset_index()
+
+
+
+# Dataframe Slicing using "isin"
+ORA_002_REE = FGCPmelt[FGCPmelt['Population'].isin(['ORA-2A-002'])]
+ORA_024_REE = FGCPmelt[FGCPmelt['Population'].isin(['ORA-2A-024'])]
+Unmingled = FGCPmelt[FGCPmelt['Population'].isin(['ORA-2A-023', 'ORA-2A-003'])]
+
+# HSR subgroups
+
+FGREE = FGmelt[FGmelt['Population'].isin(['ORA-5B-410', 'ORA-5B-412', 'ORA-5B-414'])]
+
+
+ORA_410_REE = FGmelt[FGmelt['Population'].isin(['ORA-5B-410'])]
+ORA_412_REE = FGmelt[FGmelt['Population'].isin(['ORA-5B-412'])]
+ORA_414_REE = FGmelt[FGmelt['Population'].isin(['ORA-5B-414'])]
+
+
 FGCP_All = df1[df1['Population'].isin(['ORA-2A-002', 'ORA-2A-003','ORA-2A-023', 'ORA-2A-024'])]
 FG_All = df1[df1['Population'].isin(['ORA-5B-410', 'ORA-5B-414','ORA-5B-412'])]
-
 FG_All = FG_All[(FG_All['Sample'] != 'ORA-5B-410') & (FG_All['Sample'] != 'ORA-5B-412B-FG')]
 
 #set background color
 sns.set_style("darkgrid")
 
 #plot matrix
-#fig = plt.figure(figsize=(10,7.3))
-
-fig = plt.figure(figsize=(11,8.5))
+#fig = plt.figure(figsize=(10.5, 7.5))
 
 #fig = plt.figure(figsize=(10,8))
-
+fig = plt.figure(figsize=(11,8))
 
 # group plot title
 #title = fig.suptitle("All Ora Fiamme Glass Trace Elements", fontsize=16, y=0.925)
-#title = fig.suptitle("All Ora Fiamme Glass Trace Elements", fontsize=16, y=0.925)
+
+#title = fig.suptitle("Crystal-Poor (FG + FGCP) Fiamme Glass Compositions", fontsize=16, y=0.925)
 
 #plot 1 
 
@@ -344,55 +416,31 @@ yerr4 = FG_std[y]
 # Create plot
 plt.subplot(2,2,1)
 #   All one symbol
-# plot = sns.scatterplot(data=MGm, x=x, y=y, hue="Population", palette="Blues_d", marker='s', style = "Population",
-#                        edgecolor="black", s=150, alpha=0.8, legend= 'brief', hue_order=['MG 1', 'MG 2', 'MG 3'])
-# plt.errorbar(x=MGm[x], y=MGm[y], xerr=xerr1, yerr=yerr1, ls='none',
-#              ecolor='cornflowerblue', elinewidth=1, capsize=2, alpha=0.8)
 
-# plot = sns.scatterplot(data=FGCPm, x=x, y=y, hue="Population", palette="Greens_r", style= "Population", edgecolor="black",
-#                       s=150, legend='brief', alpha=0.8, hue_order=['ORA-2A-002','ORA-2A-003', 'ORA-2A-023', 'ORA-2A-024'])
-# plt.errorbar(x=FGCPm[x], y=FGCPm[y], xerr=xerr3, yerr=yerr3, ls='none',
-#             ecolor='green', elinewidth=1, capsize=2, barsabove=False, alpha=0.8)
-
-# plot = sns.scatterplot(data=VCCRm, x=x, y=y, hue="Population", palette="PuRd_r", markers = ('h','^','P'), style = "Population",
-#                        edgecolor="black", s=150, legend= 'brief', alpha=0.8, hue_order=['VCCR 1', 'VCCR 2', 'VCCR 3'])
-# plt.errorbar(x=VCCRm[x], y=VCCRm[y], xerr=xerr2, yerr=yerr2, ls='none',
-#              ecolor='palevioletred', elinewidth=1, capsize=2, barsabove=False, alpha=0.8)
-
-# plot = sns.scatterplot(data=FGm, x=x, y=y, hue="Population", palette="OrRd_r", style='Population', edgecolor="black",
-#                       s=150, legend='brief', alpha=0.8, markers=('^', 'X', 's'), hue_order=['ORA-5B-412', 'ORA-5B-410', 'ORA-5B-414'])
-# plt.errorbar(x=FGm[x], y=FGm[y], xerr=xerr4, yerr=yerr4, ls='none',
-#             ecolor='orange', elinewidth=1, capsize=2, barsabove=False, alpha=0.8)
-
-# plot = sns.scatterplot(data = FGCP_All, x= x, y=y, hue = "Population", style = "Population", palette="Greens_r", edgecolor="black", s=200, alpha = 0.1, legend=False, hue_order=['ORA-2A-002', 'ORA-2A-003', 'ORA-2A-023', 'ORA-2A-024'], markers=('P', 'o', 'X', 's'))
-# plot = sns.scatterplot(data = FG_All, x= x, y=y, hue = "Population", style = "Population", palette="OrRd_r", edgecolor="black", s=200, alpha = 0.1, legend=False, markers=('s', 'X', '^'), hue_order=['ORA-5B-412', 'ORA-5B-410', 'ORA-5B-414'])
-
-plot = sns.scatterplot(data=MG, x=x, y=y, hue="Population", palette="Blues_d", marker='s', style = "Population",
-                       edgecolor="black", s=250, alpha=0.8, legend='brief', hue_order=['MG 1', 'MG 2', 'MG 3'])
-plt.errorbar(x=MG[x], y=MG[y], xerr=xerr1, yerr=yerr1, ls='none',
-             ecolor='cornflowerblue', elinewidth=1, capsize=2, alpha=0.8)
+plot = sns.scatterplot(data = FGCP_All, x= x, y=y, hue = "Population", style = "Population", palette="Greens_r", edgecolor="black", s=200, alpha = 0.1, legend=False, hue_order=['ORA-2A-002', 'ORA-2A-003', 'ORA-2A-023', 'ORA-2A-024'], markers=('P', 'o', 'X', 's'))
+plot = sns.scatterplot(data = FG_All, x= x, y=y, hue = "Population", style = "Population", palette="OrRd_r", edgecolor="black", s=200, alpha = 0.1, legend=False, markers=('s', 'X', '^'), hue_order=['ORA-5B-412', 'ORA-5B-410', 'ORA-5B-414'])
 
 plot = sns.scatterplot(data=FGCP, x=x, y=y, hue="Population", palette="Greens_r", style="Population", edgecolor="black",
                        s=250, legend='brief', alpha=0.8, hue_order=['ORA-2A-002', 'ORA-2A-003', 'ORA-2A-023', 'ORA-2A-024'])
 plt.errorbar(x=FGCP[x], y=FGCP[y], xerr=xerr3, yerr=yerr3, ls='none',
              ecolor='green', elinewidth=1, capsize=2, barsabove=False, alpha=0.8)
 
-plot = sns.scatterplot(data=VCCR, x=x, y=y, hue="Population", palette="PuRd_r", markers = ('h','^','P'), style = "Population",
-                       edgecolor="black", s=250, legend='brief', alpha=0.8, hue_order=['VCCR 1', 'VCCR 2', 'VCCR 3'])
-plt.errorbar(x=VCCR[x], y=VCCR[y], xerr=xerr2, yerr=yerr2, ls='none',
-             ecolor='palevioletred', elinewidth=1, capsize=2, barsabove=False, alpha=0.8)
+# plot = sns.scatterplot(data=VCCR, x=x, y=y, hue="Population", palette="PuRd_r", markers = ('h','^','P'), style = "Population",
+#                        edgecolor="black", s=150, legend='brief', alpha=0.8, hue_order=['VCCR 1', 'VCCR 2', 'VCCR 3'])
+# plt.errorbar(x=VCCR[x], y=VCCR[y], xerr=xerr2, yerr=yerr2, ls='none',
+#              ecolor='palevioletred', elinewidth=1, capsize=2, barsabove=False, alpha=0.8)
 
 plot = sns.scatterplot(data=FG, x=x, y=y, hue="Population", palette="OrRd_r", style='Population', edgecolor="black",
                        s=250, legend='brief', alpha=0.8, markers=('^', 'X', 's'), hue_order=['ORA-5B-412', 'ORA-5B-410', 'ORA-5B-414'])
 plt.errorbar(x=FG[x], y=FG[y], xerr=xerr4, yerr=yerr4, ls='none',
              ecolor='orange', elinewidth=1, capsize=2, barsabove=False, alpha=0.8)
 
-plot.get_yaxis().set_minor_locator(mpl.ticker.AutoMinorLocator())
-plot.grid(b=True, which='major', color='w', linewidth=1.0)
-plot.grid(b=True, which='minor', color='w', linewidth=0.5)
+# plot.get_yaxis().set_minor_locator(mpl.ticker.AutoMinorLocator())
+# plot.grid(b=True, which='major', color='w', linewidth=1.0)
+# plot.grid(b=True, which='minor', color='w', linewidth=0.5)
 
 
-plot.text(10,0.12, str('error bars $\pm$ 1$\sigma$'), fontsize = 18.5, fontweight = 'normal')
+plot.text(34,1.1, str('error bars $\pm$ 1$\sigma$'), fontsize = 18.5, fontweight = 'normal')
 
 # h, l = plot.get_legend_handles_labels()
 # plt.legend(h[1:7]+h[7:10]+h[11:14]+h[23:26], l[1:7]+l[7:10]+l[11:14] +
@@ -402,8 +450,10 @@ plot.text(10,0.12, str('error bars $\pm$ 1$\sigma$'), fontsize = 18.5, fontweigh
 #plt.legend(h[1:4]+h[5:8], l[1:4]+l[5:8], loc='best', ncol=1)
 
 # plt.xticks(range(64, 82, 2))
-# plt.ylim(0.2, 4.9)
+#plt.ylim(8, 4000)
 
+# plt.xlim(left = 0.9, right = 500)
+# plt.ylim(bottom = 0.9, top =  600)
 
 
 # # create major element plot
@@ -429,18 +479,17 @@ plt.xticks(fontsize=14)
 
 # Turn on Log Axes
 
-plt.xscale('log')
-plt.yscale('log')
+# plt.xscale('log')
+# plt.yscale('log')
 
-from matplotlib.ticker import FuncFormatter
-for axis in [plot.xaxis, plot.yaxis]:
-    formatter = FuncFormatter(lambda y, _: '{:.16g}'.format(y))
-    axis.set_major_formatter(formatter)
+# from matplotlib.ticker import FuncFormatter
+# for axis in [plot.xaxis, plot.yaxis]:
+#     formatter = FuncFormatter(lambda y, _: '{:.16g}'.format(y))
+#     axis.set_major_formatter(formatter)
 
-plt.ylim( (10**-1,10**3) )
+#plt.ylim( (10**-1,10**3) )
 
 
-h, l = plot.get_legend_handles_labels()
 # plt.legend(h[1:7]+h[7:10]+h[11:14]+h[23:26], l[1:7]+l[7:10]+l[11:14] +
 #            l[23:26], loc='lower right', bbox_to_anchor=(2, -3), ncol=5, fontsize=11)
 
@@ -449,34 +498,47 @@ h, l = plot.get_legend_handles_labels()
 # l[9] = "Intracaldera"
 # l[13] = "Intracaldera (FG)"
 
+h, l = plot.get_legend_handles_labels()
 
-l[0] = "Outflow"
-l[1:4] = ('CCR 1', 'CCR 2', 'CCR 3')
+# l[0] = "Outflow (FGCP)"
+# l[5] = 'Intracaldera (FG)'
 
-l[4] = "O-FCP"
-l[9] = "Intracaldera"
-l[13] = "I-FCP"
+# l[0] = "Outflow (FGCP)"
+# l[5] = 'Intracaldera (FG)'
 
-l[5] = "ORA-2A-002*"
-l[8] = "ORA-2A-024*"
+l[1] = "ORA-2A-002*"
+l[4] = "ORA-2A-024*"
+
+plt.legend(h, l, loc='best', ncol = 2, handlelength = 1, columnspacing = 1, fontsize = 15, markerscale = 1.6)
+
+plt.legend(h[1:5] + h[6:], l[1:5] + l[6:], loc='upper left', ncol = 2, handlelength = 1, columnspacing = 1, fontsize = 14, markerscale = 1.6, title = "O-FCP                 I-FCP", title_fontsize = 15)
+
+
+# l[0] = "Outflow"
+# l[1:4] = ('CG 1', 'CG 2', 'CG 3')
+
+# l[4] = "Outflow (FGCP)"
+# l[9] = "Intracaldera"
+# l[13] = "Intracaldera (FG)"
+
 
 #plt.legend(h[0:4]+h[5:13]+h[14:],l[0:4]+l[5:13]+l[14:], loc='lower right', bbox_to_anchor=(2, -2.366), ncol=4, fontsize=11)
 
 
 #plt.legend(h[0:5]+h[5:14]+h[14:],l[0:4]+l[5:14]+l[14:], loc='lower right', bbox_to_anchor=(2, -2.366), ncol=4, fontsize=11)
 
-plt.legend(h, l, loc='lower right', bbox_to_anchor=(2, -2.15), ncol=4, handlelength = 1, columnspacing = 1, fontsize = 15, markerscale = 1.6)
-#plt.legend(h[0:1], l[0:1], loc='lower right', ncol=4, handlelength = 1, columnspacing = 1, fontsize = 15, markerscale = 1.6)
-
-
+#plt.legend(h [1:5] + h [6:], l[1:5] + l[6:], loc='lower right', bbox_to_anchor=(2, -2.366), ncol=2, fontsize=11)
 
 #plot 2
 plt.subplot(2,2,2)
 #create trace element plot
 
 # Select elements to plot
-x = 'Zr'
-y = 'Th'
+# # x = 'Zr'
+# # y = 'Th'
+
+x = 'U'
+y = 'Ti'
 
 # x = 'Gd/Lu'
 # y = 'La/Lu'
@@ -500,18 +562,17 @@ yerr4 = FG_std[y]
 
 # Create plot
 #   All one symbol
-# plot2 = sns.scatterplot(data = FGCP_All, x= x, y=y, hue = "Population", style = "Population", palette="Greens_r", edgecolor="black", s=200, alpha = 0.1, legend=False, hue_order=['ORA-2A-002', 'ORA-2A-003', 'ORA-2A-023', 'ORA-2A-024'], markers=('P', 'o', 'X', 's'))
-# plot2 = sns.scatterplot(data = FG_All, x= x, y=y, hue = "Population", style = "Population", palette="OrRd_r", edgecolor="black", s=200, alpha = 0.1, legend=False, markers=('s', 'X', '^'), hue_order=['ORA-5B-412', 'ORA-5B-410', 'ORA-5B-414'])
+# plot2 = sns.scatterplot(data=MG, x=x, y=y, hue="Population", palette="Blues_d", marker='s', style = "Population",
+#                        edgecolor="black", s=150, alpha=0.8, legend=False, hue_order=['MG 1', 'MG 2', 'MG 3'])
+# plt.errorbar(x=MG[x], y=MG[y], xerr=xerr1, yerr=yerr1, ls='none',
+#              ecolor='cornflowerblue', elinewidth=1, capsize=2, alpha=0.8)
 
-plot2 = sns.scatterplot(data=MG, x=x, y=y, hue="Population", palette="Blues_d", marker='s', style = "Population",
-                       edgecolor="black", s=250, alpha=0.8, legend=False, hue_order=['MG 1', 'MG 2', 'MG 3'])
-plt.errorbar(x=MG[x], y=MG[y], xerr=xerr1, yerr=yerr1, ls='none',
-             ecolor='cornflowerblue', elinewidth=1, capsize=2, alpha=0.8)
-
-plot2 = sns.scatterplot(data=VCCR, x=x, y=y, hue="Population", palette="PuRd_r", markers = ('h','^','P'), style = "Population",
-                       edgecolor="black", s=250, legend=False, alpha=0.8, hue_order=['VCCR 1', 'VCCR 2', 'VCCR 3'])
-plt.errorbar(x=VCCR[x], y=VCCR[y], xerr=xerr2, yerr=yerr2, ls='none',
-             ecolor='palevioletred', elinewidth=1, capsize=2, barsabove=False, alpha=0.8)
+# plot2 = sns.scatterplot(data=VCCR, x=x, y=y, hue="Population", palette="PuRd_r", markers = ('h','^','P'), style = "Population",
+#                        edgecolor="black", s=150, legend=False, alpha=0.8, hue_order=['VCCR 1', 'VCCR 2', 'VCCR 3'])
+# plt.errorbar(x=VCCR[x], y=VCCR[y], xerr=xerr2, yerr=yerr2, ls='none',
+#              ecolor='palevioletred', elinewidth=1, capsize=2, barsabove=False, alpha=0.8)
+plot2 = sns.scatterplot(data = FGCP_All, x= x, y=y, hue = "Population", style = "Population", palette="Greens_r", edgecolor="black", s=200, alpha = 0.1, legend=False, hue_order=['ORA-2A-002', 'ORA-2A-003', 'ORA-2A-023', 'ORA-2A-024'], markers=('P', 'o', 'X', 's'))
+plot2 = sns.scatterplot(data = FG_All, x= x, y=y, hue = "Population", style = "Population", palette="OrRd_r", edgecolor="black", s=200, alpha = 0.1, legend=False, markers=('s', 'X', '^'), hue_order=['ORA-5B-412', 'ORA-5B-410', 'ORA-5B-414'])
 
 plot2 = sns.scatterplot(data=FGCP, x=x, y=y, hue="Population", palette="Greens_r", style="Population", edgecolor="black",
                        s=250, legend=False, alpha=0.8, hue_order=['ORA-2A-002', 'ORA-2A-003', 'ORA-2A-023', 'ORA-2A-024'])
@@ -524,7 +585,7 @@ plt.errorbar(x=FG[x], y=FG[y], xerr=xerr4, yerr=yerr4, ls='none',
              ecolor='orange', elinewidth=1, capsize=2, barsabove=False, alpha=0.8)
 
 
-# plt.ylim(8.5,40)
+#plt.ylim(8.5,40)
 
 plt.xlabel(x + ' [ppm]', fontsize = 18.5)
 plt.ylabel(y + " [ppm]", fontsize = 18.5)
@@ -551,13 +612,27 @@ plt.xticks(fontsize=14)
 
 #set location of legend
 #plt.legend(loc='center left', bbox_to_anchor=(1, 0.5), ncol=1)
+h, l = plot2.get_legend_handles_labels()
+#plt.legend(h[1:5] + h[6:], l[1:5] + l[6:], loc='upper left', ncol = 1, handlelength = 1, columnspacing = 1, fontsize = 14, markerscale = 1.6)
+
+#plt.legend(h [1:5] + h [6:], l[1:5] + l[6:], loc='upper right', ncol=1, fontsize=11, columnspacing = 0.5, handlelength = 0.5)
+
+#plt.legend(h [1:], l[1:], loc='upper right', ncol=1, fontsize=11, columnspacing = 0.5, handlelength = 0.5)
+
+# l[0] = "Outflow (FGCP)"
+# l[5] = 'Intracaldera (FG)'
+
+# plt.legend(h, l, loc='upper right', ncol=1, fontsize=11, columnspacing = 0.5, handlelength = 0.5)
+
 
 #plot 3
 plt.subplot(2,2,3)
 
-x = 'Lu'
-y = 'La'
+# x = 'Lu'
+# y = 'La'
 
+x = 'Nb'
+y = 'Y'
 # x = 'Sr'
 # y = 'La/Lu'
 
@@ -576,18 +651,18 @@ yerr3 = FGCP_std[y]
 xerr4 = FG_std[x]
 yerr4 = FG_std[y]
 
-# plot3 = sns.scatterplot(data = FGCP_All, x= x, y=y, hue = "Population", style = "Population", palette="Greens_r", edgecolor="black", s=200, alpha = 0.1, legend=False, hue_order=['ORA-2A-002', 'ORA-2A-003', 'ORA-2A-023', 'ORA-2A-024'], markers=('P', 'o', 'X', 's'))
-# plot3 = sns.scatterplot(data = FG_All, x= x, y=y, hue = "Population", style = "Population", palette="OrRd_r", edgecolor="black", s=200, alpha = 0.1, legend=False, markers=('s', 'X', '^'), hue_order=['ORA-5B-412', 'ORA-5B-410', 'ORA-5B-414'])
+plot = sns.scatterplot(data = FGCP_All, x= x, y=y, hue = "Population", style = "Population", palette="Greens_r", edgecolor="black", s=200, alpha = 0.1, legend=False, hue_order=['ORA-2A-002', 'ORA-2A-003', 'ORA-2A-023', 'ORA-2A-024'], markers=('P', 'o', 'X', 's'))
+plot3 = sns.scatterplot(data = FG_All, x= x, y=y, hue = "Population", style = "Population", palette="OrRd_r", edgecolor="black", s=200, alpha = 0.1, legend=False, markers=('s', 'X', '^'), hue_order=['ORA-5B-412', 'ORA-5B-410', 'ORA-5B-414'])
 
-plot3 = sns.scatterplot(data=MG, x=x, y=y, hue="Population", palette="Blues_d", marker='s', style = "Population",
-                       edgecolor="black", s=250, alpha=0.8, legend=False, hue_order=['MG 1', 'MG 2', 'MG 3'])
-plt.errorbar(x=MG[x], y=MG[y], xerr=xerr1, yerr=yerr1, ls='none',
-             ecolor='cornflowerblue', elinewidth=1, capsize=2, alpha=0.8)
+# plot3 = sns.scatterplot(data=MG, x=x, y=y, hue="Population", palette="Blues_d", marker='s', style = "Population",
+#                        edgecolor="black", s=150, alpha=0.8, legend=False, hue_order=['MG 1', 'MG 2', 'MG 3'])
+# plt.errorbar(x=MG[x], y=MG[y], xerr=xerr1, yerr=yerr1, ls='none',
+#              ecolor='cornflowerblue', elinewidth=1, capsize=2, alpha=0.8)
 
-plot3 = sns.scatterplot(data=VCCR, x=x, y=y, hue="Population", palette="PuRd_r", markers=('h','^','P'), style = "Population",
-                       edgecolor="black", s=250, legend=False, alpha=0.8, hue_order=['VCCR 1', 'VCCR 2', 'VCCR 3'])
-plt.errorbar(x=VCCR[x], y=VCCR[y], xerr=xerr2, yerr=yerr2, ls='none',
-             ecolor='palevioletred', elinewidth=1, capsize=2, barsabove=False, alpha=0.8)
+# plot3 = sns.scatterplot(data=VCCR, x=x, y=y, hue="Population", palette="PuRd_r", markers=('h','^','P'), style = "Population",
+#                        edgecolor="black", s=150, legend=False, alpha=0.8, hue_order=['VCCR 1', 'VCCR 2', 'VCCR 3'])
+# plt.errorbar(x=VCCR[x], y=VCCR[y], xerr=xerr2, yerr=yerr2, ls='none',
+#              ecolor='palevioletred', elinewidth=1, capsize=2, barsabove=False, alpha=0.8)
 
 plot3 = sns.scatterplot(data=FGCP, x=x, y=y, hue="Population", palette="Greens_r", style="Population", edgecolor="black",
                        s=250, legend=False, alpha=0.8, hue_order=['ORA-2A-002', 'ORA-2A-003', 'ORA-2A-023', 'ORA-2A-024'])
@@ -602,8 +677,8 @@ plt.errorbar(x=FG[x], y=FG[y], xerr=xerr4, yerr=yerr4, ls='none',
 plt.xlabel(x + ' [ppm]', fontsize = 18.5)
 plt.ylabel(y + " [ppm]", fontsize = 18.5)
 
-plt.yticks(fontsize=14)
-plt.xticks(fontsize=14)
+plt.yticks(fontsize = 14)
+plt.xticks(fontsize = 14)
 
 #plot3.text(28,11, str('error bars $\pm$ 1$\sigma$'), fontsize = 11, fontweight = 'normal')
 
@@ -624,92 +699,62 @@ plt.xticks(fontsize=14)
 
 #plot 4
 plt.subplot(2,2,4)
-x = 'Nb'
-y = 'Y'
-
-# x = 'Ba'
-# y = 'La/Lu'
-
-xerr1 = MG_std[x]
-yerr1 = MG_std[y]
-
-# VCCR Error Bar Values
-xerr2 = VCCR_std[x]
-yerr2 = VCCR_std[y]
-
-# FGCP Error Bar Values
-xerr3 = FGCP_std[x]
-yerr3 = FGCP_std[y]
-
-# FG Error Bar Values
-xerr4 = FG_std[x]
-yerr4 = FG_std[y]
-
-# plot4 = sns.scatterplot(data = FGCP_All, x= x, y=y, hue = "Population", style = "Population", palette="Greens_r", edgecolor="black", s=200, alpha = 0.1, legend=False, hue_order=['ORA-2A-002', 'ORA-2A-003', 'ORA-2A-023', 'ORA-2A-024'], markers=('P', 'o', 'X', 's'))
-# plot4 = sns.scatterplot(data = FG_All, x= x, y=y, hue = "Population", style = "Population", palette="OrRd_r", edgecolor="black", s=200, alpha = 0.1, legend=False, markers=('s', 'X', '^'), hue_order=['ORA-5B-412', 'ORA-5B-410', 'ORA-5B-414'])
-
-plot4 = sns.scatterplot(data=MG, x=x, y=y, hue="Population", palette="Blues_d", marker='s', style = "Population",
-                       edgecolor="black", s=250, alpha=0.8, legend= False, hue_order=['MG 1', 'MG 2', 'MG 3'])
-plt.errorbar(x=MG[x], y=MG[y], xerr=xerr1, yerr=yerr1, ls='none',
-             ecolor='cornflowerblue', elinewidth=1, capsize=2, alpha=0.8)
-
-plot4 = sns.scatterplot(data=VCCR, x=x, y=y, hue="Population", palette="PuRd_r", markers=('h','^','P'), style = "Population",
-                       edgecolor="black", s=250, legend= False, alpha=0.8, hue_order=['VCCR 1', 'VCCR 2', 'VCCR 3'])
-plt.errorbar(x=VCCR[x], y=VCCR[y], xerr=xerr2, yerr=yerr2, ls='none',
-             ecolor='palevioletred', elinewidth=1, capsize=2, barsabove=False, alpha=0.8)
 
 
-plot4 = sns.scatterplot(data=FGCP, x=x, y=y, hue="Population", palette="Greens_r", style="Population", edgecolor="black",
-                       s=250, legend=False, alpha=0.8, hue_order=['ORA-2A-002', 'ORA-2A-003', 'ORA-2A-023', 'ORA-2A-024'])
-plt.errorbar(x=FGCP[x], y=FGCP[y], xerr=xerr3, yerr=yerr3, ls='none',
-             ecolor='green', elinewidth=1, capsize=2, barsabove=False, alpha=0.8)
+plot = sns.lineplot(data = FGCPmelt, x= 'variable', y='value', hue = 'Population', sort = False, palette="Greens_d",legend="brief", ci = 'sd', hue_order = ('ORA-2A-002', 'ORA-2A-003', 'ORA-2A-023', 'ORA-2A-024'), linewidth = 1)
+plot = sns.lineplot(data = FGREE, x= 'variable', y='value', hue = 'Population', sort = False, palette="OrRd_r",legend="brief", hue_order = ('ORA-5B-412', 'ORA-5B-410', 'ORA-5B-414'), ci = 'sd', linewidth = 1)
 
-plot4 = sns.scatterplot(data=FG, x=x, y=y, hue="Population", palette="OrRd_r", style='Population', edgecolor="black",
-                       s=250, legend=False, alpha=0.8, markers=('^', 'X', 's'), hue_order=['ORA-5B-412', 'ORA-5B-410', 'ORA-5B-414'])
-plt.errorbar(x=FG[x], y=FG[y], xerr=xerr4, yerr=yerr4, ls='none',
-             ecolor='orange', elinewidth=1, capsize=2, barsabove=False, alpha=0.8)
+#plot = sns.lineplot(data = ORA_002_REE, x= 'variable', y='value', hue = 'Sample', sort = False, palette="Greys_d",legend="brief", hue_order = ('ORA-2A-002-Type 1', 'ORA-2A-002-Type 2', 'ORA-2A-002-Type 3'))
+#plot = sns.lineplot(data = ORA_024_REE, x= 'variable', y='value', hue = 'Sample', sort = False, palette="Greens",legend="brief")
 
+plot.get_yaxis().set_minor_locator(mpl.ticker.AutoMinorLocator())
+plot.grid(b=True, which='major', color='w', linewidth=1.0)
+plot.grid(b=True, which='minor', color='w', linewidth=0.5)
 
-plt.xlabel(x + ' [ppm]', fontsize = 18.5)
-plt.ylabel(y + " [ppm]", fontsize = 18.5)
+#set location of legend
+#plt.legend(loc='lower right')
+
+h,l = plot.get_legend_handles_labels()
+
+l[1] = "ORA-2A-002*"
+l[4] = "ORA-2A-024*"
+
+plt.legend(h[1:5] + h[6:], l[1:5] + l[6:], loc='lower left', fontsize = 14, ncol = 1, handlelength = 0.5, markerscale = 10)
+
+# plt.gca().add_artist(first_legend)
+# #plt.legend(h[10:], l[10:], loc = 'lower left', handlelength = 0.5, columnspacing = 0.5, fontsize = 10)
+
+# plt.legend(h[4:], l[4:], loc = 'lower right', handlelength = 0.5, columnspacing = 0.5, fontsize = 10)
+
+plt.xlabel('')
+plt.ylabel('Sample/Chondrite', fontsize = 18.5)
 
 plt.yticks(fontsize=14)
-plt.xticks(fontsize=14)
+plt.xticks(fontsize=18.5)
 
-#plot4.text(34.5,17, str('error bars $\pm$ 1$\sigma$'), fontsize = 11, fontweight = 'normal')
+plot.text(4.8,0.11, str('error envelopes $\pm$ 1 std'), fontsize = 18.5, fontweight = 'normal')
 
+#set y axis to log scale
+plot.set(yscale='log')
+plt.ylim( (10**-1.05,10**2.27) )
 
-# Configure legend
-h, l = plot2.get_legend_handles_labels()
-
-# Legend outside of plot
-#plt.legend(h[1:4]+h[5:8],l[1:4]+l[5:8],loc='center left', bbox_to_anchor=(1, 0.5), ncol=1)
-
-# Legend inside of plot
-#plt.legend(h[1:4]+h[5:8], l[1:4]+l[5:8], loc='best', ncol=2)
-
-
-# l[0] = "Outflow"
-# l[4] = "Intracaldera"
-
-#plt.legend(h, l, loc='best', ncol = 2, handlelength = 1, columnspacing = 0.5)
+for axis in [plot.yaxis]:
+    formatter = FuncFormatter(lambda y, _: '{:.16g}'.format(y))
+    axis.set_major_formatter(formatter)
+#
+for tick in plot.xaxis.get_major_ticks()[1::2]:
+    tick.set_pad(25)
 
 
-# set size of plot
-#plt.tight_layout(pad = 3.0)
-#plt.subplots_adjust
-#fig.tight_layout(pad = 3.0)
 
 # ADD IN EXTRA SPACE FOR LOG PLOT
-plt.subplots_adjust(hspace = 0.25, wspace = 0.25)
-#plt.tight_layout(pad = 0.75)
+#plt.subplots_adjust(hspace = 0.25, wspace = 0.25)
 
-
-
+plt.tight_layout(pad = 0.75)
 #plt.show()
 
 # set size of plot
 #sns.set_context("poster")
 
-#plt.savefig('/Users/gennachiaro/Documents/vanderbilt/research/ora caldera/trace-elements/graphs/All_4Plot_ErrorBars_Revision3.svg', dpi=800)
+#plt.savefig('/Users/gennachiaro/Documents/vanderbilt/research/ora caldera/trace-elements/graphs/FCP_4plot_4_ZR.svg', dpi=800)
 

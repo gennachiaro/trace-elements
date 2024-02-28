@@ -166,8 +166,8 @@ FGCP_std = sample_std[sample_std['Population'].isin(
 sns.set_style("darkgrid")
 
 #plot matrix
-#fig = plt.figure(figsize=(9.5,4.5))
-fig = plt.figure(figsize=(8,4))
+fig = plt.figure(figsize=(9.5,4.5))
+#fig = plt.figure(figsize=(8,4))
 
 
 
@@ -180,8 +180,8 @@ plt.subplot(1,2,1)
 #create trace element plot
 
 # Select elements to plot
-x = 'Nb'
-y = 'Y'
+x = 'Ba'
+y = 'Sr'
 
 xerr1 = MG_std[x]
 yerr1 = MG_std[y]
@@ -202,21 +202,25 @@ plt.errorbar(x=VCCR[x], y=VCCR[y], xerr=xerr2, yerr=yerr2, ls='none',
              ecolor='palevioletred', elinewidth=1, capsize=2, barsabove=False, alpha=0.8)
 
 
-plt.xlabel(x + ' [ppm]')
-plt.ylabel(y + " [ppm]")
+plt.xlabel(x + ' [ppm]', fontsize = 15)
+plt.ylabel(y + " [ppm]", fontsize = 15)
 
 #plot2.text(14.5,-2, str('error bars $\pm$ 1$\sigma$'), fontsize = 11, fontweight = 'normal')
 h, l = plot2.get_legend_handles_labels()
 
-#plot2.text(52,-0.5, str('error bars $\pm$ 1$\sigma$'), fontsize = 11, fontweight = 'normal')
-plot2.text(30,28.5, str('error bars $\pm$ 1$\sigma$'), fontsize = 11, fontweight = 'normal')
+plot2.text(46,-0.5, str('error bars $\pm$ 1$\sigma$'), fontsize = 14, fontweight = 'normal')
+#plot2.text(30,28.5, str('error bars $\pm$ 1$\sigma$'), fontsize = 11, fontweight = 'normal')
 
 
-l[1:4] = ('CG 1', 'CG 2', 'CG 3')
 
-plt.legend(h[1:4]+h[5:8],l[1:4]+l[5:8],loc='upper left', ncol=2, columnspacing = 0.5)
+l[1:4] = ('CCR 1', 'CCR 2', 'CCR 3')
+
+plt.legend(h[1:4]+h[5:8],l[1:4]+l[5:8],loc='upper left', ncol=2, fontsize = 13, columnspacing = 0.5,markerscale = 1.4, handlelength = 1, )
+
 #plt.legend(h[0:8],l[0:8],loc='upper left', ncol=2, columnspacing = 0.5)
 
+plt.xticks(fontsize=13)
+plt.yticks(fontsize=13)
 
 #set location of legend
 #plt.legend(loc='center left', bbox_to_anchor=(1, 0.5), ncol=1)
@@ -224,8 +228,8 @@ plt.legend(h[1:4]+h[5:8],l[1:4]+l[5:8],loc='upper left', ncol=2, columnspacing =
 #plot 2
 plt.subplot(1,2,2)
 
-x = 'Lu'
-y = 'Th'
+x = 'Nb'
+y = 'Y'
 
 xerr1 = MG_std[x]
 yerr1 = MG_std[y]
@@ -244,9 +248,11 @@ plot3 = sns.scatterplot(data=VCCR, x=x, y=y, hue="Population", palette="PuRd_r",
 plt.errorbar(x=VCCR[x], y=VCCR[y], xerr=xerr2, yerr=yerr2, ls='none',
              ecolor='palevioletred', elinewidth=1, capsize=2, barsabove=False, alpha=0.8)
 
-plt.xlabel(x + ' [ppm]')
-plt.ylabel(y + " [ppm]")
+plt.xlabel(x + ' [ppm]', fontsize = 15)
+plt.ylabel(y + " [ppm]", fontsize = 15)
 
+plt.yticks(fontsize=13)
+plt.xticks(fontsize=13)
 #aplt.ylim(15, 40)
 
 #plot3.text(5.1,109, str('error bars $\pm$ 1$\sigma$'), fontsize = 11, fontweight = 'normal')
@@ -262,7 +268,7 @@ plt.ylabel(y + " [ppm]")
 # l[0] = "Outflow"
 # l[4] = "Intracaldera"
 
-# l[1:4] = ('CG 1', 'CG 2', 'CG 3')
+l[1:4] = ('CCR 1', 'CCR 2', 'CCR 3')
 
 # plt.legend(h[1:4]+h[5:8],l[1:4]+l[5:8],loc='center left', bbox_to_anchor=(1, 0.5), ncol=1)
 
@@ -279,6 +285,7 @@ plt.ylabel(y + " [ppm]")
 
 
 
+
 #plt.legend(h, l, loc='best', ncol = 2, handlelength = 1, columnspacing = 0.5)
 
 
@@ -289,4 +296,4 @@ plt.tight_layout()
 # set size of plot
 #sns.set_context("poster")
 
-plt.savefig('/Users/gennachiaro/Documents/vanderbilt/research/ora caldera/trace-elements/graphs/HSR_2plot_La-Lu', dpi=800)
+plt.savefig('/Users/gennachiaro/Documents/vanderbilt/research/ora caldera/trace-elements/graphs/HSR_2plot_SRBa', dpi=800)

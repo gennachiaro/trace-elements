@@ -156,7 +156,7 @@ sns.set_style("darkgrid")
 
 # Plotting
 # Select elements to plot
-x = 'U'
+x = 'Nb'
 y = 'Y'
 
 # x = 'Ba'
@@ -186,6 +186,9 @@ plt.title("ORA-2A-002", fontsize=13.5, fontweight=0, color='black', y = 0.99)
 # Show all symbols
 plot = sns.scatterplot(data = all_2A_002, x= x, y=y, hue = "Sample", style = "Sample", palette="gray", edgecolor="black", s=150, alpha = 0.2, legend=False, markers = ['o','X','s'], hue_order=['ORA-2A-002-Type1','ORA-2A-002-Type2','ORA-2A-002-Type3'])
 
+plt.ylim(50, 120)
+#plt.xlim(6, 19)
+plt.xlim(20, 50)
 
 ORA2A002 = ORA2A002.replace(regex={'ORA-2A-002-Type1': 'Type 1', 'ORA-2A-002-Type2': 'Type 2', 'ORA-2A-002-Type3': 'Type 3'})
 
@@ -197,7 +200,7 @@ plt.errorbar(x=ORA2A002[x], y=ORA2A002[y], xerr=xerr1, yerr=yerr1, ls='none', ec
 # plot.text(14.3,53, str('error bars $\pm$ 1$\sigma$'), fontsize = 11, fontweight = 'normal')
 
 #Y vs. Gd
-plot.text(14.3,53, str('error bars $\pm$ 1$\sigma$'), fontsize = 11, fontweight = 'normal')
+#plot.text(14.3,53, str('error bars $\pm$ 1$\sigma$'), fontsize = 11, fontweight = 'normal')
 
 
 h, l = plot.get_legend_handles_labels()
@@ -215,11 +218,12 @@ plot2 = sns.scatterplot(data = all_2A_024, x= x, y=y, hue = "Sample", style = "S
 
 ORA2A024 = ORA2A024.replace(regex={'ORA-2A-024-TYPE1': 'Type 1','ORA-2A-024-TYPE2': 'Type 2' ,'ORA-2A-024-TYPE3': 'Type 3','ORA-2A-024-TYPE4': 'Type 4'})
 
-
 plot2 = sns.scatterplot(data=ORA2A024, x=x, y=y, hue="Sample", palette="Greens_r", style="Sample", edgecolor="black",
                        s=200, legend='brief', alpha=0.85)
 plt.errorbar(x=ORA2A024[x], y=ORA2A024[y], xerr=xerr2, yerr=yerr2, ls='none', ecolor='green', elinewidth=1, capsize=2, barsabove=False, alpha=0.8)
 
+plt.ylim(50, 120)
+plt.xlim(20, 50)
 # plot = sns.scatterplot(data=FGCP, x=x, y=y, hue="Population", palette="Greens_r", style="Population", edgecolor="black",
 #                        s=150, legend=False, alpha=0.8, hue_order=['ORA-2A-003', 'ORA-2A-016', 'ORA-2A-023', 'ORA-2A-024'])
 # plt.errorbar(x=FGCP[x], y=FGCP[y], xerr=xerr3, yerr=yerr3, ls='none',
@@ -237,7 +241,7 @@ plt.ylabel(y + " [ppm]")
 # plot2.text(15.7,67.4, str('error bars $\pm$ 1$\sigma$'), fontsize = 11, fontweight = 'normal')
 
 #Y vs. Gd
-plot2.text(15.7,67.4, str('error bars $\pm$ 1$\sigma$'), fontsize = 11, fontweight = 'normal')
+#plot2.text(15.7,67.4, str('error bars $\pm$ 1$\sigma$'), fontsize = 11, fontweight = 'normal')
 
 
 h, l = plot2.get_legend_handles_labels()
@@ -278,7 +282,7 @@ h, l = plot.get_legend_handles_labels()
 # General title
 # plt.suptitle("High-Silica Rhyolite (MG + VCCR) Fiamme Glass", fontsize=15,
 #              fontweight=0, color='black', y=0.95)
-#plt.savefig('/Users/gennachiaro/Documents/vanderbilt/research/ora caldera/trace-elements/graphs/2A-002-024_Y-Gd.png', dpi=400)
+plt.savefig('/Users/gennachiaro/Documents/vanderbilt/research/ora caldera/trace-elements/graphs/2A-002-024_Y-Nd.png', dpi=600)
 
 # Set size of plot
 sns.set_context("paper") 

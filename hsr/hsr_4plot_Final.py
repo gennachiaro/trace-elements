@@ -190,18 +190,18 @@ MGREE = melt[melt['Population'].isin(['CG 1', 'CG 2', 'CG 3'])]#VCCRREE = REE.lo
 sns.set_style("darkgrid")
 
 #plot matrix
-fig = plt.figure(figsize=(10,7))
+fig = plt.figure(figsize=(11,8))
 
 
 #group plot title
-title = fig.suptitle("Crystal-Rich (VCCR + CG) Fiamme Glass Populations", fontsize=18, y = 0.96)
+#title = fig.suptitle("Crystal-Rich (VCCR + CG) Fiamme Glass Populations", fontsize=18, y = 0.97)
 
 #plot 1 
 
 #create ree plot
 plt.subplot(2,2,4)
-plot = sns.lineplot(data = MGREE, x= 'variable', y='value', hue = 'Population', sort = False, palette="Blues_d",legend="brief", ci = 'sd')
-plot1 = sns.lineplot(data = VCCRREE, x= 'variable', y='value', hue = 'Population', sort = False, palette="PuRd_r", hue_order = ['VCCR 1', 'VCCR 2', 'VCCR 3'], ci = 'sd')
+plot = sns.lineplot(data = MGREE, x= 'variable', y='value', hue = 'Population', sort = False, palette="Blues_d",legend="brief", ci = 'sd', linewidth = 1)
+plot1 = sns.lineplot(data = VCCRREE, x= 'variable', y='value', hue = 'Population', sort = False, palette="PuRd_r", hue_order = ['VCCR 1', 'VCCR 2', 'VCCR 3'], ci = 'sd', linewidth = 1)
 
 plot.get_yaxis().set_minor_locator(mpl.ticker.AutoMinorLocator())
 plot.grid(b=True, which='major', color='w', linewidth=1.0)
@@ -211,14 +211,19 @@ plot.grid(b=True, which='minor', color='w', linewidth=0.5)
 plt.legend(loc='lower right')
 
 h,l = plot.get_legend_handles_labels()
+
+l[1:4] = ('CCR 1', 'CCR 2', 'CCR 3')
 #plot just populations
-plt.legend(h[1:4]+h[5:9],l[1:4]+l[5:9],loc='lower right')
+plt.legend(h[1:4]+h[5:9],l[1:4]+l[5:9],loc='lower right', fontsize = 15, ncol = 1, handlelength = 1.5, markerscale = 10)
 
 plt.xlabel('')
-plt.ylabel('Sample/Chondrite')
+plt.ylabel('Sample/Chondrite', fontsize = 18.5)
+
+plt.yticks(fontsize=14)
+plt.xticks(fontsize=18.5)
 
 #plot1.text(-0.5,0.45, str('error envelopes $\pm$ 1$\sigma$'), fontsize = 11, fontweight = 'normal')
-plot1.text(-0.5,0.12, str('error envelopes $\pm$ 1 std'), fontsize = 11, fontweight = 'normal')
+plot1.text(-0.5,0.12, str('error envelopes $\pm$ 1 std'), fontsize = 18.5, fontweight = 'normal')
 
 
 #plt.ylim(0.05, 200)
@@ -230,6 +235,10 @@ plt.ylim( (10**-1,10**2.2) )
 for axis in [plot.yaxis]:
     formatter = FuncFormatter(lambda y, _: '{:.16g}'.format(y))
     axis.set_major_formatter(formatter)
+
+for tick in plot1.xaxis.get_major_ticks()[1::2]:
+    tick.set_pad(25)
+
 
 #plot 2
 plt.subplot(2,2,1)
@@ -248,35 +257,60 @@ yerr2 = VCCR_std[y]
 
 
 plot2 = sns.scatterplot(data=MG, x=x, y=y, hue="Population", palette="Blues_d", marker='s', style = "Population",
-                       edgecolor="black", s=150, alpha=0.8, legend= "brief", hue_order=['MG 1', 'MG 2', 'MG 3'])
+                       edgecolor="black", s=250, alpha=0.8, legend= "brief", hue_order=['MG 1', 'MG 2', 'MG 3'])
 plt.errorbar(x=MG[x], y=MG[y], xerr=xerr1, yerr=yerr1, ls='none',
              ecolor='cornflowerblue', elinewidth=1, capsize=2, alpha=0.8)
 
 plot2 = sns.scatterplot(data=VCCR, x=x, y=y, hue="Population", palette="PuRd_r", markers=('h','^','P'), style = "Population",
-                       edgecolor="black", s=150, legend= "brief", alpha=0.8, hue_order=['VCCR 1', 'VCCR 2', 'VCCR 3'])
+                       edgecolor="black", s=250, legend= "brief", alpha=0.8, hue_order=['VCCR 1', 'VCCR 2', 'VCCR 3'])
 plt.errorbar(x=VCCR[x], y=VCCR[y], xerr=xerr2, yerr=yerr2, ls='none',
              ecolor='palevioletred', elinewidth=1, capsize=2, barsabove=False, alpha=0.8)
 
-plt.xlabel(x + ' [ppm]')
-plt.ylabel(y + " [ppm]")
+plt.xlabel(x + ' [ppm]', fontsize = 18.5)
+plt.ylabel(y + " [ppm]", fontsize = 18.5)
 
-plot2.text(54,-0.3, str('error bars $\pm$ 1$\sigma$'), fontsize = 11, fontweight = 'normal')
+plt.yticks(fontsize=14)
+plt.xticks(fontsize=14)
 
-# Configure legend
+# plot2.get_yaxis().set_minor_locator(mpl.ticker.AutoMinorLocator())
+# plot2.grid(b=True, which='major', color='w', linewidth=1.0)
+# plot2.grid(b=True, which='minor', color='w', linewidth=0.5)
+
+#log annotation
+#plot2.text(9.9,0.12, str('error bars $\pm$ 1$\sigma$'), fontsize = 18.5, fontweight = 'normal')
+
+plot2.text(43,-0.12, str('error bars $\pm$ 1$\sigma$'), fontsize = 18.5, fontweight = 'normal')
+
+plt.yticks(np.arange(0,24, step = 5))
+
+
+# #set y axis to log scale
+# plot2.set(yscale='log')
+# plot2.set(xscale = "log")
+
+# from matplotlib.ticker import FuncFormatter
+# for axis in [plot2.yaxis, plot2.xaxis]:
+#     formatter = FuncFormatter(lambda y, _: '{:.16g}'.format(y))
+#     axis.set_major_formatter(formatter)
+
+# plt.ylim( (10**-1,10**3) )
+# plt.xlim( (10**-0.4,10**2.01) )
+
+
 h, l = plot2.get_legend_handles_labels()
 
-# Legend outside of plot
-#plt.legend(h[1:4]+h[5:8],l[1:4]+l[5:8],loc='center left', bbox_to_anchor=(1, 0.5), ncol=1)
-
-# Legend inside of plot
-#plt.legend(h[1:4]+h[5:8], l[1:4]+l[5:8], loc='best', ncol=2)
-
 l[0] = "Outflow"
-l[4] = "Intracaldera"
-l[1:4] = ('CG 1', 'CG 2', 'CG 3')
+l[1:4] = ('CCR 1', 'CCR 2', 'CCR 3')
+
+# l[4] = "Outflow (FGCP)"
+# l[9] = "Intracaldera"
+# l[13] = "Intracaldera (FG)"
 
 
-plt.legend(h, l, loc='best', ncol = 2, handlelength = 1, columnspacing = 0.5)
+
+
+plt.legend(h[1:4] + h [5:], l[1:4] + l[5:], loc='best', ncol = 2, handlelength = 1, columnspacing = 1, fontsize = 15, markerscale = 1.6)
+plt.legend(h[1:4] + h [5:], l[1:4] + l[5:], loc='upper left', ncol = 2, handlelength = 1, columnspacing = 1, fontsize = 15, markerscale = 1.6)
 
 
 #set location of legend
@@ -296,17 +330,21 @@ xerr2 = VCCR_std[x]
 yerr2 = VCCR_std[y]
 
 plot3 = sns.scatterplot(data=MG, x=x, y=y, hue="Population", palette="Blues_d", marker='s', style = "Population",
-                       edgecolor="black", s=150, alpha=0.8, legend= False, hue_order=['MG 1', 'MG 2', 'MG 3'])
+                       edgecolor="black", s=250, alpha=0.8, legend= False, hue_order=['MG 1', 'MG 2', 'MG 3'])
 plt.errorbar(x=MG[x], y=MG[y], xerr=xerr1, yerr=yerr1, ls='none',
              ecolor='cornflowerblue', elinewidth=1, capsize=2, alpha=0.8)
 
 plot3 = sns.scatterplot(data=VCCR, x=x, y=y, hue="Population", palette="PuRd_r", markers=('h','^','P'), style = "Population",
-                       edgecolor="black", s=150, legend= False, alpha=0.8, hue_order=['VCCR 1', 'VCCR 2', 'VCCR 3'])
+                       edgecolor="black", s=250, legend= False, alpha=0.8, hue_order=['VCCR 1', 'VCCR 2', 'VCCR 3'])
 plt.errorbar(x=VCCR[x], y=VCCR[y], xerr=xerr2, yerr=yerr2, ls='none',
              ecolor='palevioletred', elinewidth=1, capsize=2, barsabove=False, alpha=0.8)
 
-plt.xlabel(x + ' [ppm]')
-plt.ylabel(y + " [ppm]")
+plt.xlabel(x + ' [ppm]', fontsize = 18.5)
+plt.ylabel(y + " [ppm]", fontsize = 18.5)
+
+plt.yticks(fontsize=14)
+plt.xticks(fontsize=14)
+
 
 #plot3.text(5.1,109, str('error bars $\pm$ 1$\sigma$'), fontsize = 11, fontweight = 'normal')
 
@@ -319,10 +357,10 @@ h, l = plot2.get_legend_handles_labels()
 # Legend inside of plot
 #plt.legend(h[1:4]+h[5:8], l[1:4]+l[5:8], loc='best', ncol=2)
 
-l[0] = "Outflow"
-l[4] = "Intracaldera"
+# l[0] = "Outflow"
+# l[4] = "Intracaldera"
 
-l[5:7] = ('CG 1', 'CG 2', 'CG 3')
+l[5:7] = ('CCR 1', 'CCR 2', 'CCR 3')
 
 #plt.legend(h, l, loc='best', ncol = 2, handlelength = 1, columnspacing = 0.5)
 
@@ -340,17 +378,21 @@ xerr2 = VCCR_std[x]
 yerr2 = VCCR_std[y]
 
 plot4 = sns.scatterplot(data=MG, x=x, y=y, hue="Population", palette="Blues_d", marker='s', style = "Population",
-                       edgecolor="black", s=150, alpha=0.8, legend= False, hue_order=['MG 1', 'MG 2', 'MG 3'])
+                       edgecolor="black", s=250, alpha=0.8, legend= False, hue_order=['MG 1', 'MG 2', 'MG 3'])
 plt.errorbar(x=MG[x], y=MG[y], xerr=xerr1, yerr=yerr1, ls='none',
              ecolor='cornflowerblue', elinewidth=1, capsize=2, alpha=0.8)
 
 plot4 = sns.scatterplot(data=VCCR, x=x, y=y, hue="Population", palette="PuRd_r", markers=('h','^','P'), style = "Population",
-                       edgecolor="black", s=150, legend= False, alpha=0.8, hue_order=['VCCR 1', 'VCCR 2', 'VCCR 3'])
+                       edgecolor="black", s=250, legend= False, alpha=0.8, hue_order=['VCCR 1', 'VCCR 2', 'VCCR 3'])
 plt.errorbar(x=VCCR[x], y=VCCR[y], xerr=xerr2, yerr=yerr2, ls='none',
              ecolor='palevioletred', elinewidth=1, capsize=2, barsabove=False, alpha=0.8)
 
-plt.xlabel(x + ' [ppm]')
-plt.ylabel(y + " [ppm]")
+plt.xlabel(x + ' [ppm]', fontsize = 18.5)
+plt.ylabel(y + " [ppm]", fontsize = 18.5)
+
+
+plt.yticks(fontsize=14)
+plt.xticks(fontsize=14)
 
 #plot4.text(33,29.53, str('error bars $\pm$ 1$\sigma$'), fontsize = 11, fontweight = 'normal')
 
@@ -372,10 +414,13 @@ l[4] = "Intracaldera"
 
 
 # set size of plot
-plt.tight_layout()
+plt.tight_layout(pad = 0.75)
 #plt.show()
 
 # set size of plot
 #sns.set_context("poster")
 
-#eplt.savefig('/Users/gennachiaro/Documents/vanderbilt/research/ora caldera/trace-elements/graphs/HSR_4Plot_ErrorBars_V14.svg', dpi=800)
+
+#plt.savefig('/Users/gennachiaro/Documents/vanderbilt/research/ora caldera/trace-elements/graphs/HSR_4Plot_ErrorBars_Revision.svg', dpi=800)
+
+plt.savefig('/Users/gennachiaro/Documents/vanderbilt/research/ora caldera/trace-elements/graphs/HSR_4Plot_ErrorBars_noLog.png', dpi=800)

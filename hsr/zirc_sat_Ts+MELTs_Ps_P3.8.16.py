@@ -68,9 +68,9 @@ sns.set_style("darkgrid")
 color_dict = dict({'VCCR 1': '#CC3366',
                    'VCCR 2': '#DA68A8',
                    'VCCR 3': '#D4BBDA',
-                   'CG 1': '#3870AF',
-                   'CG 2': '#79ADD2',
-                   'CG 3': '#ABCFE5',
+                   'CCR 1': '#3870AF',
+                   'CCR 2': '#79ADD2',
+                   'CCR 3': '#ABCFE5',
                    'VCCR' : '#DA68A8',
                    'MG' : '#79ADD2', 
                    'MG 3': '#ABCFE5'})
@@ -131,9 +131,9 @@ df['Type'] = df['Population'].str[:-2]
 
 
 replacement_mapping_dict = {
-    "MG 1": "CG 1",
-    "MG 2": "CG 2",
-    "MG 3": "CG 3"
+    "MG 1": "CCR 1",
+    "MG 2": "CCR 2",
+    "MG 3": "CCR 3"
 }
 
 df['Population'] = df['Population'].replace(replacement_mapping_dict, regex = True)
@@ -168,7 +168,7 @@ g = (sns.jointplot(data=df, x='T °C (WH 83)', y='Pressures (MPa)', palette=colo
 
 #plt.xlim([680, 780])
 
-g.ax_joint.scatter(data = MG3, x = 'T °C (WH 83)', y = 'Pressures (MPa)', color = '#ABCFE5', marker = 'X', s=50, edgecolor = 'white', linewidth = 0.4, label = "CG 3")
+g.ax_joint.scatter(data = MG3, x = 'T °C (WH 83)', y = 'Pressures (MPa)', color = '#ABCFE5', marker = 'X', s=50, edgecolor = 'white', linewidth = 0.4, label = "CCR 3")
 
 # KDE plots for population MG 3
 sns.kdeplot(data = MG3, x = 'T °C (WH 83)', color = '#ABCFE5', fill = True, common_norm = False, ax = g.ax_marg_x)
@@ -241,7 +241,7 @@ h, l = plt.gca().get_legend_handles_labels()
 order =[0, 1, 5, 2, 3, 4]
 
 
-plt.legend([h[idx] for idx in order], [l[idx] for idx in order], loc='upper right', ncol=1)
+plt.legend([h[idx] for idx in order], [l[idx] for idx in order], loc='upper right', ncol=2, title = "Outflow             Intracaldera")
 
 
 # # SECOND Y AXIS
@@ -333,6 +333,8 @@ plt.legend([h[idx] for idx in order], [l[idx] for idx in order], loc='upper righ
 # g.xaxis.set_major_locator(ticker.MultipleLocator(tick_spacing))
 
 #g.set_xticklabels(g.get_xticklabels(), rotation=45, horizontalalignment="right")
+
+plt.ylim(reversed(plt.ylim(50,200)))
 
 # general title
 plt.suptitle("Ora Zircon Saturation Temperatures and Rhyolite-MELTS Q2F Pressures",

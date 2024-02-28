@@ -18,9 +18,9 @@ import matplotlib as mpl
 
 # Add in REE
 #import xlsx file
-FGCPREE = pd.read_excel("/Users/gennachiaro/Documents/vanderbilt/research/writing/Ora Fiamme Paper 2021/Supplementary Info/Ora_Normalized_REE.xlsx", sheet_name = 'FGCP_Normalized')
-HSRREE = pd.read_excel("/Users/gennachiaro/Documents/vanderbilt/research/writing/Ora Fiamme Paper 2021/Supplementary Info/Ora_Normalized_REE.xlsx", sheet_name = 'HSR_Normalized')
-FGREE = pd.read_excel("/Users/gennachiaro/Documents/vanderbilt/research/writing/Ora Fiamme Paper 2021/Supplementary Info/Ora_Normalized_REE.xlsx", sheet_name = 'FG_Normalized')
+FGCPREE = pd.read_excel("/Users/gennachiaro/Documents/vanderbilt/research/writing/Ora Fiamme Paper 2021/Supplementary Info/Supplementary_Data_Table_4_Normalized_REE.xlsx", sheet_name = 'O-FCP_Normalized')
+AllREE = pd.read_excel("/Users/gennachiaro/Documents/vanderbilt/research/writing/Ora Fiamme Paper 2021/Supplementary Info/Supplementary_Data_Table_4_Normalized_REE.xlsx", sheet_name = 'All_Normalized')
+FGREE = pd.read_excel("/Users/gennachiaro/Documents/vanderbilt/research/writing/Ora Fiamme Paper 2021/Supplementary Info/Supplementary_Data_Table_4_Normalized_REE.xlsx", sheet_name = 'I-FCP_Normalized')
 
 #  change all negatives to NaN
 num = FGREE._get_numeric_data()
@@ -31,11 +31,11 @@ FGREE = FGREE.dropna(axis=1, how = 'all')
 FGREE = FGREE.dropna(axis=0, how = 'any')
 
 #  change all negatives to NaN
-num = HSRREE._get_numeric_data()
+num = AllREE._get_numeric_data()
 num[num <= 0] = np.nan
 
-HSRREE = HSRREE.dropna(axis=1, how = 'all')
-HSRREE = HSRREE.dropna(axis=0, how = 'any')
+AllREE = AllREE.dropna(axis=1, how = 'all')
+AllREE = AllREE.dropna(axis=0, how = 'any')
 
 
 #  change all negatives to NaN
@@ -60,7 +60,7 @@ FGCPREE = FGCPREE.dropna(axis=0, how = 'any')
 #   every element for each spot corresponds to a separate row
 #       this is for if we want to plot every single data point
 FGCPmelt = (FGCPREE.melt(id_vars=['Sample','Population'], value_vars=['La','Ce','Pr','Nd','Pm','Sm','Eu','Gd','Tb','Dy','Ho','Er','Tm','Yb','Lu'], ignore_index=False))
-HSRmelt = (HSRREE.melt(id_vars=['Sample','Population'], value_vars=['La','Ce','Pr','Nd','Pm','Sm','Eu','Gd','Tb','Dy','Ho','Er','Tm','Yb','Lu'], ignore_index=False))
+Allmelt = (AllREE.melt(id_vars=['Sample','Population'], value_vars=['La','Ce','Pr','Nd','Pm','Sm','Eu','Gd','Tb','Dy','Ho','Er','Tm','Yb','Lu'], ignore_index=False))
 FGmelt = (FGREE.melt(id_vars=['Sample','Population'], value_vars=['La','Ce','Pr','Nd','Pm','Sm','Eu','Gd','Tb','Dy','Ho','Er','Tm','Yb','Lu'], ignore_index=False))
 #melt = melt.set_index('Sample')
 
@@ -80,9 +80,9 @@ Unmingled = FGCPmelt[FGCPmelt['Population'].isin(['ORA-2A-023', 'ORA-2A-003'])]
 # HSR subgroups
 #MG = HSRmelt[HSRmelt['Population'].isin(['MG 1', 'MG 2', 'MG 3'])]
 
-CG = HSRmelt[HSRmelt['Population'].isin(['CG 1', 'CG 2', 'CG 3'])]
+CCR = Allmelt[Allmelt['Population'].isin(['CCR 1', 'CCR 2', 'CCR 3'])]
 
-VCCR = HSRmelt[HSRmelt['Population'].isin(['VCCR 1', 'VCCR 2', 'VCCR 3'])]
+VCCR = Allmelt[Allmelt['Population'].isin(['VCCR 1', 'VCCR 2', 'VCCR 3'])]
 
 FG = FGmelt[FGmelt['Population'].isin(['ORA-5B-410', 'ORA-5B-412', 'ORA-5B-414'])]
 
@@ -103,7 +103,7 @@ fig = plt.figure(figsize=(10,8))
 #plt.subplot(3,2,1)
 plt.subplot(2,2,1)
 
-plt.title('Outflow (Unmingled FGCP + CG)', fontsize = 13)
+plt.title('Outflow (O-FCP* + CCR)', fontsize = 13)
 
 ORA_002_REE = ORA_002_REE.replace(regex={'ORA-2A-002-Type1': 'ORA-2A-002-Type 1', 'ORA-2A-002-Type2': 'ORA-2A-002-Type 2', 'ORA-2A-002-Type3': 'ORA-2A-002-Type 3'})
 ORA_024_REE = ORA_024_REE.replace(regex={'ORA-2A-024-TYPE1': 'ORA-2A-024-Type 1','ORA-2A-024-TYPE2': 'ORA-2A-024-Type 2' ,'ORA-2A-024-TYPE3': 'ORA-2A-024-Type 3','ORA-2A-024-TYPE4': 'ORA-2A-024-Type 4'})
@@ -163,7 +163,7 @@ for axis in [plot.yaxis]:
 #plt.subplot(3,2,2)
 plt.subplot(2,2,2)
 
-plt.title('Intracaldera (FG + VCCR)', fontsize = 13)
+plt.title('Intracaldera (I-FCP + VCCR)', fontsize = 13)
 
 FG = FG.replace(regex={'ORA-5B-410-B': 'ORA-5B-410', 'ORA-5B-412A-FG': 'ORA-5B-412', 'ORA-5B-414-FG': 'ORA-5B-414'})
 
@@ -181,7 +181,7 @@ plt.xlabel('')
 plt.ylabel('Sample/Chondrite')
 
 #plt.text(-0.6,0.12, str('error envelopes $\pm$ 1$\sigma$'), fontsize = 11, fontweight = 'normal')
-plt.text(-0.6,0.12, str('error envelopes $\pm$ 1 std'), fontsize = 11, fontweight = 'normal')
+plt.text(-0.6,0.12, str('error envelopes $\pm$ 1s'), fontsize = 11, fontweight = 'normal')
 
 
 props = dict(boxstyle = 'square, pad = 0.2', facecolor = 'white', alpha = 0.5, ec = 'none')
@@ -202,7 +202,7 @@ for axis in [plot.yaxis]:
 #plt.subplot(3,2,3)
 plt.subplot(2,2,3)
 
-plot = sns.lineplot(data = CG, x= 'variable', y='value', hue = 'Population', sort = False, palette="Blues_d",legend="brief", ci = 'sd')
+plot = sns.lineplot(data = CCR, x= 'variable', y='value', hue = 'Population', sort = False, palette="Blues_d",legend="brief", ci = 'sd')
 
 #set location of legend
 plt.legend(loc='lower right')
@@ -334,4 +334,4 @@ for axis in [plot.yaxis]:
 # #sns.set_context("paper") 
 #plt.tight_layout()
 
-#plt.savefig('/Users/gennachiaro/Documents/vanderbilt/research/ora caldera/trace-elements/graphs/All_REE.png', dpi=500)
+plt.savefig('/Users/gennachiaro/Documents/vanderbilt/research/ora caldera/trace-elements/graphs/All_REE2.png', dpi=700)

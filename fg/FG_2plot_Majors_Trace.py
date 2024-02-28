@@ -410,7 +410,7 @@ h, l = plot.get_legend_handles_labels()
 
 # Legend inside of plot
 #plt.legend(h[1:6], l[1:6], loc='best', ncol=1, handlelength = 1, columnspacing = 0.5)
-plt.legend(h[1:6], l[1:6], loc='best', ncol=1)
+plt.legend(h[1:6], l[1:6], loc='best', ncol=1, handlelength = 1, columnspacing = 0.5, markerscale = 1.3)
 
 plt.tight_layout()
 

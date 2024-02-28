@@ -15,6 +15,9 @@ import matplotlib.pyplot as plt
 path = '/Users/gennachiaro/Documents/vanderbilt/research/ora caldera/trace-elements/new-spreadsheets/Ora-Glass-MASTER.xlsx'
 #path = os.path.normcase(path) # This changes path to be compatible with windows
 
+errors = '/Users/gennachiaro/Documents/vanderbilt/research/ora caldera/trace-elements/new-spreadsheets/stats/1_sigmaerrors_mingled_ORA-2A-002.xlsx'
+
+
 # Create a custom list of values I want to cast to NaN, and explicitly
 #   define the data types of columns:
 na_values = ['<-1.00', '****', '<****', '*****']
@@ -24,6 +27,8 @@ data = ({'Li': np.float64, 'Mg': np.float64, 'Al': np.float64,'Si': np.float64,'
 
 # Master spreadsheet with clear mineral analyses removed (excel file!)
 df = pd.read_excel(path, sheet_name = 'Data', skiprows = [1], dtype = data, na_values = na_values)
+
+errors = pd.read_excel(errors, dtype = data, na_values = na_values)
 
 #If Value in included row is equal to zero, drop this row
 df = df.loc[~((df['Included'] == 0))]
@@ -75,6 +80,10 @@ all_2A_002 = df[df['Sample'].isin(['ORA-2A-002-Type1','ORA-2A-002-Type2','ORA-2A
 
 all_2A_024 = df[df['Sample'].isin(['ORA-2A-024-TYPE1','ORA-2A-024-TYPE2','ORA-2A-024-TYPE3','ORA-2A-024-TYPE4'])]
 
+errors = errors.reset_index()
+list = all_2A_002['Spot']
+errors = errors.loc[errors['Spot'].isin(list)].reset_index(drop=True)
+errors = errors.set_index('Spot')
 
 #---------
 # Calculate means for each sample (messy)
@@ -202,6 +211,12 @@ yerr1 = ORA2A002_std[y]
 xerr2 = ORA2A024_std[x]
 yerr2 = ORA2A024_std[y]
 
+xerr2 = errors[x]
+yerr2 = errors[y]
+
+all_2A_002 = all_2A_002.set_index('Spot')
+
+
 #fig.suptitle("ORA-2A-002", fontsize=13.5, fontweight=0, color='black', y = 0.99)
 
 # Create plot
@@ -213,6 +228,8 @@ plt.subplot(2,2,1)
 ORA2A002 = ORA2A002.replace(regex={'ORA-2A-002-Type1': 'ORA-2A-002-Type 1', 'ORA-2A-002-Type2': 'ORA-2A-002-Type 2', 'ORA-2A-002-Type3': 'ORA-2A-002-Type 3'})
 
 plot = sns.scatterplot(data = all_2A_002, x= x, y=y, hue = "Sample", style = "Sample", palette="gray", edgecolor="black", s=150, alpha = 0.2, legend=False, markers = ['o','X','s'], hue_order=['ORA-2A-002-Type1','ORA-2A-002-Type2','ORA-2A-002-Type3'])
+plt.errorbar(x=all_2A_002[x], y=all_2A_002[y], xerr=xerr2, yerr=yerr2, ls='none',
+            ecolor='gray', elinewidth=1, capsize=2, barsabove=False, alpha=0.2)
 
 
 plot = sns.scatterplot(data=ORA2A002, x=x, y=y, hue="Sample", palette="Greens_r", style="Sample", edgecolor="black",
@@ -244,14 +261,20 @@ plt.subplot(2,2,2)
 #create trace element plot
 #plt.title("ORA-2A-024", fontsize=13.5, fontweight=0, color='black', y = 0.99)
 
-x = 'Zr'
+x = 'Nb'
 y = 'Yb'
 
 xerr1 = ORA2A002_std[x]
 yerr1 = ORA2A002_std[y]
 
+xerr2 = errors[x]
+yerr2 = errors[y]
+
+
 # Show all symbols
 plot2 = sns.scatterplot(data = all_2A_002, x= x, y=y, hue = "Sample", style = "Sample", palette="gray", edgecolor="black", s=150, alpha = 0.2, legend=False, markers = ['o','X','s'], hue_order=['ORA-2A-002-Type1','ORA-2A-002-Type2','ORA-2A-002-Type3'])
+plt.errorbar(x=all_2A_002[x], y=all_2A_002[y], xerr=xerr2, yerr=yerr2, ls='none',
+            ecolor='gray', elinewidth=1, capsize=2, barsabove=False, alpha=0.2)
 
 
 plot2 = sns.scatterplot(data=ORA2A002, x=x, y=y, hue="Sample", palette="Greens_r", style="Sample", edgecolor="black",
@@ -280,8 +303,14 @@ y = 'Th'
 xerr1 = ORA2A002_std[x]
 yerr1 = ORA2A002_std[y]
 
+xerr2 = errors[x]
+yerr2 = errors[y]
+
+
 # Show all symbols
 plot3 = sns.scatterplot(data = all_2A_002, x= x, y=y, hue = "Sample", style = "Sample", palette="gray", edgecolor="black", s=150, alpha = 0.2, legend=False, markers = ['o','X','s'], hue_order=['ORA-2A-002-Type1','ORA-2A-002-Type2','ORA-2A-002-Type3'])
+plt.errorbar(x=all_2A_002[x], y=all_2A_002[y], xerr=xerr2, yerr=yerr2, ls='none',
+            ecolor='gray', elinewidth=1, capsize=2, barsabove=False, alpha=0.2)
 
 
 plot3 = sns.scatterplot(data=ORA2A002, x=x, y=y, hue="Sample", palette="Greens_r", style="Sample", edgecolor="black",
@@ -292,29 +321,35 @@ plt.xlabel(x + ' [ppm]')
 plt.ylabel(y + " [ppm]")
 #plt.yscale('log')
 
-#plot3.text(24,10.3, str('error bars $\pm$ 1$\sigma$'), fontsize = 11, fontweight = 'normal')
+plot3.text(24.5,9.8, str('error bars $\pm$ 1s'), fontsize = 11, fontweight = 'normal')
 
 
 # -----------
 #plot 4
 plt.subplot(2,2,4)
 
-x = 'La/Lu'
-y = 'Eu/Eu*'
+x = 'Ti'
+y = 'Zr'
 
 xerr1 = ORA2A002_std[x]
 yerr1 = ORA2A002_std[y]
 
+xerr2 = errors[x]
+yerr2 = errors[y]
+
+
 # Show all symbols
 plot4 = sns.scatterplot(data = all_2A_002, x= x, y=y, hue = "Sample", style = "Sample", palette="gray", edgecolor="black", s=150, alpha = 0.2, legend=False, markers = ['o','X','s'], hue_order=['ORA-2A-002-Type1','ORA-2A-002-Type2','ORA-2A-002-Type3'])
+plt.errorbar(x=all_2A_002[x], y=all_2A_002[y], xerr=xerr2, yerr=yerr2, ls='none',
+            ecolor='gray', elinewidth=1, capsize=2, barsabove=False, alpha=0.2)
 
 
 plot4 = sns.scatterplot(data=ORA2A002, x=x, y=y, hue="Sample", palette="Greens_r", style="Sample", edgecolor="black",
                        s=200, legend=False, alpha=0.85,  markers = ['o','s','X'])
 plt.errorbar(x=ORA2A002[x], y=ORA2A002[y], xerr=xerr1, yerr=yerr1, ls='none', ecolor='green', elinewidth=1, capsize=2, barsabove=False, alpha=0.8)
 
-#plt.xlabel(x + ' [ppm]')
-#plt.ylabel(y + " [ppm]")
+plt.xlabel(x + ' [ppm]')
+plt.ylabel(y + " [ppm]")
 
 #plot1.text(-0.5,0.45, str('error envelopes $\pm$ 1$\sigma$'), fontsize = 11, fontweight = 'normal')
 
@@ -328,4 +363,4 @@ plt.errorbar(x=ORA2A002[x], y=ORA2A002[y], xerr=xerr1, yerr=yerr1, ls='none', ec
 #sns.set_context("paper") 
 #plt.tight_layout()
 
-#plt.savefig('/Users/gennachiaro/Documents/vanderbilt/research/ora caldera/trace-elements/graphs/2A-002_4plot_Eu_La.png', dpi=500)
+plt.savefig('/Users/gennachiaro/Documents/vanderbilt/research/ora caldera/trace-elements/graphs/2A-002_4plot2.png', dpi=700)

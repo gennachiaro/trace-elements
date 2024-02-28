@@ -9,6 +9,7 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 from matplotlib.collections import PathCollection
 import matplotlib.ticker as ticker
+import matplotlib as mpl
 
 ##ONLY WORKS WITH BASE PYTHON 3.8.5!!!!!
 #AND SEABORN 0.11.2!!!
@@ -70,9 +71,9 @@ sns.set_style("darkgrid")
 color_dict = dict({'VCCR 1': '#CC3366',
                    'VCCR 2': '#DA68A8',
                    'VCCR 3': '#D4BBDA',
-                   'CG 1': '#3870AF',
-                   'CG 2': '#79ADD2',
-                   'CG 3': '#ABCFE5',
+                   'CCR 1': '#3870AF',
+                   'CCR 2': '#79ADD2',
+                   'CCR 3': '#ABCFE5',
                    'VCCR' : '#DA68A8',
                    'MG' : '#79ADD2', 
                    'MG 3': '#ABCFE5'})
@@ -133,9 +134,9 @@ df['Type'] = df['Population'].str[:-2]
 
 
 replacement_mapping_dict = {
-    "MG 1": "CG 1",
-    "MG 2": "CG 2",
-    "MG 3": "CG 3"
+    "MG 1": "CCR 1",
+    "MG 2": "CCR 2",
+    "MG 3": "CCR 3"
 }
 
 df['Population'] = df['Population'].replace(replacement_mapping_dict, regex = True)
@@ -167,6 +168,8 @@ df1['Population'] = df1['Population'].replace(replacement_mapping_dict, regex = 
 
 g = (sns.jointplot(data=df, x='T °C (WH 83)', y='Pressures (MPa)', palette=color_dict, hue='Population', kind='kde', shade=True, joint_kws={"s": 100, "edgecolor": 'black', 'alpha': 0.7}, marginal_kws={
      'fill': True, 'common_norm' : False})).plot_joint(sns.kdeplot, zorder=0, alpha=0.3, warn_singular=False, linewidths=1).plot_joint(sns.scatterplot, style=df['Population'], s=40, markers = ('o', 's', '^', 'P', 'h')).set_axis_labels('T °C (WH 83)','Pressure (MPa)')
+
+g.ax_joint.yaxis.set_major_locator(ticker.MultipleLocator(25))
 
 #plt.xlim([680, 780])
 
@@ -200,9 +203,6 @@ sns.kdeplot(data = MG3, y = 'Pressures (MPa)', color = '#ABCFE5', fill = True, c
 #sns.distplot(MG3, color = '#ABCFE5', ax = g.ax_marg_y, vertical=True)
 
 
-
-
-
 # Group by Type
 # g = (sns.jointplot(data=df, x='T °C (WH 83)', y='Pressures (MPa)', palette=color_dict, hue='Type', kind='kde', shade=True, joint_kws={"s": 100, "edgecolor": 'black', 'alpha': 0.7}, marginal_kws={
 #      'fill': True, 'common_norm' : False})).plot_joint(sns.kdeplot, zorder=0, alpha=0.3, warn_singular=False, linewidths=1).plot_joint(sns.scatterplot, style=df['Type'], s=40).set_axis_labels('T °C (WH 83)','Pressures (MPa)')
@@ -217,7 +217,7 @@ def km2MPa(x):
 secax = g.ax_marg_y.secondary_yaxis('right', functions = (MPa2km, km2MPa))
 
 secax.set_ylabel('Depth (km)')
-
+#secax.yaxis.set_major_locator(ticker.MultipleLocator(space))
 
 
 # #Plot with common norm normalizes the histograms
@@ -321,6 +321,11 @@ plt.legend(loc='lower left', ncol=1)
 # plt.ylim(reversed(plt.ylim(0,16.65)))
 # plt.ylim(reversed(plt.ylim(0,11.1)))
 
+plt.ylim(reversed(plt.ylim(50,200)))
+
+
+#plt.yaxis.set_major_locator(ticker.MultipleLocator(space))
+
 #g.text(702, 5.31, str('error bars $\pm$ 1$\sigma$'), fontsize = 11, fontweight = 'normal')
 
 #g.text(702, 5.31, str('error bars $\pm$ 1$\sigma$'), fontsize = 11, fontweight = 'normal')
@@ -340,10 +345,12 @@ plt.suptitle("Ora Zircon Saturation Temperatures and Rhyolite-MELTS Q2F Pressure
 
 # Save Figure
 
-plt.show()
+#plt.show()
 
 #plt.savefig('/Users/gennachiaro/Documents/vanderbilt/research/ora caldera/zircon saturation/zr_satplot_temps_kde_fill+points_crust_300MPa_xlim.png', dpi=300, bbox_inches = 'tight')
 
 #plt.savefig('/Users/gennachiaro/Documents/vanderbilt/research/ora caldera/zircon saturation/zr_satplot_temps_CG3_300MP_updated.svg', dpi=400, bbox_inches = 'tight')
 #plt.savefig('/Users/gennachiaro/Documents/vanderbilt/research/ora caldera/zircon saturation/zr_satplot_temps_CG3_200MP_updated.svg', dpi=400, bbox_inches = 'tight')
+
+plt.savefig('/Users/gennachiaro/Library/CloudStorage/Dropbox/Writing/Alteration Paper 2021/Adobe_Illustrator_Files/zr_satplot_temps_80-200MP_updated_25MPaSteps.svg', dpi=800, bbox_inches = 'tight')
 

@@ -15,21 +15,16 @@ from matplotlib.collections import PathCollection
 na_values = ['-']
 
 df = pd.read_excel(
-    '/Users/gennachiaro/Documents/vanderbilt/research/ora caldera/zircon saturation/Ora_ZircSat_renamed.xlsx', index_col=1, na_values=na_values)
+    '/Users/gennachiaro/Library/CloudStorage/Dropbox/Ora_Fiamme_Paper_Reviews/Revision/Supplementary_Data_Table_7_Zircon_Saturation_Temperatures.xlsx', index_col=1, na_values=na_values)
 
 # Slice df so that I just have the HSR values
-df = df[7:32]
+df = df[0:24]
 
 # Drop columns with any NaN values
 df = df.dropna(how = 'all',axis = 1)
 
 # Drop rows with any NaN values
 df = df.dropna(axis = 0)
-
-df = df.reset_index()
-df = df.set_index('Sample_Name')
-df = df.drop(['ORA-5B-405', 'ORA-5B-416'])
-df = df.reset_index()
 
 #set style for boxplot
 sns.set_style("darkgrid")
@@ -83,23 +78,10 @@ for artist in g.findobj(PathCollection):
 
 #xerr = df['1 sigma']
 
-plt.ylabel('Population', fontsize = 15)
-#plt.xlabel('T °C (W&H 83)', fontsize = 15)
-
-plt.xlabel('T °C', fontsize = 15)
-
-# Set tick font size
-for label in (g.get_xticklabels() + g.get_yticklabels()):
-	label.set_fontsize(12)
-
-# plt.xticks(fontsize=12)
 
 #swarmplot
 #g = sns.swarmplot(x='Population', y="Pressures (MPa)", data=df, edgecolor = 'gray', linewidth =  0.5, ax = g, alpha = 0.7, hue = "Population", hue_order = ['VCCR 1', 'VCCR 2', 'VCCR 3','MG 1', 'MG 2','MG 3'], palette = color_dict, size = 7)
-g = sns.swarmplot(x='T °C (WH 83)', y="Population", data=df, edgecolor = 'gray', linewidth =  0.5, ax = g, alpha = 0.7, hue = "Population", hue_order = ['CCR 1', 'CCR 2', 'CCR 3','VCCR 1', 'VCCR 2','VCCR 3'], palette = color_dict, size = 9)
-
-plt.ylabel('Population', fontsize = 15)
-plt.xlabel('Temperature (°C)', fontsize = 15)
+g = sns.swarmplot(x='T °C (WH 83)', y="Population", data=df, edgecolor = 'gray', linewidth =  0.5, ax = g, alpha = 0.7, hue = "Population", hue_order = ['CCR 1', 'CCR 2', 'CCR 3','VCCR 1', 'VCCR 2','VCCR 3'], palette = color_dict, size = 7)
 
 # # Select group to calculate the number of observations in each group
 # group = 'Sample'
@@ -129,13 +111,7 @@ plt.xlabel('Temperature (°C)', fontsize = 15)
 
 
 # Legend outside of plot
-#plt.legend(loc='center left', bbox_to_anchor=(1, 0.5), ncol=1)
-
-h, l = g.get_legend_handles_labels()
-
-# l[0:2]= ('CCR 1', 'CCR 2', 'CCR 3')
-
-plt.legend(h, l, loc='center left', bbox_to_anchor=(1, 0.5), ncol=1, handlelength = 1, columnspacing = 0.5, markerscale = 1, fontsize = 12)
+plt.legend(loc='center left', bbox_to_anchor=(1, 0.5), ncol=1)
 
 
 # # SECOND PLOT
@@ -176,7 +152,7 @@ plt.legend(h, l, loc='center left', bbox_to_anchor=(1, 0.5), ncol=1, handlelengt
 #g.text(702, 5.31, str('error bars $\pm$ 1$\sigma$'), fontsize = 11, fontweight = 'normal')
 
 #format x axis labels
-#plt.ylabel('Depth (km)')
+plt.xlabel('Temperature (°C)')
 
 #set x-axis labels
 #f.set_xticklabels(g.get_xticklabels(), rotation=45, horizontalalignment="right")
@@ -186,118 +162,4 @@ plt.suptitle("Ora Zircon Saturation Temperatures (W&H 83)", fontsize=15, fontwei
 
 # Save Figure
 
-#plt.savefig('/Users/gennachiaro/Documents/vanderbilt/research/ora caldera/zircon saturation/zr_satplot_KW_4.svg', dpi=800, bbox_inches = 'tight')
-
-
-df = df[['Population', 'T °C (WH 83)']]
-
-
-import itertools
-
-#BOEHNKE CALCULATIONS!!
-#df = df[['Population', 'T °C (B 13)']]
-
-# CG_1 = df[df['Population'].isin(['CG 1'])]
-# CG_1 = CG_1[['T °C (B 13)']]
-# CG_1 = CG_1.values.tolist()
-# CG_1 = list(itertools.chain(*CG_1))
-
-# CG_2 = df[df['Population'].isin(['CG 2'])]
-# CG_2 = CG_2[['T °C (B 13)']]
-# CG_2 = CG_2.values.tolist()
-# CG_2 = list(itertools.chain(*CG_2))
-
-# CG_3 = df[df['Population'].isin(['CG 3'])]
-# CG_3 = CG_3[['T °C (B 13)']]
-# CG_3 = CG_3.values.tolist()
-# CG_3 = list(itertools.chain(*CG_3))
-
-# VCCR_1 = df[df['Population'].isin(['VCCR 1'])]
-# VCCR_1 = VCCR_1[['T °C (B 13)']]
-# VCCR_1 = VCCR_1.values.tolist()
-# VCCR_1 = list(itertools.chain(*VCCR_1))
-
-# VCCR_2 = df[df['Population'].isin(['VCCR 2'])]
-# VCCR_2 = VCCR_2[['T °C (B 13)']]
-# VCCR_2 = VCCR_2.values.tolist()
-# VCCR_2 = list(itertools.chain(*VCCR_2))
-
-# VCCR_3 = df[df['Population'].isin(['VCCR 3'])]
-# VCCR_3 = VCCR_3[['T °C (B 13)']]
-# VCCR_3 = VCCR_3.values.tolist()
-# VCCR_3 = list(itertools.chain(*VCCR_3))
-
-CG_1 = df[df['Population'].isin(['CG 1'])]
-CG_1 = CG_1[['T °C (WH 83)']]
-CG_1 = CG_1.values.tolist()
-CG_1 = list(itertools.chain(*CG_1))
-
-CG_2 = df[df['Population'].isin(['CG 2'])]
-CG_2 = CG_2[['T °C (WH 83)']]
-CG_2 = CG_2.values.tolist()
-CG_2 = list(itertools.chain(*CG_2))
-
-CG_3 = df[df['Population'].isin(['CG 3'])]
-CG_3 = CG_3[['T °C (WH 83)']]
-CG_3 = CG_3.values.tolist()
-CG_3 = list(itertools.chain(*CG_3))
-
-VCCR_1 = df[df['Population'].isin(['VCCR 1'])]
-VCCR_1 = VCCR_1[['T °C (WH 83)']]
-VCCR_1 = VCCR_1.values.tolist()
-VCCR_1 = list(itertools.chain(*VCCR_1))
-
-VCCR_2 = df[df['Population'].isin(['VCCR 2'])]
-VCCR_2 = VCCR_2[['T °C (WH 83)']]
-VCCR_2 = VCCR_2.values.tolist()
-VCCR_2 = list(itertools.chain(*VCCR_2))
-
-VCCR_3 = df[df['Population'].isin(['VCCR 3'])]
-VCCR_3 = VCCR_3[['T °C (WH 83)']]
-VCCR_3 = VCCR_3.values.tolist()
-VCCR_3 = list(itertools.chain(*VCCR_3))
-
-
-from scipy import stats
-result = stats.kruskal(CG_1, CG_2, CG_3)
-print(result)
-
-result = stats.kruskal(VCCR_1, VCCR_2, VCCR_3)
-print(result)
-
-#Normality Tests
-stats.shapiro(VCCR_2)
-
-stats.shapiro(VCCR_3)
-
-stats.shapiro(CG_1)
-
-stats.shapiro(CG_2)
-
-
-stats.bartlett(VCCR_2, VCCR_3)
-stats.levene(VCCR_2, VCCR_3)
-
-stats.bartlett(CG_1, CG_2)
-stats.levene(CG_1, CG_2)
-
-
-
-stats.ttest_ind(VCCR_2, VCCR_3)
-stats.ttest_ind(CG_1, CG_2)
-
-stats.mannwhitneyu(VCCR_2, VCCR_3)
-stats.mannwhitneyu(CG_1, CG_2)
-
-
-import statistics
-
-statistics.variance(VCCR_2)
-statistics.variance(VCCR_3)
-
-statistics.variance(CG_1)
-statistics.variance(CG_2)
-statistics.variance(CG_3)
-
-stats.f_oneway(CG_1, CG_2, CG_3)
-stats.f_oneway(VCCR_1, VCCR_2, VCCR_3)
+plt.savefig('/Users/gennachiaro/Documents/vanderbilt/research/ora caldera/zircon saturation/zr_satplot_WH83_Final.png', dpi=500, bbox_inches = 'tight')

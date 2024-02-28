@@ -10,12 +10,15 @@ import numpy as np
 import seaborn as sns; sns.set()
 import matplotlib.pyplot as plt
 from matplotlib.ticker import FuncFormatter
+import matplotlib as mpl
 
+#USE MYENV
 
 ##FROM BA-SR-ALL.PY
 # Specify pathname
 path = '/Users/gennachiaro/Documents/vanderbilt/research/ora caldera/trace-elements/new-spreadsheets/Ora-Glass-MASTER.xlsx'
 #path = os.path.normcase(path) # This changes path to be compatible with windows
+
 
 # Create a custom list of values I want to cast to NaN, and explicitly
 #   define the data types of columns:
@@ -76,7 +79,6 @@ df = df.reset_index()
 all_2A_002 = df[df['Sample'].isin(['ORA-2A-002-Type1','ORA-2A-002-Type2','ORA-2A-002-Type3'])]
 
 all_2A_024 = df[df['Sample'].isin(['ORA-2A-024-TYPE1','ORA-2A-024-TYPE2','ORA-2A-024-TYPE3','ORA-2A-024-TYPE4'])]
-
 
 #---------
 # Calculate means for each sample (messy)
@@ -182,7 +184,7 @@ ORA_024_REE = melt[melt['Population'].isin(['ORA-2A-024'])]
 sns.set_style("darkgrid")
 
 #plot matrix
-fig = plt.figure(figsize=(10,8))
+fig = plt.figure(figsize=(11,9))
 
 # group plot title
 #title = fig.suptitle("All Ora Fiamme Glass Trace Elements", fontsize=16, y=0.925)
@@ -196,7 +198,7 @@ x = 'La/Lu'
 y = 'Eu/Eu*'
 
 # x = 'Ba'
-# y = 'Sr'
+# y = 'Nb'
 
 # 2A 024 Error Bar Values
 xerr1 = ORA2A002_std[x]
@@ -210,16 +212,16 @@ yerr2 = ORA2A024_std[y]
 # Create plot
 plt.subplot(2,2,1)
 
-plt.title("ORA-2A-002", fontsize=13.5, fontweight=0, color='black', y = 0.99)
+plt.title("ORA-2A-002", fontsize=18.5, fontweight=0, color='black', y = 0.99)
 
 # Show all symbols
 ORA2A002 = ORA2A002.replace(regex={'ORA-2A-002-Type1': 'ORA-2A-002-Type 1', 'ORA-2A-002-Type2': 'ORA-2A-002-Type 2', 'ORA-2A-002-Type3': 'ORA-2A-002-Type 3'})
 
-plot = sns.scatterplot(data = all_2A_002, x= x, y=y, hue = "Sample", style = "Sample", palette="gray", edgecolor="black", s=150, alpha = 0.2, legend=False, markers = ['o','X','s'], hue_order=['ORA-2A-002-Type1','ORA-2A-002-Type2','ORA-2A-002-Type3'])
+plot = sns.scatterplot(data = all_2A_002, x= x, y=y, hue = "Sample", style = "Sample", palette="gray", edgecolor="black", s=200, alpha = 0.2, legend=False, markers = ['o','X','s'], hue_order=['ORA-2A-002-Type1','ORA-2A-002-Type2','ORA-2A-002-Type3'])
 
 
 plot = sns.scatterplot(data=ORA2A002, x=x, y=y, hue="Sample", palette="Greens_r", style="Sample", edgecolor="black",
-                       s=200, legend='brief', alpha=0.85,  markers = ['o','s','X'])
+                       s=250, legend='brief', alpha=0.85,  markers = ['o','s','X'])
 plt.errorbar(x=ORA2A002[x], y=ORA2A002[y], xerr=xerr1, yerr=yerr1, ls='none', ecolor='green', elinewidth=1, capsize=2, barsabove=False, alpha=0.8)
 
 #Y vs. U
@@ -228,9 +230,20 @@ plt.errorbar(x=ORA2A002[x], y=ORA2A002[y], xerr=xerr1, yerr=yerr1, ls='none', ec
 #Y vs. Gd
 #plot.text(14.9,53, str('error bars $\pm$ 1$\sigma$'), fontsize = 11, fontweight = 'normal')
 
+plt.xlabel(x, fontsize = 18.5)
+plt.ylabel(y, fontsize = 18.5)
+
+plt.yticks(fontsize=14)
+plt.xticks(fontsize=14)
+
+from scipy import stats
+import numpy as np
+res = stats.linregress(ORA2A002[x], ORA2A002[y])
+print(f"R-squared: {res.rvalue**2:.6f}")
+
 
 h, l = plot.get_legend_handles_labels()
-plt.legend(h[1:4]+h[5:8], l[1:4]+l[5:8], loc='best', ncol=1, handlelength = 1, columnspacing = 0.5)
+plt.legend(h[1:4]+h[5:8], l[1:4]+l[5:8], loc='best', fontsize = 18.5, ncol = 1, handlelength = 1.5, markerscale = 2)
 
 # plt.xlabel(x + ' [ppm]')
 # plt.ylabel(y + " [ppm]")
@@ -244,17 +257,17 @@ plt.xlim (8, 44)
 #plot 2
 plt.subplot(2,2,2)
 #create trace element plot
-plt.title("ORA-2A-024", fontsize=13.5, fontweight=0, color='black', y = 0.99)
+plt.title("ORA-2A-024", fontsize=18.5, fontweight=0, color='black', y = 0.99)
 
 # Show all symbols
 ORA2A024 = ORA2A024.replace(regex={'ORA-2A-024-TYPE1': 'ORA-2A-024-Type 1','ORA-2A-024-TYPE2': 'ORA-2A-024-Type 2' ,'ORA-2A-024-TYPE3': 'ORA-2A-024-Type 3','ORA-2A-024-TYPE4': 'ORA-2A-024-Type 4'})
 
-plot2 = sns.scatterplot(data = all_2A_024, x= x, y=y, hue = "Sample", style = "Sample", palette="gray", edgecolor="black", s=150, alpha = 0.2, legend=False, ci = 99.7)
+plot2 = sns.scatterplot(data = all_2A_024, x= x, y=y, hue = "Sample", style = "Sample", palette="gray", edgecolor="black", s=200, alpha = 0.2, legend=False, ci = 99.7,  linewidth = 1)
 
 
 
 plot2 = sns.scatterplot(data=ORA2A024, x=x, y=y, hue="Sample", palette="Greens_r", style="Sample", edgecolor="black",
-                       s=200, legend='brief', alpha=0.85)
+                       s=250, legend='brief', alpha=0.85)
 plt.errorbar(x=ORA2A024[x], y=ORA2A024[y], xerr=xerr2, yerr=yerr2, ls='none', ecolor='green', elinewidth=1, capsize=2, barsabove=False, alpha=0.8)
 
 # plot = sns.scatterplot(data=FGCP, x=x, y=y, hue="Population", palette="Greens_r", style="Population", edgecolor="black",
@@ -273,8 +286,19 @@ plt.errorbar(x=ORA2A024[x], y=ORA2A024[y], xerr=xerr2, yerr=yerr2, ls='none', ec
 # plt.ylim((51, 120.2) )
 # plt.xlim (6.4, 19)
 
-plot2.text(32.5,-0.0007, str('error bars $\pm$ 1$\sigma$'), fontsize = 11, fontweight = 'normal')
+# plot2.text(28.5,-0.0007, str('error bars $\pm$ 1$\sigma$'), fontsize = 18.5, fontweight = 'normal')
 
+from scipy import stats
+import numpy as np
+res = stats.linregress(ORA2A024[x], ORA2A024[y])
+print(f"R-squared: {res.rvalue**2:.6f}")
+
+
+plt.xlabel(x, fontsize = 18.5)
+plt.ylabel(y, fontsize = 18.5)
+
+plt.yticks(fontsize=14)
+plt.xticks(fontsize=14)
 
 plt.ylim((-0.0025,0.067) )
 plt.xlim (8, 44)
@@ -283,7 +307,7 @@ plt.xlim (8, 44)
 
 h, l = plot2.get_legend_handles_labels()
 # Legend inside of plot
-plt.legend(h[1:5]+h[5:8], l[1:5]+l[5:8], loc='upper left', ncol=1, handlelength = 1, columnspacing = 0.5)
+plt.legend(h[1:5]+h[5:8], l[1:5]+l[5:8], loc='upper left', ncol=1, handlelength = 1, columnspacing = 0.5, fontsize = 18.5, markerscale = 2)
 
 # ---------
 #plot 3
@@ -301,13 +325,16 @@ plot = sns.lineplot(data = ORA_002_REE, x= 'variable', y='value', hue = 'Sample'
 plt.legend(loc='lower right')
 
 h,l = plot.get_legend_handles_labels()
-plt.legend(h[1:4]+h[5:8], l[1:4]+l[5:8], loc='best', ncol=1, handlelength = 1, columnspacing = 0.5)
+plt.legend(h[1:4]+h[5:8], l[1:4]+l[5:8], loc='lower right', fontsize = 18.5, ncol = 1, handlelength = 1, markerscale = 10, columnspacing = 0.5)
 
 plt.xlabel('')
-plt.ylabel('Sample/Chondrite')
+plt.ylabel('Sample/Chondrite', fontsize = 18.5)
+
+plt.yticks(fontsize=14)
+plt.xticks(fontsize=18.5)
 
 #plt.text(8.1,0.12, str('error envelopes $\pm$ 1$\sigma$'), fontsize = 11, fontweight = 'normal')
-plt.text(7.55,0.12, str('error envelopes $\pm$ 1 std'), fontsize = 11, fontweight = 'normal')
+plt.text(-0.2,0.12, str('error envelopes $\pm$ 1 std'), fontsize = 18.5, fontweight = 'normal')
 
 plot.get_yaxis().set_minor_locator(mpl.ticker.AutoMinorLocator())
 plot.grid(b=True, which='major', color='w', linewidth=1.0)
@@ -321,6 +348,9 @@ for axis in [plot.yaxis]:
     formatter = FuncFormatter(lambda y, _: '{:.16g}'.format(y))
     axis.set_major_formatter(formatter)
 
+for tick in plot.xaxis.get_major_ticks()[1::2]:
+    tick.set_pad(25)
+
 #plt.yscale('log')
 
 
@@ -330,7 +360,7 @@ plt.subplot(2,2,4)
 
 ORA_024_REE = ORA_024_REE.replace(regex={'ORA-2A-024-TYPE1': 'ORA-2A-024-Type 1','ORA-2A-024-TYPE2': 'ORA-2A-024-Type 2' ,'ORA-2A-024-TYPE3': 'ORA-2A-024-Type 3','ORA-2A-024-TYPE4': 'ORA-2A-024-Type 4'})
 
-plot = sns.lineplot(data = ORA_024_REE, x= 'variable', y='value', hue = 'Sample', sort = False, palette="Greens_d",legend="brief", ci = 'sd', err_kws = error_config)
+plot = sns.lineplot(data = ORA_024_REE, x= 'variable', y='value', hue = 'Sample', sort = False, palette="Greens_d",legend="brief", ci = 'sd', err_kws = error_config,  linewidth = 1)
 
 #plot = sns.lineplot(data = ORA_024_REE, x= 'variable', y='value', sort = False, palette="Greens_d",legend="brief")
 
@@ -339,11 +369,14 @@ plt.legend(loc='lower right')
 
 h,l = plot.get_legend_handles_labels()
 # Legend inside of plot
-plt.legend(h[1:5]+h[5:8], l[1:5]+l[5:8], loc='best', ncol=1, handlelength = 1, columnspacing = 0.5)
+plt.legend(h[1:5]+h[5:8], l[1:5]+l[5:8], loc='lower right', fontsize = 18.5, ncol = 1, handlelength = 1, markerscale = 10, columnspacing = 0.5)
 
 
 plt.xlabel('')
-plt.ylabel('Sample/Chondrite')
+plt.ylabel('Sample/Chondrite', fontsize = 18.5)
+
+plt.yticks(fontsize=14)
+plt.xticks(fontsize=18.5)
 
 plot.get_yaxis().set_minor_locator(mpl.ticker.AutoMinorLocator())
 plot.grid(b=True, which='major', color='w', linewidth=1.0)
@@ -364,8 +397,13 @@ for axis in [plot.yaxis]:
     formatter = FuncFormatter(lambda y, _: '{:.16g}'.format(y))
     axis.set_major_formatter(formatter)
 
+for tick in plot.xaxis.get_major_ticks()[1::2]:
+    tick.set_pad(25)
+
 #sns.set_context("paper") 
 #plt.tight_layout()
 
-plt.savefig('/Users/gennachiaro/Documents/vanderbilt/research/ora caldera/trace-elements/graphs/FGCP_4plot_REE_sd_eu-eu*log_numbers_Final.svg', dpi=800)
+plt.tight_layout(pad = 1)
+
+#plt.savefig('/Users/gennachiaro/Documents/vanderbilt/research/ora caldera/trace-elements/graphs/FGCP_4plot_REE_sd_eu-eu*log_numbers_Revision2_Errorbars.svg', dpi=800)
 

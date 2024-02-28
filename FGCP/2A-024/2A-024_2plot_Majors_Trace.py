@@ -12,6 +12,8 @@ sns.set()
 path = '/Users/gennachiaro/Documents/vanderbilt/research/ora caldera/trace-elements/new-spreadsheets/Ora-Glass-MASTER.xlsx'
 #path = os.path.normcase(path) # This changes path to be compatible with windows
 
+errors = '/Users/gennachiaro/Documents/vanderbilt/research/ora caldera/trace-elements/new-spreadsheets/stats/1_sigmaerrors_mingled_ORA-2A-024.xlsx'
+
 # Create a custom list of values I want to cast to NaN, and explicitly
 #   define the data types of columns:
 na_values = ['<-1.00', '****', '<****', '*****']
@@ -21,6 +23,10 @@ data = ({'Li': np.float64, 'Mg': np.float64, 'Al': np.float64,'Si': np.float64,'
 
 # Master spreadsheet with clear mineral analyses removed (excel file!)
 df = pd.read_excel(path, sheet_name = 'Data', skiprows = [1], dtype = data, na_values = na_values)
+
+# import 1 sigma error bars from GLITTER
+errors = pd.read_excel(errors, dtype = data, na_values = na_values)
+
 
 #If Value in included row is equal to zero, drop this row
 df = df.loc[~((df['Included'] == 0))]
@@ -70,6 +76,10 @@ df = df.reset_index()
 # Dataframe Slicing of average values using "isin"
 all_2A_024 = df[df['Sample'].isin(['ORA-2A-024-TYPE1','ORA-2A-024-TYPE2','ORA-2A-024-TYPE3','ORA-2A-024-TYPE4'])]
 
+errors = errors.reset_index()
+list = all_2A_024['Spot']
+errors = errors.loc[errors['Spot'].isin(list)].reset_index(drop=True)
+errors = errors.set_index('Spot')
 #---------
 # Calculate means for each sample (messy)
 # sample_mean = df.groupby('Sample').mean()
@@ -316,19 +326,23 @@ FGCP = FGCP.replace(regex={'Type 1': 'ORA-2A-024-Type 1','Type 2': 'ORA-2A-024-T
 
 plt.figure(figsize=(9, 4), dpi=400)
 
-
 # Create plot
 plt.subplot(1,2,1)
 
 plot = sns.scatterplot(data = FGCP_All, x= x, y= y,hue = "Type", palette= "gray", edgecolor="black", marker = '^', s=150, style = "Type", alpha = 0.2, legend = False)
 
 #CaO errorbar text
-plot.text(72.99,0.3, str('error bars $\pm$ 1$\sigma$'), fontsize = 11, fontweight = 'normal')
+plot.text(72.99,0.3, str('error bars $\pm$ 1$\sigma$'), fontsize = 15, fontweight = 'normal')
 
 plot = sns.scatterplot(data=FGCP, x=x, y=y, hue="Type", palette="Greens_r", style="Type", edgecolor="black",
                       s=200, legend=False, alpha=0.85)
 plt.errorbar(x=FGCP[x], y=FGCP[y], xerr=xerr3, yerr=yerr3, ls='none',
             ecolor='green', elinewidth=1, capsize=2, barsabove=False, alpha=0.8)
+
+
+
+plt.yticks(fontsize=12)
+plt.xticks(fontsize=12)
 
 #plt.tight_layout()
 
@@ -385,9 +399,9 @@ plt.errorbar(x=FGCP[x], y=FGCP[y], xerr=xerr3, yerr=yerr3, ls='none',
 # Set size of plot
 #sns.set_context("paper")
 
-plt.xlabel('SiO$_2$' + ' wt.%', fontsize = 12)
+plt.xlabel('SiO$_2$' + ' wt.%', fontsize = 15)
 #plt.ylabel('K$_2$O' + " wt.%", fontsize = 12)
-plt.ylabel('CaO' + " wt.%", fontsize = 12)
+plt.ylabel('CaO' + " wt.%", fontsize = 15)
 
 # Create plot
 # Show all symbols
@@ -396,7 +410,7 @@ plt.subplot(1,2,2)
 
 # Plotting
 # Select elements to plot
-x = 'Nb'
+x = 'Zr'
 y = 'Y'
 
 # x = 'Ba'
@@ -407,7 +421,15 @@ y = 'Y'
 xerr3 = FGCP1_std[x]
 yerr3 = FGCP1_std[y]
 
+xerr2 = errors[x]
+yerr2 = errors[y]
+
+all_2A_024 = all_2A_024.set_index('Spot')
+
 plot = sns.scatterplot(data = all_2A_024, x= x, y=y, hue = "Sample", style = "Sample", palette="gray", edgecolor="black", s=150, alpha = 0.2, legend=False)
+plt.errorbar(x=all_2A_024[x], y=all_2A_024[y], xerr=xerr2, yerr=yerr2, ls='none',
+            ecolor='gray', elinewidth=1, capsize=2, barsabove=False, alpha=0.2)
+
 
 #   All one symbol
 # plot = sns.scatterplot(data=MG, x=x, y=y, hue="Population", palette="Blues_d", marker='s',
@@ -423,7 +445,7 @@ plot = sns.scatterplot(data = all_2A_024, x= x, y=y, hue = "Sample", style = "Sa
 FGCP1 = FGCP1.replace(regex={'ORA-2A-024-TYPE1': 'ORA-2A-024-Type 1','ORA-2A-024-TYPE2': 'ORA-2A-024-Type 2' ,'ORA-2A-024-TYPE3': 'ORA-2A-024-Type 3','ORA-2A-024-TYPE4': 'ORA-2A-024-Type 4'})
 
 plot = sns.scatterplot(data=FGCP1, x=x, y=y, hue="Sample", palette="Greens_r", style="Sample", edgecolor="black",
-                       s=200, legend='brief', alpha=0.85)
+                       s=200, legend='brief', alpha=1)
 plt.errorbar(x=FGCP1[x], y=FGCP1[y], xerr=xerr3, yerr=yerr3, ls='none',
              ecolor='green', elinewidth=1, capsize=2, barsabove=False, alpha=0.8)
 
@@ -432,9 +454,12 @@ plt.errorbar(x=FGCP1[x], y=FGCP1[y], xerr=xerr3, yerr=yerr3, ls='none',
 # plt.errorbar(x=FG[x], y=FG[y], xerr=xerr4, yerr=yerr4, ls='none',
 #              ecolor='orange', elinewidth=1, capsize=2, barsabove=False, alpha=0.8)
 
-plt.xlabel(x + ' [ppm]')
-plt.ylabel(y + " [ppm]")
+plt.xlabel(x + ' [ppm]', fontsize = 15)
+plt.ylabel(y + " [ppm]", fontsize = 15)
 
+
+plt.yticks(fontsize=12)
+plt.xticks(fontsize=12)
 
 #plt.text(x=MG[MG[x]], y=MG[MG[y]], s='Sample')
 
@@ -473,7 +498,7 @@ h, l = plot.get_legend_handles_labels()
 #plt.legend(h[1:4]+h[5:8],l[1:4]+l[5:8],loc='center left', bbox_to_anchor=(1, 0.5), ncol=1)
 
 # Legend inside of plot
-plt.legend(h[1:6], l[1:6], loc='best', ncol=1, handlelength = 1, columnspacing = 0.5)
+plt.legend(h[1:6], l[1:6], loc='best', ncol=1, handlelength = 1, columnspacing = 0.5, markerscale = 1.3)
 plt.tight_layout()
 
 # Populations
@@ -486,7 +511,7 @@ plt.tight_layout()
 # plt.suptitle("High-Silica Rhyolite (MG + VCCR) Fiamme Glass", fontsize=15,
 #              fontweight=0, color='black', y=0.95)
 
-plt.savefig('/Users/gennachiaro/Documents/vanderbilt/research/ora caldera/trace-elements/graphs/2A 024/2A-024_majors_trace_2panel_Y_Nb_2.svg', dpi=800)
+#plt.savefig('/Users/gennachiaro/Documents/vanderbilt/research/ora caldera/trace-elements/graphs/2A 024/2A-024_majors_trace_errors.svg', dpi=800)
 
 
 # Set size of plot
